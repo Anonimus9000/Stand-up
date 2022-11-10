@@ -1,6 +1,10 @@
-﻿using Script.Libraries.UISystem.Managers.Instantiater;
+﻿using System.Collections.Generic;
+using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.FullscreenDialogs;
+using Script.UI.UIInstantiater;
+using Script.UI.UiWindowsLoader;
 using UnityEngine;
 
 namespace Script.Initializer.Initializables.StartApplicationInitializables
@@ -12,11 +16,23 @@ namespace Script.Initializer.Initializables.StartApplicationInitializables
 
         public void Initialize()
         {
-            IInstantiater instantiater = new UnityInstantiater(_parentToCreate);
+            var uiWindows = InitializeWindowsLoader();
 
-            var uiManager = new UIManager(_pathToDialogs, instantiater);
+            IInstantiater instantiater = new UnityInstantiater(_parentToCreate);
+            var uiManager = new UIManager(instantiater, uiWindows);
             
             OpenApplicationEnterDotWindow(uiManager);
+        }
+
+        private List<IUIWindow> InitializeWindowsLoader()
+        {
+            var loaderObject = new GameObject("WindowsLoader");
+            loaderObject.transform.SetParent(transform);
+            var unityUIWindowsLoader = loaderObject.AddComponent<UnityUIWindowsLoader>();
+            
+            unityUIWindowsLoader.LoadDialogs(_pathToDialogs);
+
+            return unityUIWindowsLoader.UIWindows;
         }
 
         private void OpenApplicationEnterDotWindow(UIManager uiManager)

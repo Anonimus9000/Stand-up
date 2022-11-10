@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
 
@@ -9,41 +10,59 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
         private readonly IDialogsManager _popupsManager = new PopupsManager();
         private readonly IDialogsManager _fullScreensManager = new FullScreensManager();
         
-        private BaseUIWindow _currentWindow;
+        private IUIWindow _currentWindow;
 
-        public UIManager(string prefabsPath, IInstantiater instantiater)
+        public UIManager(IInstantiater instantiater, List<IUIWindow> windows)
         {
-            InitializeManagers(prefabsPath, instantiater);
+            InitializeManagers(instantiater, windows);
         }
 
-        private void InitializeManagers(string prefabsPath, IInstantiater instantiater)
+        private void InitializeManagers(IInstantiater instantiater, List<IUIWindow> uiWindows)
         {
-            _popupsManager.Initialize(prefabsPath, instantiater);
-            _fullScreensManager.Initialize(prefabsPath, instantiater);
+            var popupDialogs = new List<IUIWindow>(uiWindows.Count);
+            var fullScreenDialogs = new List<IUIWindow>(uiWindows.Count);
+
+            foreach (var uiWindow in uiWindows)
+            {
+                switch (uiWindow)
+                {
+                    case IPopupDialog popupDialog:
+                        popupDialogs.Add(popupDialog);
+                        break;
+                    case IFullScreenDialog fullScreenDialog:
+                        fullScreenDialogs.Add(fullScreenDialog);
+                        break;
+                    default:
+                        throw new Exception($"Incorrect type window {uiWindow.GetType()}");
+                }
+            }
+            
+            _popupsManager.Initialize(instantiater, popupDialogs);
+            _fullScreensManager.Initialize(instantiater, fullScreenDialogs);
         }
 
-        public BaseUIWindow Show<T>() where T : BaseUIWindow, new()
+        public IUIWindow Show<T>() where T : IUIWindow, new()
         {
             // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
             switch (new T())
             {
-                case PopupDialog _:
+                case IPopupDialog _:
                     return _popupsManager.Show<T>();
-                case FullScreenDialog _:
+                case IFullScreenDialog _:
                     return _fullScreensManager.Show<T>();
                 default:
                     throw new Exception("Incorrect type: " + typeof(T));
             }
         }
 
-        public BaseUIWindow Hide<T>() where T : BaseUIWindow, new()
+        public IUIWindow Hide<T>() where T : IUIWindow, new()
         {
             // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
             switch (new T())
             {
-                case PopupDialog _:
+                case IPopupDialog _:
                     return _popupsManager.Hide<T>();
-                case FullScreenDialog _:
+                case IFullScreenDialog _:
                     return _fullScreensManager.Hide<T>();
                 default:
                     throw new Exception("Incorrect type: " + typeof(T));

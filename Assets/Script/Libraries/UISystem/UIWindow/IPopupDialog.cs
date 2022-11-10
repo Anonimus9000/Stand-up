@@ -1,6 +1,6 @@
 ﻿namespace Script.Libraries.UISystem.UIWindow
 {
-    public class PopupDialog : BaseUIWindow
+    public interface IPopupDialog : IUIWindow
     {
         
     }

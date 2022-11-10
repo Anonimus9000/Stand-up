@@ -2,44 +2,41 @@
 using System.Collections.Generic;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
-using UnityEngine;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
     public class FullScreensManager : IDialogsManager
     {
-        private FullScreenDialog _currentDialog;
-        private List<FullScreenDialog> _fullScreenDialogPrefabs;
-        private string _fullScreenDialogPrefabsPath;
+        private IFullScreenDialog _currentDialog;
+        private List<IUIWindow> _fullScreenDialogPrefabs;
         private IInstantiater _instantiater;
 
-        public void Initialize(string fullScreenDialogsPrefabsPath, IInstantiater instantiater)
+        public void Initialize(IInstantiater instantiater, List<IUIWindow> fullScreenDialogs)
         {
             _instantiater = instantiater;
-            _fullScreenDialogPrefabsPath = fullScreenDialogsPrefabsPath;
 
-            InitializePrefabs(_fullScreenDialogPrefabsPath);
+            _fullScreenDialogPrefabs = fullScreenDialogs;
         }
 
-        public BaseUIWindow Show<T>() where T : BaseUIWindow
+        public IUIWindow Show<T>() where T : IUIWindow
         {
             var dialogToShow = GetPrefab<T>();
 
             TryCloseCurrentDialog();
 
-            var fullScreenDialog = _instantiater.Instantiate(dialogToShow) as FullScreenDialog;
+            var fullScreenDialog = _instantiater.Instantiate(dialogToShow) as IFullScreenDialog;
 
             fullScreenDialog!.OnShown();
 
             return fullScreenDialog;
         }
 
-        public BaseUIWindow Hide<T>() where T : BaseUIWindow
+        public IUIWindow Hide<T>() where T : IUIWindow
         {
             throw new NotImplementedException();
         }
 
-        public void Close<T>() where T : BaseUIWindow
+        public void Close<T>() where T : IUIWindow
         {
             var fullScreenDialog = GetPrefab<T>();
             CloseDialog(fullScreenDialog);
@@ -54,30 +51,24 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             return true;
         }
 
-        private FullScreenDialog GetPrefab<T>() where T : BaseUIWindow
+        private IFullScreenDialog GetPrefab<T>() where T : IUIWindow
         {
             foreach (var dialogPrefab in _fullScreenDialogPrefabs)
             {
                 if (dialogPrefab is T)
                 {
-                    return dialogPrefab;
+                    return dialogPrefab as IFullScreenDialog;
                 }
             }
 
-            throw new Exception($"Can't find prefab {typeof(T)}. Need add prefab in {_fullScreenDialogPrefabsPath}");
+            throw new Exception($"Can't find prefab {typeof(T)}");
         }
 
-        private void CloseDialog(BaseUIWindow dialogToClose)
+        private void CloseDialog(IUIWindow dialogToClose)
         {
             dialogToClose.OnHidden();
             
             _instantiater.Destroy(dialogToClose);
-        }
-
-        private void InitializePrefabs(string prefabsPath)
-        {
-            var fullScreenDialogs = Resources.LoadAll<FullScreenDialog>(_fullScreenDialogPrefabsPath);
-            _fullScreenDialogPrefabs = new List<FullScreenDialog>(fullScreenDialogs);
         }
     }
 }

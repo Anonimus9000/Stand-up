@@ -1,8 +1,9 @@
 ﻿using System;
+using Script.Libraries.UISystem.Managers.Instantiater;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Script.Libraries.UISystem.Managers.Instantiater
+namespace Script.UI.UIInstantiater
 {
     public class UnityInstantiater : IInstantiater
     {

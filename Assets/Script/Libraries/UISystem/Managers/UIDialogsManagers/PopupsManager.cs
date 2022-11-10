@@ -2,44 +2,41 @@
 using System.Collections.Generic;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
-using UnityEngine;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
     public class PopupsManager : IDialogsManager
     {
-        private PopupDialog _currentPopup;
-        private List<PopupDialog> _popupPrefabs;
-        private string _popupPrefabsPath;
+        private IPopupDialog _currentPopup;
+        private List<IUIWindow> _popupPrefabs;
         private IInstantiater _instantiater;
 
-        public void Initialize(string popupPrefabsPath, IInstantiater instantiater)
+        public void Initialize(IInstantiater instantiater, List<IUIWindow> windows)
         {
             _instantiater = instantiater;
-            _popupPrefabsPath = popupPrefabsPath;
-            
-            InitializePrefabs(_popupPrefabsPath);
+
+            _popupPrefabs = windows;
         }
 
-        public BaseUIWindow Show<T>() where T : BaseUIWindow
+        public IUIWindow Show<T>() where T : IUIWindow
         {
             var popupToShow = GetPrefab<T>();
 
             TryCloseCurrentPopup();
 
-            var popupDialog = _instantiater.Instantiate(popupToShow) as PopupDialog;
+            var popupDialog = _instantiater.Instantiate(popupToShow) as IPopupDialog;
             
             popupDialog!.OnShown();
 
             return popupDialog;
         }
 
-        public BaseUIWindow Hide<T>() where T : BaseUIWindow
+        public IUIWindow Hide<T>() where T : IUIWindow
         {
             throw new NotImplementedException();
         }
 
-        public void Close<T>() where T : BaseUIWindow
+        public void Close<T>() where T : IUIWindow
         {
             var popupDialog = GetPrefab<T>();
             _instantiater.Destroy(popupDialog);
@@ -54,29 +51,23 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             return true;
         }
 
-        private PopupDialog GetPrefab<T>() where T : BaseUIWindow
+        private IPopupDialog GetPrefab<T>() where T : IUIWindow
         {
             foreach (var popupPrefab in _popupPrefabs)
             {
                 if (popupPrefab is T)
                 {
-                    return popupPrefab;
+                    return popupPrefab as IPopupDialog;
                 }
             }
 
-            throw new Exception($"Can't find prefab {typeof(T)}. Need add prefab in {_popupPrefabsPath}");
+            throw new Exception($"Can't find prefab {typeof(T)}");
         }
 
-        private void ClosePrefab(PopupDialog popupToClose)
+        private void ClosePrefab(IPopupDialog popupToClose)
         {
             popupToClose.OnHidden();
             _instantiater.Destroy(popupToClose);
-        }
-
-        private void InitializePrefabs(string prefabsPath)
-        {
-            var popupDialogs = Resources.LoadAll<PopupDialog>(prefabsPath);
-            _popupPrefabs = new List<PopupDialog>(popupDialogs);
         }
     }
 }
