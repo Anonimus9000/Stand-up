@@ -1,5 +1,6 @@
 ﻿using System;
 using Script.Libraries.UISystem.Managers.Instantiater;
+using Script.Libraries.UISystem.UIWindow;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -29,6 +30,36 @@ namespace Script.UI.UIInstantiater
             if (objectToDestroy is Component obj)
             {
                 Object.Destroy(obj.gameObject);
+            }
+        }
+        
+
+        public void SetActive(IInstantiatble objectToHide, bool isActive)
+        {
+            if (isActive)
+            {
+                Activate(objectToHide);
+            }
+            else
+            {
+                Deactivate(objectToHide);
+            }
+            
+        }
+
+        private void Activate(IInstantiatble objectToHide)
+        {
+            if (objectToHide is Component obj)
+            {
+                obj.gameObject.SetActive(true);
+            }
+        }
+
+        private void Deactivate(IInstantiatble objectToHide)
+        {
+            if (objectToHide is Component obj)
+            {
+                obj.gameObject.SetActive(false);
             }
         }
     }

@@ -30,20 +30,35 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
                     throw new Exception("Incorrect type: " + typeof(T));
             }
         }
-
-        public IUIWindow Hide<T>() where T : IUIWindow, new()
+        public void Close<T>() where T : IUIWindow, new()
         {
             // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
             switch (new T())
             {
                 case IPopupDialog _:
-                    return _popupsManager.Hide<T>();
+                    _popupsManager.Close<T>();
+                    break;
                 case IFullScreenDialog _:
-                    return _fullScreensManager.Hide<T>();
+                    _fullScreensManager.Close<T>();
+                    break;
                 default:
                     throw new Exception("Incorrect type: " + typeof(T));
             }
         }
+
+        // private IUIWindow Hide<T>() where T : IUIWindow, new()
+        // {
+        //     // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
+        //     switch (new T())
+        //     {
+        //         case IPopupDialog _:
+        //             return _popupsManager.Hide<T>();
+        //         case IFullScreenDialog _:
+        //             return _fullScreensManager.Hide<T>();
+        //         default:
+        //             throw new Exception("Incorrect type: " + typeof(T));
+        //     }
+        // }
 
         private void InitializeManagers(IInstantiater instantiater, List<IUIWindow> uiWindows)
         {
@@ -65,8 +80,8 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
                 }
             }
             
-            _popupsManager.Initialize(instantiater, popupDialogs);
-            _fullScreensManager.Initialize(instantiater, fullScreenDialogs);
+            _popupsManager.Initialize(instantiater, popupDialogs, this);
+            _fullScreensManager.Initialize(instantiater, fullScreenDialogs, this);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
 
@@ -10,46 +11,70 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
         private IFullScreenDialog _currentDialog;
         private List<IUIWindow> _fullScreenDialogPrefabs;
         private IInstantiater _instantiater;
+        private List<IFullScreenDialog> _queueHiddenScreens = new List<IFullScreenDialog>();
+        private UIManager _uiManager;
 
-        public void Initialize(IInstantiater instantiater, List<IUIWindow> fullScreenDialogs)
+        public void Initialize(IInstantiater instantiater, List<IUIWindow> fullScreenDialogs, UIManager uiManager)
         {
+            _uiManager = uiManager;
             _instantiater = instantiater;
 
             _fullScreenDialogPrefabs = fullScreenDialogs;
         }
 
         public IUIWindow Show<T>() where T : IUIWindow
-        {
-            var dialogToShow = GetPrefab<T>();
+        {   
+            TryHideCurrentScreen();
 
-            TryCloseCurrentDialog();
+            var screenToShow = GetPrefab<T>();
 
-            var fullScreenDialog = _instantiater.Instantiate(dialogToShow) as IFullScreenDialog;
+            var screen = _instantiater.Instantiate(screenToShow) as IFullScreenDialog;
 
-            fullScreenDialog!.OnShown();
+            _currentDialog = screen;
+            
+            screen!.OnShown();
+            screen!.Initialize(_uiManager);
+            _queueHiddenScreens.Add(screen);
 
-            return fullScreenDialog;
+            return screen;
         }
 
-        public IUIWindow Hide<T>() where T : IUIWindow
+        private bool TryHideCurrentScreen()
         {
-            throw new NotImplementedException();
+            if (_currentDialog is null)
+            {
+                return false;
+            }
+            
+            _instantiater.SetActive(_currentDialog, false);
+            
+            return true;
         }
+        
 
         public void Close<T>() where T : IUIWindow
         {
-            var fullScreenDialog = GetPrefab<T>();
-            CloseDialog(fullScreenDialog);
+            var screen = _queueHiddenScreens.Last();
+            _queueHiddenScreens.Remove(screen);
+            _instantiater.Destroy(screen);
+
+            TryShowLastHiddenPopup();
         }
 
-        private bool TryCloseCurrentDialog()
+        private bool TryShowLastHiddenPopup()
         {
-            if (_currentDialog == null) return false;
+            if (_queueHiddenScreens.Count > 0)
+            {
+                var screen = _queueHiddenScreens.Last();
+                _instantiater.SetActive(screen, true);
+                _currentDialog = screen;
+                
+                return true;
+            }
 
-            CloseDialog(_currentDialog);
-
-            return true;
+            return false;
         }
+        
 
         private IFullScreenDialog GetPrefab<T>() where T : IUIWindow
         {
@@ -62,13 +87,6 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             }
 
             throw new Exception($"Can't find prefab {typeof(T)}");
-        }
-
-        private void CloseDialog(IUIWindow dialogToClose)
-        {
-            dialogToClose.OnHidden();
-            
-            _instantiater.Destroy(dialogToClose);
         }
     }
 }
