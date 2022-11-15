@@ -3,6 +3,7 @@ using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.FullscreenDialogs;
+using Script.UI.Tests;
 using Script.UI.UIInstantiater;
 using Script.UI.UiWindowsLoader;
 using UnityEngine;
@@ -37,7 +38,7 @@ namespace Script.Initializer.Initializables.StartApplicationInitializables
 
         private void OpenApplicationEnterDotWindow(UIManager uiManager)
         {
-            uiManager.Show<ApplicationEnterWindow>();
+            uiManager.Show<TestScreen1>();
         }
     }
 }
