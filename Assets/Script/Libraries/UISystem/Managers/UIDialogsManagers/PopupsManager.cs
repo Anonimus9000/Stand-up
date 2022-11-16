@@ -31,6 +31,8 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             var popupToShow = GetPrefab<T>();
 
             var popupDialog = _instantiater.Instantiate(popupToShow) as IPopupDialog;
+
+            _currentPopup = popupDialog;
             
             popupDialog!.OnShown();
             popupDialog!.Initialize(_uiManager);
@@ -48,7 +50,7 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             
             _instantiater.SetActive(_currentPopup, false);
             
-            return false;
+            return true;
         }
 
         public void Close<T>() where T : IUIWindow
@@ -57,6 +59,11 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             _queueHiddenPopups.Remove(popupDialog);
             _instantiater.Destroy(popupDialog);
 
+            if (_queueHiddenPopups.Count == 0)
+            {
+                _currentPopup = null;
+            }
+            
             TryShowLastHiddenPopup();
         }
 
@@ -66,6 +73,7 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             {
                 var popupDialog = _queueHiddenPopups.Last();
                 _instantiater.SetActive(popupDialog, true);
+                _currentPopup = popupDialog;
                 
                 return true;
             }

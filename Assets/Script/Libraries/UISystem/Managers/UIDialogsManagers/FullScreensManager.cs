@@ -58,10 +58,10 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
             _queueHiddenScreens.Remove(screen);
             _instantiater.Destroy(screen);
 
-            TryShowLastHiddenPopup();
+            TryShowLastHiddenScreen();
         }
 
-        private bool TryShowLastHiddenPopup()
+        private bool TryShowLastHiddenScreen()
         {
             if (_queueHiddenScreens.Count > 0)
             {

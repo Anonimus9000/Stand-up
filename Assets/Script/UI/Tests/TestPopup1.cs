@@ -1,9 +1,29 @@
-﻿using Script.UI.Dialogs.BaseDialogs;
+﻿using Script.Libraries.UISystem.Tests;
+using Script.UI.Dialogs.BaseDialogs;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Script.UI.Tests
 {
     public class TestPopup1 : BasePopupDialog
     {
-        
+        [SerializeField] private Button _openPopup;
+        [SerializeField] private Button _closePopup;
+
+        private void Start()
+        {
+            _openPopup.onClick.AddListener(OpenPopup);
+            _closePopup.onClick.AddListener(ClosePopup);
+        }
+
+        private void ClosePopup()
+        {
+            UIManager.Close<TestPopup1>();
+        }
+
+        private void OpenPopup()
+        {
+            UIManager.Show<TestPopup2>();
+        }
     }
 }
