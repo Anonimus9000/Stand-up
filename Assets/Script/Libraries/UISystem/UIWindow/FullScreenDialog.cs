@@ -1,7 +1,6 @@
 ﻿namespace Script.Libraries.UISystem.UIWindow
 {
-    public interface IFullScreenDialog : IUIWindow
-    {
-        
-    }
+public interface IFullScreenDialog : IUIWindow
+{
+}
 }

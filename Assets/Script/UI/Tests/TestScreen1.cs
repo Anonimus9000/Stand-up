@@ -15,7 +15,7 @@ public class TestScreen1 : BaseFullscreenWindow
 
     private void OpenScreen()
     {
-        UIManager.Show<TestScreen2>();
+        uiManager.Show<TestScreen2>();
     }
 }
 }

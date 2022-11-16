@@ -17,12 +17,12 @@ public class TestScreen2 : BaseFullscreenWindow
 
     private void CloseScreen()
     {
-        UIManager.Close<TestScreen2>();
+        uiManager.Close<TestScreen2>();
     }
 
     private void OpenPopup()
     {
-        UIManager.Show<TestPopup1>();
+        uiManager.Show<TestPopup1>();
     }
 }
 }

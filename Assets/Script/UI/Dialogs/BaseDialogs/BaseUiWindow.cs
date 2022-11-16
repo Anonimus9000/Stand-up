@@ -6,11 +6,11 @@ namespace Script.UI.Dialogs.BaseDialogs
 {
 public abstract class BaseUiWindow : MonoBehaviour, IUIWindow
 {
-    protected UIManager UIManager;
+    protected IUIManager uiManager;
 
-    public void Initialize(UIManager uiManager)
+    public void Initialize(IUIManager uiManager)
     {
-        UIManager = uiManager;
+        this.uiManager = uiManager;
     }
 
     public void OnShown()

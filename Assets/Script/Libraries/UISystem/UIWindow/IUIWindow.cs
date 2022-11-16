@@ -3,11 +3,11 @@ using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 
 namespace Script.Libraries.UISystem.UIWindow
 {
-    public interface IUIWindow : IInstantiatble
-    {
-        void Initialize(UIManager uiManager);
-        void OnShown();
+public interface IUIWindow : IInstantiatble
+{
+    void Initialize(IUIManager uiManager);
+    void OnShown();
 
-        void OnHidden();
-    }
+    void OnHidden();
+}
 }

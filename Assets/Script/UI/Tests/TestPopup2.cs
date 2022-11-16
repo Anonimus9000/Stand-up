@@ -15,7 +15,7 @@ public class TestPopup2 : BasePopupDialog
 
     private void ClosePopup()
     {
-        UIManager.Close<TestPopup2>();
+        uiManager.Close<TestPopup2>();
     }
 }
 }

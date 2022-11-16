@@ -17,12 +17,12 @@ public class TestPopup1 : BasePopupDialog
 
     private void ClosePopup()
     {
-        UIManager.Close<TestPopup1>();
+        uiManager.Close<TestPopup1>();
     }
 
     private void OpenPopup()
     {
-        UIManager.Show<TestPopup2>();
+        uiManager.Show<TestPopup2>();
     }
 }
 }
