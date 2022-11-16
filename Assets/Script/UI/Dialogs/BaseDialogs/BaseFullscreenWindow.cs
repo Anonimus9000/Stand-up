@@ -2,7 +2,7 @@
 
 namespace Script.UI.Dialogs.BaseDialogs
 {
-    public abstract class BaseFullscreenWindow : BaseUiWindow, IFullScreenDialog
-    {
-    }
+public abstract class BaseFullscreenWindow : BaseUiWindow, IFullScreenDialog
+{
+}
 }

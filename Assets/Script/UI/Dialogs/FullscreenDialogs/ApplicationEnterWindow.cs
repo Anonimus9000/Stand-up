@@ -2,7 +2,7 @@
 
 namespace Script.UI.Dialogs.FullscreenDialogs
 {
-    public class ApplicationEnterWindow : BaseFullscreenWindow
-    {
-    }
+public class ApplicationEnterWindow : BaseFullscreenWindow
+{
+}
 }

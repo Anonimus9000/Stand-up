@@ -7,33 +7,33 @@ using UnityEngine;
 
 namespace Script.UI.UiWindowsLoader
 {
-    public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
+public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
+{
+    public List<IUIWindow> UIWindows
     {
-        public List<IUIWindow> UIWindows
+        get
         {
-            get
+            if (_windows.Count == 0)
             {
-                if (_windows.Count == 0)
-                {
-                    throw new Exception("Need load dialogs by method LoadDialogs()");
-                }
-                
-                return _windows;
+                throw new Exception("Need load dialogs by method LoadDialogs()");
             }
-        }
 
-        private List<IUIWindow> _windows;
-
-        public void LoadDialogs(string pathToLoad)
-        {
-            var loadedWindows = Resources.LoadAll<BaseUiWindow>(pathToLoad);
-            
-            _windows = new List<IUIWindow>(loadedWindows) ;
-            
-            if (UIWindows.Count == 0)
-            {
-                throw new Exception($"Need add prefabs in {pathToLoad}");
-            }
+            return _windows;
         }
     }
+
+    private List<IUIWindow> _windows;
+
+    public void LoadDialogs(string pathToLoad)
+    {
+        var loadedWindows = Resources.LoadAll<BaseUiWindow>(pathToLoad);
+
+        _windows = new List<IUIWindow>(loadedWindows);
+
+        if (UIWindows.Count == 0)
+        {
+            throw new Exception($"Need add prefabs in {pathToLoad}");
+        }
+    }
+}
 }

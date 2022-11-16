@@ -2,20 +2,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Script.Libraries.UISystem.Tests
+namespace Script.UI.Tests
 {
-    public class TestPopup2: BasePopupDialog
+public class TestPopup2 : BasePopupDialog
+{
+    [SerializeField] private Button _closePopup;
+
+    void Start()
     {
-        [SerializeField] private Button _closePopup;
-
-        void Start()
-        {
-            _closePopup.onClick.AddListener(ClosePopup);
-        }
-
-        private void ClosePopup()
-        {
-            UIManager.Close<TestPopup2>();
-        }
+        _closePopup.onClick.AddListener(ClosePopup);
     }
+
+    private void ClosePopup()
+    {
+        UIManager.Close<TestPopup2>();
+    }
+}
 }

@@ -1,66 +1,68 @@
 ﻿using System;
+using Script.Initializer;
 using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.UIWindow;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Script.UI.UIInstantiater
 {
-    public class UnityInstantiater : IInstantiater
+public class UnityInstantiater : IInstantiater, IInitializable
+{
+    private readonly Transform _parentToCreate;
+
+    public UnityInstantiater(Transform parentToCreate)
     {
-        private readonly Transform _parentToCreate;
+        _parentToCreate = parentToCreate;
+    }
 
-        public UnityInstantiater(Transform parentToCreate)
-        {
-            _parentToCreate = parentToCreate;
-        }
-        
-        public IInstantiatble Instantiate(IInstantiatble objectToCreate)
-        {
-            if (objectToCreate is Object obj)
-            {
-                return Object.Instantiate(obj, _parentToCreate) as IInstantiatble;
-            }
+    public void Initialize()
+    {
+    }
 
-            throw new Exception("Need daughter of Object class");
+    public IInstantiatble Instantiate(IInstantiatble objectToCreate)
+    {
+        if (objectToCreate is Object obj)
+        {
+            return Object.Instantiate(obj, _parentToCreate) as IInstantiatble;
         }
 
-        public void Destroy(IInstantiatble objectToDestroy)
-        {
-            if (objectToDestroy is Component obj)
-            {
-                Object.Destroy(obj.gameObject);
-            }
-        }
-        
+        throw new Exception("Need daughter of Object class");
+    }
 
-        public void SetActive(IInstantiatble objectToHide, bool isActive)
+    public void Destroy(IInstantiatble objectToDestroy)
+    {
+        if (objectToDestroy is Component obj)
         {
-            if (isActive)
-            {
-                Activate(objectToHide);
-            }
-            else
-            {
-                Deactivate(objectToHide);
-            }
-            
-        }
-
-        private void Activate(IInstantiatble objectToHide)
-        {
-            if (objectToHide is Component obj)
-            {
-                obj.gameObject.SetActive(true);
-            }
-        }
-
-        private void Deactivate(IInstantiatble objectToHide)
-        {
-            if (objectToHide is Component obj)
-            {
-                obj.gameObject.SetActive(false);
-            }
+            Object.Destroy(obj.gameObject);
         }
     }
+
+    public void SetActive(IInstantiatble objectToHide, bool isActive)
+    {
+        if (isActive)
+        {
+            Activate(objectToHide);
+        }
+        else
+        {
+            Deactivate(objectToHide);
+        }
+    }
+
+    private void Activate(IInstantiatble objectToHide)
+    {
+        if (objectToHide is Component obj)
+        {
+            obj.gameObject.SetActive(true);
+        }
+    }
+
+    private void Deactivate(IInstantiatble objectToHide)
+    {
+        if (objectToHide is Component obj)
+        {
+            obj.gameObject.SetActive(false);
+        }
+    }
+}
 }

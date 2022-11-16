@@ -1,6 +1,7 @@
 ﻿namespace Script.Initializer
 {
-    public interface IInitializer
-    {
-    }
+public interface IInitializer
+{
+    void InitializeElements();
+}
 }

@@ -4,18 +4,18 @@ using UnityEngine.UI;
 
 namespace Script.UI.Tests
 {
-    public class TestScreen1: BaseFullscreenWindow
+public class TestScreen1 : BaseFullscreenWindow
+{
+    [SerializeField] private Button _openSecondScreen;
+
+    private void Start()
     {
-        [SerializeField] private Button _openSecondScreen;
-
-        private void Start()
-        {
-            _openSecondScreen.onClick.AddListener(OpenScreen);
-        }
-
-        private void OpenScreen()
-        {
-            UIManager.Show<TestScreen2>();
-        }
+        _openSecondScreen.onClick.AddListener(OpenScreen);
     }
+
+    private void OpenScreen()
+    {
+        UIManager.Show<TestScreen2>();
+    }
+}
 }

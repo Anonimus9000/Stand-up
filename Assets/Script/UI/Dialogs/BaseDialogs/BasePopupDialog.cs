@@ -2,8 +2,7 @@
 
 namespace Script.UI.Dialogs.BaseDialogs
 {
-    public class BasePopupDialog : BaseUiWindow, IPopupDialog
-    {
-        
-    }
+public class BasePopupDialog : BaseUiWindow, IPopupDialog
+{
+}
 }
