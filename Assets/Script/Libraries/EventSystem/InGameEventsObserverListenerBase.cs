@@ -2,18 +2,18 @@
 
 namespace Script.Libraries.EventSystem
 {
-public abstract class InGameEventsObservableBase : IObservable
+public abstract class InGameEventsObserverListenerBase : IObserverListener
 {
     public IObserver Observer { get; }
 
     public abstract bool EventCondition { get; }
 
-    protected InGameEventsObservableBase(IObserver inGameEventsObserver)
+    protected InGameEventsObserverListenerBase(IObserver inGameEventsObserver)
     {
         Observer = inGameEventsObserver;
     }
 
-    public abstract void OnEventNotifyd();
+    public abstract void OnEventNotified();
 
     public virtual void SubscribeOnEventNotify(IObserver observer)
     {

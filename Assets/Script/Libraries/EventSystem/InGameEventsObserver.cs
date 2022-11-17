@@ -6,34 +6,34 @@ namespace Script.Libraries.EventSystem
 {
 public class InGameEventsObserver : IObserver
 {
-    private readonly Dictionary<InGameEventsObservableBase, Action> _subscribers;
+    private readonly Dictionary<InGameEventsObserverListenerBase, Action> _subscribers;
 
     public InGameEventsObserver()
     {
-        _subscribers = new Dictionary<InGameEventsObservableBase, Action>();
+        _subscribers = new Dictionary<InGameEventsObserverListenerBase, Action>();
     }
 
-    public void AddEvent(IObservable observable)
+    public void AddEvent(IObserverListener observerListener)
     {
-        if (observable is InGameEventsObservableBase inGameEventsObserver)
+        if (observerListener is InGameEventsObserverListenerBase inGameEventsObserver)
         {
-            _subscribers.Add(inGameEventsObserver, observable.OnEventNotifyd);
+            _subscribers.Add(inGameEventsObserver, observerListener.OnEventNotified);
         }
         else
         {
-            throw new Exception($"Incorrect type {observable.GetType()}");
+            throw new Exception($"Incorrect type {observerListener.GetType()}");
         }
     }
 
-    public void RemoveEvent(IObservable observable)
+    public void RemoveEvent(IObserverListener observerListener)
     {
-        if (observable is InGameEventsObservableBase inGameEventsObserver)
+        if (observerListener is InGameEventsObserverListenerBase inGameEventsObserver)
         {
             _subscribers.Remove(inGameEventsObserver);
         }
         else
         {
-            throw new Exception($"Incorrect type {observable.GetType()}");
+            throw new Exception($"Incorrect type {observerListener.GetType()}");
         }
     }
 
