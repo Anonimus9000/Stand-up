@@ -11,7 +11,7 @@ public class FullScreensManager : IDialogsManager
     private IFullScreenDialog _currentDialog;
     private List<IUIWindow> _fullScreenDialogPrefabs;
     private IInstantiater _instantiater;
-    private List<IFullScreenDialog> _queueHiddenScreens = new List<IFullScreenDialog>();
+    private readonly List<IFullScreenDialog> _queueHiddenScreens = new List<IFullScreenDialog>();
     private IUIManager _uiManager;
 
     public void Initialize(IInstantiater instantiater, List<IUIWindow> fullScreenDialogs, IUIManager uiManager)
@@ -33,7 +33,7 @@ public class FullScreensManager : IDialogsManager
         _currentDialog = screen;
 
         screen!.OnShown();
-        screen!.Initialize(_uiManager);
+        screen!.InitializeWindow(_uiManager);
         _queueHiddenScreens.Add(screen);
 
         return screen;

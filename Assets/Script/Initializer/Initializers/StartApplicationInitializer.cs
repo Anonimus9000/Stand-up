@@ -5,7 +5,7 @@ namespace Script.Initializer.Initializers
 {
 public class StartApplicationInitializer : MonoBehaviour, IInitializer
 {
-    [SerializeField] private UIManagerInitializer _uiManagerInitializer;
+    [SerializeReference] private UIManagerInitializer _uiManagerInitializer;
 
     private void Awake()
     {

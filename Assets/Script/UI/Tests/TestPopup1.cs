@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Script.UI.Tests
 {
-public class TestPopup1 : BasePopupDialog
+public class TestPopup1 : UIViewPopupWindow
 {
     [SerializeField] private Button _openPopup;
     [SerializeField] private Button _closePopup;
@@ -23,6 +23,11 @@ public class TestPopup1 : BasePopupDialog
     private void OpenPopup()
     {
         uiManager.Show<TestPopup2>();
+    }
+
+    protected override void InitializeMVVM()
+    {
+        
     }
 }
 }

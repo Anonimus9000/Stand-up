@@ -26,7 +26,7 @@ public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
 
     public void LoadDialogs(string pathToLoad)
     {
-        var loadedWindows = Resources.LoadAll<BaseUiWindow>(pathToLoad);
+        var loadedWindows = Resources.LoadAll<UIWindowViewBase>(pathToLoad);
 
         _windows = new List<IUIWindow>(loadedWindows);
 

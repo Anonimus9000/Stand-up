@@ -1,12 +1,12 @@
 ﻿using Script.Libraries.Observer;
 
-namespace Script.Libraries.EventSystem
+namespace Script.Libraries.InGameEventSystem
 {
 public abstract class InGameEventsObserverListenerBase : IObserverListener
 {
     public IObserver Observer { get; }
 
-    public abstract bool EventCondition { get; }
+    public abstract bool EventCondition();
 
     protected InGameEventsObserverListenerBase(IObserver inGameEventsObserver)
     {

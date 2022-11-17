@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Script.UI.Tests
 {
-public class TestScreen1 : BaseFullscreenWindow
+public class TestScreen1 : UIViewPopupWindow
 {
     [SerializeField] private Button _openSecondScreen;
 
@@ -16,6 +16,11 @@ public class TestScreen1 : BaseFullscreenWindow
     private void OpenScreen()
     {
         uiManager.Show<TestScreen2>();
+    }
+
+    protected override void InitializeMVVM()
+    {
+        
     }
 }
 }

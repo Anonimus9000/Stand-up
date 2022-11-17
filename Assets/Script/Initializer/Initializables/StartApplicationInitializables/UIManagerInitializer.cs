@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Script.Libraries.InGameEventSystem;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
@@ -14,15 +15,22 @@ public class UIManagerInitializer : MonoBehaviour, IInitializable
     [SerializeField] private Transform _parentToCreate;
     [SerializeField] private string _pathToDialogs;
 
-    public void Initialize()
+    public void Initialize(InGameEventsObserver inGameEventsObserver)
+    {
+        var uiManager = InitializeUIManager();
+
+        OpenApplicationEnterDotWindow(uiManager);
+    }
+
+    private UIManager InitializeUIManager()
     {
         var uiWindows = InitializeWindowsLoader();
 
         IInstantiater instantiater = new UnityInstantiater(_parentToCreate);
-        var uiManager = new UIManager(instantiater, uiWindows);
-
-        OpenApplicationEnterDotWindow(uiManager);
+        
+        return new UIManager(instantiater, uiWindows);
     }
+    
 
     private List<IUIWindow> InitializeWindowsLoader()
     {
@@ -35,7 +43,7 @@ public class UIManagerInitializer : MonoBehaviour, IInitializable
         return unityUIWindowsLoader.UIWindows;
     }
 
-    private void OpenApplicationEnterDotWindow(UIManager uiManager)
+    private void OpenApplicationEnterDotWindow(IUIManager uiManager)
     {
         uiManager.Show<TestScreen1>();
     }
