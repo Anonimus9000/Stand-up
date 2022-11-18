@@ -2,9 +2,9 @@
 {
 public interface IInstantiater
 {
-    public IInstantiatble Instantiate(IInstantiatble instantiatble);
-    public void Destroy(IInstantiatble instantiatble);
+    public IInstantiatable Instantiate(IInstantiatable instantiatable);
+    public void Destroy(IInstantiatable instantiatable);
 
-    public void SetActive(IInstantiatble popupDialog, bool isActive);
+    public void SetActive(IInstantiatable popupDialog, bool isActive);
 }
 }

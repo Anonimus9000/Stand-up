@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Script.Libraries.Observer;
 
-namespace Script.Libraries.EventSystem
+namespace Script.Libraries.InGameEventSystem
 {
 public class InGameEventsObserver : IObserver
 {
@@ -41,7 +41,9 @@ public class InGameEventsObserver : IObserver
     {
         foreach (var observableKey in _subscribers.Keys)
         {
-            if (observableKey.EventCondition)
+            var isConditionSuccess = observableKey.EventCondition();
+            
+            if (isConditionSuccess)
             {
                 _subscribers[observableKey]?.Invoke();
             }

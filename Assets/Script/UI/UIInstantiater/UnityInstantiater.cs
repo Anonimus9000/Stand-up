@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace Script.UI.UIInstantiater
 {
-public class UnityInstantiater : IInstantiater, IInitializable
+public class UnityInstantiater : IInstantiater
 {
     private readonly Transform _parentToCreate;
 
@@ -19,17 +19,17 @@ public class UnityInstantiater : IInstantiater, IInitializable
     {
     }
 
-    public IInstantiatble Instantiate(IInstantiatble objectToCreate)
+    public IInstantiatable Instantiate(IInstantiatable objectToCreate)
     {
         if (objectToCreate is Object obj)
         {
-            return Object.Instantiate(obj, _parentToCreate) as IInstantiatble;
+            return Object.Instantiate(obj, _parentToCreate) as IInstantiatable;
         }
 
         throw new Exception("Need daughter of Object class");
     }
 
-    public void Destroy(IInstantiatble objectToDestroy)
+    public void Destroy(IInstantiatable objectToDestroy)
     {
         if (objectToDestroy is Component obj)
         {
@@ -37,7 +37,7 @@ public class UnityInstantiater : IInstantiater, IInitializable
         }
     }
 
-    public void SetActive(IInstantiatble objectToHide, bool isActive)
+    public void SetActive(IInstantiatable objectToHide, bool isActive)
     {
         if (isActive)
         {
@@ -49,7 +49,7 @@ public class UnityInstantiater : IInstantiater, IInitializable
         }
     }
 
-    private void Activate(IInstantiatble objectToHide)
+    private void Activate(IInstantiatable objectToHide)
     {
         if (objectToHide is Component obj)
         {
@@ -57,7 +57,7 @@ public class UnityInstantiater : IInstantiater, IInitializable
         }
     }
 
-    private void Deactivate(IInstantiatble objectToHide)
+    private void Deactivate(IInstantiatable objectToHide)
     {
         if (objectToHide is Component obj)
         {

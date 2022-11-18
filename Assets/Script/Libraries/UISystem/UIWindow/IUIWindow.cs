@@ -3,9 +3,9 @@ using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 
 namespace Script.Libraries.UISystem.UIWindow
 {
-public interface IUIWindow : IInstantiatble
+public interface IUIWindow : IInstantiatable
 {
-    void Initialize(IUIManager uiManager);
+    void InitializeWindow(IUIManager uiManager);
     void OnShown();
 
     void OnHidden();
