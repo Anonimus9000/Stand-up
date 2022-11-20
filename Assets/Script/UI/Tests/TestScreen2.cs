@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Script.UI.Tests
 {
-public class TestScreen2 : UIViewPopupWindow
+public class TestScreen2 : UIViewFullscreen
 {
     [SerializeField] private Button _openPopup;
     [SerializeField] private Button _closeButton;

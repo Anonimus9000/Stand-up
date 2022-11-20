@@ -53,6 +53,10 @@ public class FullScreensManager : IDialogsManager
 
     public void Close<T>() where T : IUIWindow
     {
+        if (_queueHiddenScreens.Count == 0)
+        {
+            return;
+        }
         var screen = _queueHiddenScreens.Last();
         _queueHiddenScreens.Remove(screen);
         _instantiater.Destroy(screen);

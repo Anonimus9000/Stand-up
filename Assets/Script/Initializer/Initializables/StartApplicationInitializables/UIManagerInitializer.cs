@@ -12,7 +12,9 @@ namespace Script.Initializer.Initializables.StartApplicationInitializables
 {
 public class UIManagerInitializer : MonoBehaviour, IInitializable
 {
-    [SerializeField] private Transform _parentToCreate;
+    [SerializeField] private Transform _parentToCreateMainUI;
+    [SerializeField] private Transform _parentToCreateFullScreenUI;
+    [SerializeField] private Transform _parentToCreatePopupsUI;
     [SerializeField] private string _pathToDialogs;
 
     public void Initialize()
@@ -26,9 +28,11 @@ public class UIManagerInitializer : MonoBehaviour, IInitializable
     {
         var uiWindows = InitializeWindowsLoader();
 
-        IInstantiater instantiater = new UnityInstantiater(_parentToCreate);
+        IInstantiater instantiaterMainUI = new UnityInstantiater(_parentToCreateMainUI);
+        IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
+        IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
         
-        return new UIManager(instantiater, uiWindows);
+        return new UIManager(instantiaterMainUI, instantiaterFullScreens, instantiaterPopups, uiWindows);
     }
     
 
@@ -45,6 +49,7 @@ public class UIManagerInitializer : MonoBehaviour, IInitializable
 
     private void OpenApplicationEnterDotWindow(IUIManager uiManager)
     {
+        uiManager.Show<TestMainUI1>();
         uiManager.Show<TestScreen1>();
     }
 }

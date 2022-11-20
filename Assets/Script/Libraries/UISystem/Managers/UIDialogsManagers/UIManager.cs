@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
@@ -14,9 +13,9 @@ public class UIManager : IUIManager
 
     private IUIWindow _currentWindow;
 
-    public UIManager(IInstantiater instantiater, List<IUIWindow> windows)
+    public UIManager(IInstantiater mainUIInstantiater, IInstantiater fullScreenUIInstantiater, IInstantiater popupsUIInstantiater, List<IUIWindow> windows)
     {
-        InitializeManagers(instantiater, windows);
+        InitializeManagers(mainUIInstantiater, fullScreenUIInstantiater, popupsUIInstantiater, windows);
     }
 
     public IUIWindow Show<T>() where T : IUIWindow, new()
@@ -57,10 +56,11 @@ public class UIManager : IUIManager
     public void CloseWindowsExceptMain()
     {
         _popupsManager.Close<IPopup>();
+
         _fullScreensManager.Close<IFullScreen>();
     }
 
-    private void InitializeManagers(IInstantiater instantiater, List<IUIWindow> uiWindows)
+    private void InitializeManagers(IInstantiater mainUIInstantiater, IInstantiater fullScreenUIInstantiater, IInstantiater popupsUIInstantiater, List<IUIWindow> uiWindows)
     {
         var popupDialogs = new List<IUIWindow>(uiWindows.Count);
         var fullScreenDialogs = new List<IUIWindow>(uiWindows.Count);
@@ -84,9 +84,9 @@ public class UIManager : IUIManager
             }
         }
 
-        _popupsManager.Initialize(instantiater, popupDialogs, this);
-        _fullScreensManager.Initialize(instantiater, fullScreenDialogs, this);
-        _mainUIManager.Initialize(instantiater, mainUIs, this );
+        _popupsManager.Initialize(popupsUIInstantiater, popupDialogs, this);
+        _fullScreensManager.Initialize(fullScreenUIInstantiater, fullScreenDialogs, this);
+        _mainUIManager.Initialize(mainUIInstantiater, mainUIs, this );
     }
 }
 }

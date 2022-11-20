@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
+using UnityEngine.Android;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
@@ -55,6 +56,10 @@ public class PopupsManager : IDialogsManager
 
     public void Close<T>() where T : IUIWindow
     {
+        if (_queueHiddenPopups.Count == 0)
+        {
+           return;
+        }
         var popupDialog = _queueHiddenPopups.Last();
         _queueHiddenPopups.Remove(popupDialog);
         _instantiater.Destroy(popupDialog);
@@ -69,6 +74,7 @@ public class PopupsManager : IDialogsManager
 
     private bool TryShowLastHiddenPopup()
     {
+       //TODO: govno 
         if (_queueHiddenPopups.Count > 0)
         {
             var popupDialog = _queueHiddenPopups.Last();

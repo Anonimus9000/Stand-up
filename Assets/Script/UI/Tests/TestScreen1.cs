@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Script.UI.Tests
 {
-public class TestScreen1 : UIViewPopupWindow
+public class TestScreen1 : UIViewFullscreen
 {
     [SerializeField] private Button _openSecondScreen;
 
