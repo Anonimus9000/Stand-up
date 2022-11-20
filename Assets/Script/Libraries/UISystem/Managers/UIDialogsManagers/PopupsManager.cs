@@ -10,9 +10,9 @@ public class PopupsManager : IDialogsManager
 {
     private List<IUIWindow> _popupPrefabs;
     private IInstantiater _instantiater;
-    private IPopupDialog _currentPopup;
+    private IPopup _currentPopup;
 
-    private readonly List<IPopupDialog> _queueHiddenPopups = new List<IPopupDialog>();
+    private readonly List<IPopup> _queueHiddenPopups = new List<IPopup>();
     private IUIManager _uiManager;
 
     public void Initialize(IInstantiater instantiater, List<IUIWindow> windows, IUIManager uiManager)
@@ -30,7 +30,7 @@ public class PopupsManager : IDialogsManager
 
         var popupToShow = GetPrefab<T>();
 
-        var popupDialog = _instantiater.Instantiate(popupToShow) as IPopupDialog;
+        var popupDialog = _instantiater.Instantiate(popupToShow) as IPopup;
 
         _currentPopup = popupDialog;
 
@@ -81,13 +81,13 @@ public class PopupsManager : IDialogsManager
         return false;
     }
 
-    private IPopupDialog GetPrefab<T>() where T : IUIWindow
+    private IPopup GetPrefab<T>() where T : IUIWindow
     {
         foreach (var popupPrefab in _popupPrefabs)
         {
             if (popupPrefab is T)
             {
-                return popupPrefab as IPopupDialog;
+                return popupPrefab as IPopup;
             }
         }
 

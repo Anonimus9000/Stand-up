@@ -1,6 +1,6 @@
 ﻿namespace Script.Libraries.UISystem.UIWindow
 {
-public interface IPopupDialog : IUIWindow
+public interface IFullScreen : IUIWindow
 {
 }
 }

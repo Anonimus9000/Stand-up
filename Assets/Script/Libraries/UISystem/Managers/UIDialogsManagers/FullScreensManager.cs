@@ -8,10 +8,10 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
 public class FullScreensManager : IDialogsManager
 {
-    private IFullScreenDialog _currentDialog;
+    private IFullScreen _current;
     private List<IUIWindow> _fullScreenDialogPrefabs;
     private IInstantiater _instantiater;
-    private readonly List<IFullScreenDialog> _queueHiddenScreens = new List<IFullScreenDialog>();
+    private readonly List<IFullScreen> _queueHiddenScreens = new List<IFullScreen>();
     private IUIManager _uiManager;
 
     public void Initialize(IInstantiater instantiater, List<IUIWindow> fullScreenDialogs, IUIManager uiManager)
@@ -28,9 +28,9 @@ public class FullScreensManager : IDialogsManager
 
         var screenToShow = GetPrefab<T>();
 
-        var screen = _instantiater.Instantiate(screenToShow) as IFullScreenDialog;
+        var screen = _instantiater.Instantiate(screenToShow) as IFullScreen;
 
-        _currentDialog = screen;
+        _current = screen;
 
         screen!.OnShown();
         screen!.InitializeWindow(_uiManager);
@@ -41,12 +41,12 @@ public class FullScreensManager : IDialogsManager
 
     private bool TryHideCurrentScreen()
     {
-        if (_currentDialog is null)
+        if (_current is null)
         {
             return false;
         }
 
-        _instantiater.SetActive(_currentDialog, false);
+        _instantiater.SetActive(_current, false);
 
         return true;
     }
@@ -66,7 +66,7 @@ public class FullScreensManager : IDialogsManager
         {
             var screen = _queueHiddenScreens.Last();
             _instantiater.SetActive(screen, true);
-            _currentDialog = screen;
+            _current = screen;
 
             return true;
         }
@@ -74,13 +74,13 @@ public class FullScreensManager : IDialogsManager
         return false;
     }
 
-    private IFullScreenDialog GetPrefab<T>() where T : IUIWindow
+    private IFullScreen GetPrefab<T>() where T : IUIWindow
     {
         foreach (var dialogPrefab in _fullScreenDialogPrefabs)
         {
             if (dialogPrefab is T)
             {
-                return dialogPrefab as IFullScreenDialog;
+                return dialogPrefab as IFullScreen;
             }
         }
 

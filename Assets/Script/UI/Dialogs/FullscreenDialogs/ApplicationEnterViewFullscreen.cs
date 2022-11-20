@@ -2,7 +2,7 @@
 
 namespace Script.UI.Dialogs.FullscreenDialogs
 {
-public class ApplicationEnterViewFullscreenWindow : UIViewFullscreenWindow
+public class ApplicationEnterViewFullscreen : UIViewFullscreen
 {
     protected override void InitializeMVVM()
     {

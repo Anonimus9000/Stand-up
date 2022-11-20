@@ -2,7 +2,7 @@
 
 namespace Script.UI.Dialogs.BaseDialogs
 {
-public abstract class UIViewFullscreenWindow : UIWindowViewBase, IFullScreenDialog
+public abstract class UIViewFullscreen : UIWindowViewBase, IFullScreen
 {
 }
 }

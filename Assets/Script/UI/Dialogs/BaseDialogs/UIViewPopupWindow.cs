@@ -2,7 +2,7 @@
 
 namespace Script.UI.Dialogs.BaseDialogs
 {
-public abstract class UIViewPopupWindow : UIWindowViewBase, IPopupDialog
+public abstract class UIViewPopupWindow : UIWindowViewBase, IPopup
 {
 }
 }
