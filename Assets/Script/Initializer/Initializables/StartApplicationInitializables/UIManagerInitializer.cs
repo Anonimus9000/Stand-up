@@ -15,7 +15,7 @@ public class UIManagerInitializer : MonoBehaviour, IInitializable
     [SerializeField] private Transform _parentToCreate;
     [SerializeField] private string _pathToDialogs;
 
-    public void Initialize(InGameEventsObserver inGameEventsObserver)
+    public void Initialize()
     {
         var uiManager = InitializeUIManager();
 
