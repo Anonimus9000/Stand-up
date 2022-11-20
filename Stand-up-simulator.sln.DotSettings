@@ -4,4 +4,5 @@
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Initializables/@EntryIndexedValue">True</s:Boolean>
 	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Instantiater/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Interactables/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Notifyd/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

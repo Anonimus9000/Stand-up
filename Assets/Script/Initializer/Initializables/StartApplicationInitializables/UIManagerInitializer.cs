@@ -3,6 +3,7 @@ using Script.Libraries.InGameEventSystem;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Manager;
 using Script.UI.Tests;
 using Script.UI.UIInstantiater;
 using Script.UI.UiWindowsLoader;
@@ -10,21 +11,23 @@ using UnityEngine;
 
 namespace Script.Initializer.Initializables.StartApplicationInitializables
 {
-public class UIManagerInitializer : MonoBehaviour, IInitializable
+public class UIManagerInitializer : MonoBehaviour, IInitializer
 {
     [SerializeField] private Transform _parentToCreateMainUI;
     [SerializeField] private Transform _parentToCreateFullScreenUI;
     [SerializeField] private Transform _parentToCreatePopupsUI;
     [SerializeField] private string _pathToDialogs;
 
-    public void Initialize()
+    public IInitializable InitializeElements()
     {
         var uiManager = InitializeUIManager();
 
         OpenApplicationEnterDotWindow(uiManager);
+
+        return uiManager;
     }
 
-    private UIManager InitializeUIManager()
+    private UIManagerInitializable InitializeUIManager()
     {
         var uiWindows = InitializeWindowsLoader();
 
@@ -32,7 +35,7 @@ public class UIManagerInitializer : MonoBehaviour, IInitializable
         IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
         IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
         
-        return new UIManager(instantiaterMainUI, instantiaterFullScreens, instantiaterPopups, uiWindows);
+        return new UIManagerInitializable(instantiaterMainUI, instantiaterFullScreens, instantiaterPopups, uiWindows);
     }
     
 

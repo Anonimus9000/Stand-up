@@ -5,7 +5,7 @@ using Script.Libraries.UISystem.UIWindow;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
-public class UIManager : IUIManager
+public abstract class UIManager : IUIManager
 {
     private readonly IDialogsManager _popupsManager = new PopupsManager();
     private readonly IDialogsManager _fullScreensManager = new FullScreensManager();
@@ -13,12 +13,16 @@ public class UIManager : IUIManager
 
     private IUIWindow _currentWindow;
 
-    public UIManager(IInstantiater mainUIInstantiater, IInstantiater fullScreenUIInstantiater, IInstantiater popupsUIInstantiater, List<IUIWindow> windows)
+    public UIManager(
+        IInstantiater mainUIInstantiater,
+        IInstantiater fullScreenUIInstantiater,
+        IInstantiater popupsUIInstantiater,
+        List<IUIWindow> windows)
     {
         InitializeManagers(mainUIInstantiater, fullScreenUIInstantiater, popupsUIInstantiater, windows);
     }
 
-    public IUIWindow Show<T>() where T : IUIWindow, new()
+    public virtual IUIWindow Show<T>() where T : IUIWindow, new()
     {
         // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
         switch (new T())
@@ -34,7 +38,7 @@ public class UIManager : IUIManager
         }
     }
 
-    public void Close<T>() where T : IUIWindow, new()
+    public virtual void Close<T>() where T : IUIWindow, new()
     {
         // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
         switch (new T())

@@ -1,4 +1,5 @@
-﻿using Script.UI.Dialogs.BaseDialogs;
+﻿using Script.Libraries.MVVM;
+using Script.UI.Dialogs.BaseDialogs;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +26,7 @@ public class TestScreen2 : UIViewFullscreen
         uiManager.Show<TestPopup1>();
     }
 
-    protected override void InitializeMVVM()
+    protected override void InitializeViewModel(IViewModel viewModel)
     {
         
     }

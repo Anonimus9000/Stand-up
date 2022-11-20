@@ -22,6 +22,6 @@ public abstract class UIWindowViewBase : MonoBehaviour, IUIWindow, IView
     {
     }
 
-    protected abstract void InitializeMVVM();
+    protected abstract void InitializeViewModel(IViewModel viewModel);
 }
 }

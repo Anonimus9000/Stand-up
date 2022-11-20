@@ -1,4 +1,5 @@
-﻿using Script.UI.Dialogs.BaseDialogs;
+﻿using Script.Libraries.MVVM;
+using Script.UI.Dialogs.BaseDialogs;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ public class TestScreen1 : UIViewFullscreen
         uiManager.Show<TestScreen2>();
     }
 
-    protected override void InitializeMVVM()
+    protected override void InitializeViewModel(IViewModel viewModel)
     {
         
     }

@@ -1,15 +1,14 @@
-﻿using Script.UI.Dialogs.BaseDialogs;
+﻿using Script.Libraries.MVVM;
+using Script.UI.Dialogs.BaseDialogs;
 
 namespace Script.UI.Tests
 {
 public class TestMainUI2 : UIViewMain
 {
     
-    
-    
-    protected override void InitializeMVVM()
+    protected override void InitializeViewModel(IViewModel viewModel)
     {
-        //dd
+        throw new System.NotImplementedException();
     }
 }
 }

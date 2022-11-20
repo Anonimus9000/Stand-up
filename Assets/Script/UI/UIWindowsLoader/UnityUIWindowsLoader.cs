@@ -30,7 +30,7 @@ public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
 
         _windows = new List<IUIWindow>(loadedWindows);
 
-        if (UIWindows.Count == 0)
+        if (_windows.Count == 0)
         {
             throw new Exception($"Need add prefabs in {pathToLoad}");
         }

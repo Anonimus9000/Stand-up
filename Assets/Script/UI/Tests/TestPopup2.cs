@@ -1,4 +1,5 @@
-﻿using Script.UI.Dialogs.BaseDialogs;
+﻿using Script.Libraries.MVVM;
+using Script.UI.Dialogs.BaseDialogs;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -26,7 +27,7 @@ public class TestPopup2 : UIViewPopupWindow
         uiManager.Close<TestPopup2>();
     }
 
-    protected override void InitializeMVVM()
+    protected override void InitializeViewModel(IViewModel viewModel)
     {
         
     }
