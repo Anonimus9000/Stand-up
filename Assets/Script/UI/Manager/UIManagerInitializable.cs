@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Script.Initializer;
+using Script.Initializer.Base;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;

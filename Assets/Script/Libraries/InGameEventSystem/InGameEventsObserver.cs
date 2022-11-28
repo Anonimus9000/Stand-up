@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using Script.Libraries.Observer;
+using Script.Libraries.Observer.Base;
 
 namespace Script.Libraries.InGameEventSystem
 {
 public class InGameEventsObserver : IObserver
 {
-    private readonly Dictionary<InGameEventsObserverListenerBase, Action> _subscribers;
+    private readonly Dictionary<InGameEventsObserverListenerBase, Action> _listenersEventPairs;
 
     public InGameEventsObserver()
     {
-        _subscribers = new Dictionary<InGameEventsObserverListenerBase, Action>();
+        _listenersEventPairs = new Dictionary<InGameEventsObserverListenerBase, Action>();
     }
 
     public void AddEvent(IObserverListener observerListener)
     {
         if (observerListener is InGameEventsObserverListenerBase inGameEventsObserver)
         {
-            _subscribers.Add(inGameEventsObserver, observerListener.OnEventNotified);
+            _listenersEventPairs.Add(inGameEventsObserver, observerListener.OnEventNotified);
         }
         else
         {
@@ -29,7 +30,7 @@ public class InGameEventsObserver : IObserver
     {
         if (observerListener is InGameEventsObserverListenerBase inGameEventsObserver)
         {
-            _subscribers.Remove(inGameEventsObserver);
+            _listenersEventPairs.Remove(inGameEventsObserver);
         }
         else
         {
@@ -39,13 +40,13 @@ public class InGameEventsObserver : IObserver
 
     public void NotifySubscribers()
     {
-        foreach (var observableKey in _subscribers.Keys)
+        foreach (var observableKey in _listenersEventPairs.Keys)
         {
             var isConditionSuccess = observableKey.EventCondition();
             
             if (isConditionSuccess)
             {
-                _subscribers[observableKey]?.Invoke();
+                _listenersEventPairs[observableKey]?.Invoke();
             }
         }
     }

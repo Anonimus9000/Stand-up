@@ -1,4 +1,5 @@
 ﻿using Script.Libraries.Observer;
+using Script.Libraries.Observer.Base;
 
 namespace Script.Libraries.InGameEventSystem
 {
