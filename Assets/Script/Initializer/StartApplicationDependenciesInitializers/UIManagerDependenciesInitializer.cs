@@ -3,6 +3,7 @@ using Script.Initializer.Base;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Dialogs.FullscreenDialogs;
 using Script.UI.Manager;
 using Script.UI.Tests;
 using Script.UI.UIInstantiater;
@@ -52,8 +53,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
 
     private void OpenApplicationEnterDotWindow(IUIManager uiManager)
     {
-        uiManager.Show<TestMainUI1>();
-        uiManager.Show<TestScreen1>();
+        uiManager.Show<StartFullScreen>();
     }
 }
 }

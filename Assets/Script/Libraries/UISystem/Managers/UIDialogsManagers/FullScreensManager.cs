@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
+using UnityEngine;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
@@ -41,7 +42,7 @@ public class FullScreensManager : IDialogsManager
 
     private bool TryHideCurrentScreen()
     {
-        if (_current is null)
+        if (_current == null)
         {
             return false;
         }
@@ -60,6 +61,7 @@ public class FullScreensManager : IDialogsManager
         var screen = _queueHiddenScreens.Last();
         _queueHiddenScreens.Remove(screen);
         _instantiater.Destroy(screen);
+        _current = null;
 
         TryShowLastHiddenScreen();
     }

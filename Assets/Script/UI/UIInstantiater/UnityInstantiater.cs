@@ -35,6 +35,8 @@ public class UnityInstantiater : IInstantiater
         {
             Object.Destroy(obj.gameObject);
         }
+        
+        objectToDestroy = null;
     }
 
     public void SetActive(IInstantiatable objectToHide, bool isActive)
