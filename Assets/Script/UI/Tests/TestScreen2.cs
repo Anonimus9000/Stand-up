@@ -10,6 +10,12 @@ public class TestScreen2 : UIViewFullscreen
     [SerializeField] private Button _openPopup;
     [SerializeField] private Button _closeButton;
 
+    public override IViewModel ViewModel { get; }
+    public override void Initialize()
+    {
+        
+    }
+
     private void Start()
     {
         _openPopup.onClick.AddListener(OpenPopup);
@@ -24,11 +30,6 @@ public class TestScreen2 : UIViewFullscreen
     private void OpenPopup()
     {
         uiManager.Show<TestPopup1>();
-    }
-
-    protected override void InitializeViewModel(IViewModel viewModel)
-    {
-        
     }
 }
 }

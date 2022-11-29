@@ -5,8 +5,11 @@ namespace Script.UI.Dialogs.FullscreenDialogs
 {
 public class ApplicationEnterViewFullscreen : UIViewFullscreen
 {
-    protected override void InitializeViewModel(IViewModel viewModel)
+    public override IViewModel ViewModel { get; }
+    
+    public override void Initialize()
     {
+        
     }
 }
 }

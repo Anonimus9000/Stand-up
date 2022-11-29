@@ -2,5 +2,7 @@
 {
 public interface IView
 {
+    IViewModel ViewModel { get; }
+    void Initialize();
 }
 }

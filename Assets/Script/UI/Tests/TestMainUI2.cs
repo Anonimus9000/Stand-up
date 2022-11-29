@@ -6,7 +6,8 @@ namespace Script.UI.Tests
 public class TestMainUI2 : UIViewMain
 {
     
-    protected override void InitializeViewModel(IViewModel viewModel)
+    public override IViewModel ViewModel { get; }
+    public override void Initialize()
     {
         throw new System.NotImplementedException();
     }
