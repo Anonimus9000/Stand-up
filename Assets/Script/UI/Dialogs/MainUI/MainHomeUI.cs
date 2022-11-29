@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.MainUI
 {
-public class MainHomeUI:UIViewMain
+public class MainHomeUI : UIViewMain
 {
     [SerializeField] private Button _openFullscreenButton;
 
@@ -21,9 +21,11 @@ public class MainHomeUI:UIViewMain
         uiManager.Show<StartFullScreen>();
     }
 
-    protected override void InitializeViewModel(IViewModel viewModel)
+    public override IViewModel ViewModel { get; }
+
+    public override void Initialize()
     {
-        
+        throw new NotImplementedException();
     }
 }
 }

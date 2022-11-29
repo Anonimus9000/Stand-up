@@ -26,10 +26,12 @@ public class StartFullScreen: UIViewFullscreen
     {
         uiManager.Show<MainHomeUI>();
     }
+    
 
-    protected override void InitializeViewModel(IViewModel viewModel)
+    public override IViewModel ViewModel { get; }
+    public override void Initialize()
     {
-        
+        throw new System.NotImplementedException();
     }
 }
 }
