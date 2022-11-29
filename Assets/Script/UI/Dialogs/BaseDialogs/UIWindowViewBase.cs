@@ -7,7 +7,11 @@ namespace Script.UI.Dialogs.BaseDialogs
 {
 public abstract class UIWindowViewBase : MonoBehaviour, IUIWindow, IView
 {
+    public abstract IViewModel ViewModel { get; }
+    
     protected IUIManager uiManager;
+
+    public abstract void Initialize();
 
     public virtual void InitializeWindow(IUIManager uiManager)
     {
@@ -21,7 +25,5 @@ public abstract class UIWindowViewBase : MonoBehaviour, IUIWindow, IView
     public virtual void OnHidden()
     {
     }
-
-    protected abstract void InitializeViewModel(IViewModel viewModel);
 }
 }

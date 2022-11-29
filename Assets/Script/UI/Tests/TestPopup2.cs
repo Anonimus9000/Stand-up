@@ -10,11 +10,17 @@ public class TestPopup2 : UIViewPopupWindow
 {
     [SerializeField] private Button _closePopup;
     [SerializeField] private Button _openMainUI;
+    
+    public override IViewModel ViewModel { get; }
 
     void Start()
     {
         _closePopup.onClick.AddListener(ClosePopup);
         _openMainUI.onClick.AddListener(OpenMainUI);
+    }
+
+    public override void Initialize()
+    {
     }
 
     private void OpenMainUI()
@@ -25,11 +31,6 @@ public class TestPopup2 : UIViewPopupWindow
     private void ClosePopup()
     {
         uiManager.Close<TestPopup2>();
-    }
-
-    protected override void InitializeViewModel(IViewModel viewModel)
-    {
-        
     }
 }
 }

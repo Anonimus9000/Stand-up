@@ -9,6 +9,12 @@ public class TestScreen1 : UIViewFullscreen
 {
     [SerializeField] private Button _openSecondScreen;
 
+    public override IViewModel ViewModel { get; }
+    public override void Initialize()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void Start()
     {
         _openSecondScreen.onClick.AddListener(OpenScreen);
@@ -17,11 +23,6 @@ public class TestScreen1 : UIViewFullscreen
     private void OpenScreen()
     {
         uiManager.Show<TestScreen2>();
-    }
-
-    protected override void InitializeViewModel(IViewModel viewModel)
-    {
-        
     }
 }
 }
