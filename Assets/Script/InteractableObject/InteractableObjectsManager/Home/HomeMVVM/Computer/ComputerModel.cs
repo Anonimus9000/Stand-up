@@ -4,6 +4,5 @@ namespace Script.InteractableObject.InteractableObjectsManager.Home.HomeMVVM.Com
 {
 public class ComputerModel : IModel
 {
-    
 }
 }

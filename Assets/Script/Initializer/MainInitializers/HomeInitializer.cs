@@ -7,7 +7,7 @@ namespace Script.Initializer.MainInitializers
 public class HomeInitializer : MonoBehaviour, IMainInitializer
 {
     [SerializeReference]
-    private IDependenciesInitializer _homeInteractableObjectInitializer;
+    private HomeInteractableObjectInitializer _homeInteractableObjectInitializer;
     
     private void OnEnable()
     {
