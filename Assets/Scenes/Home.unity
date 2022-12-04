@@ -506,7 +506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiManagerInitializer: {fileID: 989767062}
   _sceneContainer: {fileID: 1331286968}
-  _monoDependencyProvider: {fileID: 11400000, guid: cedd6de4854bd734b93f38b01c4e3221, type: 2}
+  _monoDependencyProvider: {fileID: 11400000, guid: 6a8dc2b2e6827b54184c96fc1a9cfd35, type: 2}
 --- !u!4 &609094266
 Transform:
   m_ObjectHideFlags: 0
