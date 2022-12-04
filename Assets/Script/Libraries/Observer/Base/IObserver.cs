@@ -2,8 +2,7 @@
 {
 public interface IObserver
 {
-    void AddEvent(IObserverListener observerListener);
-    void RemoveEvent(IObserverListener observerListener);
-    void NotifySubscribers();
+    void AddListener(IObserverListener observerListener);
+    void RemoveListener(IObserverListener observerListener);
 }
 }

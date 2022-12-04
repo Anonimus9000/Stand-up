@@ -13,6 +13,11 @@ public abstract class UIWindowViewBase : MonoBehaviour, IUIWindow, IView
 
     public abstract void Initialize();
 
+    public void Initialize(IViewModel viewModel)
+    {
+        
+    }
+
     public virtual void InitializeWindow(IUIManager uiManager)
     {
         this.uiManager = uiManager;

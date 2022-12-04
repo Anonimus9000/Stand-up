@@ -1,5 +1,7 @@
 using Script.Initializer.Base;
+using Script.Initializer.MonoDependencyContainers;
 using Script.Initializer.StartApplicationDependenciesInitializers;
+using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.SceneSwitcherSystem.Container;
 using Script.SceneSwitcherSystem.Switcher;
@@ -17,6 +19,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     [SerializeField]
     private SceneContainer _sceneContainer;
 
+    [SerializeField]
+    private MonoDependencyProvider _monoDependencyProvider;
+
     #endregion
 
     private void OnEnable()
@@ -28,6 +33,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     {
         var uiManager = InitializeUISystem();
         var sceneSwitcher = InitializeSceneSwitcher(uiManager);
+        var initializeDataServiceProvider = InitializeDataServiceProvider();
+        
+        _monoDependencyProvider.InitializeDependencies(initializeDataServiceProvider);
     }
 
     private IUIManager InitializeUISystem()
@@ -40,5 +48,11 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var sceneSwitcher = new SceneSwitcherDependenciesInitializer(uiManager, _sceneContainer);
         return (ISceneSwitcher)sceneSwitcher.Initialize();
     }
+
+    private IServiceProvider InitializeDataServiceProvider()
+    {
+        var dataServiceProviderInitializer = new DataServiceProviderInitializer();
+        return (IServiceProvider)dataServiceProviderInitializer.Initialize();
+    } 
 }
 }
