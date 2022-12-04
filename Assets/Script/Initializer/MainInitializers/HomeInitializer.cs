@@ -13,8 +13,6 @@ public class HomeInitializer : MonoBehaviour, IMainInitializer
     [SerializeReference]
     private HomeInteractableObjectInitializer _homeInteractableObjectInitializer;
     
-    [FormerlySerializedAs("_monoDependancyContainers")]
-    [FormerlySerializedAs("_monoInitializableContainers")]
     [SerializeField]
     private MonoDependencyProvider _monoDependencyContainers;
 
@@ -27,6 +25,7 @@ public class HomeInitializer : MonoBehaviour, IMainInitializer
 
     public void InitializeElements()
     {
+        return;
         InitializeServiceProvider();
         
         InitializeHomeInteractableObjects();
@@ -40,6 +39,7 @@ public class HomeInitializer : MonoBehaviour, IMainInitializer
     private void InitializeHomeInteractableObjects()
     {
         var dataService = _serviceProvider.GetService<IDataService>();
+        if(_homeInteractableObjectInitializer == null) return;
         _homeInteractableObjectInitializer.InitializeDependencies(dataService);
         var interactableViewModelsContainer = _homeInteractableObjectInitializer.Initialize();
     }

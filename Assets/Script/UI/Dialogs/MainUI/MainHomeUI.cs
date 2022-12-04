@@ -10,10 +10,17 @@ namespace Script.UI.Dialogs.MainUI
 public class MainHomeUI : UIViewMain
 {
     [SerializeField] private Button _openFullscreenButton;
+    [SerializeField] private Button _openCharacterInfoButton;
 
     private void Start()
     {
         _openFullscreenButton.onClick.AddListener(OpenStartFullscreen);
+        _openCharacterInfoButton.onClick.AddListener(OpenCharacterInfo);
+    }
+
+    private void OpenCharacterInfo()
+    {
+        uiManager.Show<CharacterInfoFullScreen>();
     }
 
     private void OpenStartFullscreen()
