@@ -23,7 +23,7 @@ public class FullScreensManager : IDialogsManager
         _fullScreenDialogPrefabs = fullScreenDialogs;
     }
 
-    public IUIWindow Show<T>() where T : IUIWindow
+    public T Show<T>() where T : IUIWindow
     {
         TryHideCurrentScreen();
 
@@ -37,7 +37,7 @@ public class FullScreensManager : IDialogsManager
         screen!.InitializeWindow(_uiManager);
         _queueHiddenScreens.Add(screen);
 
-        return screen;
+        return (T) screen;
     }
 
     private bool TryHideCurrentScreen()

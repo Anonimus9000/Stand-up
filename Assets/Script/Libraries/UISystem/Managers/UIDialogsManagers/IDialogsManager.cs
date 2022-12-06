@@ -7,7 +7,7 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 public interface IDialogsManager
 {
     void Initialize(IInstantiater instantiater, List<IUIWindow> windows, IUIManager uiManager);
-    IUIWindow Show<T>() where T : IUIWindow;
+    T Show<T>() where T : IUIWindow;
     void Close<T>() where T : IUIWindow;
 }
 }

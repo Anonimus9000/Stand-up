@@ -1,4 +1,5 @@
-﻿using Script.Libraries.MVVM;
+﻿using System;
+using Script.Libraries.MVVM;
 using Script.UI.Dialogs.BaseDialogs;
 using Script.UI.Dialogs.MainUI;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class StartFullScreen: UIViewFullscreen
 {
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _closeButton;
+
+    public event Action OnStartPressed;
 
     private void Start()
     {
@@ -24,6 +27,8 @@ public class StartFullScreen: UIViewFullscreen
 
     private void StartButton()
     {
+        OnStartPressed?.Invoke();
+        
         uiManager.Show<MainHomeUI>();
     }
     

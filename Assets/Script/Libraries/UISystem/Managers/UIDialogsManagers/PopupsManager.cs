@@ -25,7 +25,7 @@ public class PopupsManager : IDialogsManager
         _popupPrefabs = windows;
     }
 
-    public IUIWindow Show<T>() where T : IUIWindow
+    public T Show<T>() where T : IUIWindow
     {
         TryHideCurrentPopup();
 
@@ -39,7 +39,7 @@ public class PopupsManager : IDialogsManager
         popupDialog!.InitializeWindow(_uiManager);
         _queueHiddenPopups.Add(popupDialog);
 
-        return popupDialog;
+        return (T) popupDialog;
     }
 
     private bool TryHideCurrentPopup()

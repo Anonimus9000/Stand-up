@@ -10,7 +10,8 @@ public class DataServiceProviderInitializer : IDependenciesInitializer
 {
     public IInitializable Initialize()
     {
-        var dataServiceProvider = new DataServiceProvider();
+        var services = GetServices();
+        var dataServiceProvider = new DataServiceProvider(services);
 
         return dataServiceProvider;
     }

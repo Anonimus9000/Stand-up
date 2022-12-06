@@ -22,7 +22,7 @@ public abstract class UIManager : IUIManager
         InitializeManagers(mainUIInstantiater, fullScreenUIInstantiater, popupsUIInstantiater, windows);
     }
 
-    public virtual IUIWindow Show<T>() where T : IUIWindow, new()
+    public virtual T Show<T>() where T : IUIWindow, new()
     {
         // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
         switch (new T())

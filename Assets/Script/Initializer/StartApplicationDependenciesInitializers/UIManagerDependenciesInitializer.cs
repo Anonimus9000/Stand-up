@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Script.Initializer.Base;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
@@ -18,6 +19,9 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
     [SerializeField] private Transform _parentToCreateFullScreenUI;
     [SerializeField] private Transform _parentToCreatePopupsUI;
     [SerializeField] private string _pathToDialogs;
+
+    //TODO: remove
+    public event Action StartGamePressed;
 
     public IInitializable Initialize()
     {
@@ -51,9 +55,12 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         return unityUIWindowsLoader.UIWindows;
     }
 
+    //TODO: Replace in initialize queuee <-fuck
     private void OpenApplicationEnterDotWindow(IUIManager uiManager)
     {
-        uiManager.Show<StartFullScreen>();
+        var uiWindow = uiManager.Show<StartFullScreen>();
+        uiWindow.OnStartPressed += () => StartGamePressed?.Invoke();
+
     }
 }
 }

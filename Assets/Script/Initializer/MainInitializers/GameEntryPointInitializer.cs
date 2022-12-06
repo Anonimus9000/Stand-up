@@ -22,6 +22,10 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     [SerializeField]
     private MonoDependencyProvider _monoDependencyProvider;
 
+    //TODO: Replace in SceneManager
+    [SerializeField] 
+    private HomeInitializer _homeInitializer;
+
     #endregion
 
     private void OnEnable()
@@ -35,11 +39,12 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var sceneSwitcher = InitializeSceneSwitcher(uiManager);
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         
-        _monoDependencyProvider.InitializeDependencies(initializeDataServiceProvider);
+        _monoDependencyProvider.InitializeDependencies(initializeDataServiceProvider, uiManager);
     }
 
     private IUIManager InitializeUISystem()
     {
+        _uiManagerInitializer.StartGamePressed += _homeInitializer.Initialize;
         return (IUIManager)_uiManagerInitializer.Initialize();
     }
 

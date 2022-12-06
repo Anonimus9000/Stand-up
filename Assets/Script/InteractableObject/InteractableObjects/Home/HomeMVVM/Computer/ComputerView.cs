@@ -17,6 +17,16 @@ public class ComputerView : InteractableBase, IView
     private ComputerViewModel _viewModel;
     private IObjectClickChecker _mouseClickChecker;
 
+    private void OnEnable()
+    {
+        ActivateInput();
+    }
+
+    private void OnDisable()
+    {
+        DeactivateInput();
+    }
+
     public void Initialize(IViewModel viewModel)
     {
     }
@@ -24,9 +34,28 @@ public class ComputerView : InteractableBase, IView
     public override void InitializeClickInput(IObjectClickChecker objectClickChecker)
     {
         _mouseClickChecker = objectClickChecker;
-        
-        _mouseClickChecker.Activate();
-        _mouseClickChecker.ObjectClicked += OnClick;
+        //TODO: replace in activate outside
+        ActivateInput();
+    }
+
+    private void ActivateInput()
+    {
+        //TODO: remove if
+        if (_mouseClickChecker != null)
+        {
+            _mouseClickChecker.Activate();
+            _mouseClickChecker.ObjectClicked += OnClick;
+        }
+    }
+
+    private void DeactivateInput()
+    {
+        //TODO: remove if
+        if (_mouseClickChecker != null)
+        {
+            _mouseClickChecker.Deactivate();
+            _mouseClickChecker.ObjectClicked -= OnClick;
+        }
     }
 
     protected override void OnClick()

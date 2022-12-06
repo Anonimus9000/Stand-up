@@ -12,6 +12,7 @@ using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Bed;
 using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer;
 using Script.Libraries.MVVM;
 using Script.Libraries.Observer.DataObserver;
+using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using UnityEngine;
 
 namespace Script.InteractableObject.InteractableObjects.Home.Initializer
@@ -26,19 +27,21 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
     private DataObserver _observer;
     private readonly List<IViewModel> _viewModels = new();
     private IDataService _dataService;
+    private IUIManager _uiManager;
 
-    public void InitializeDependencies(IDataService dataService)
+    public void InitializeDependencies(IDataService dataService, IUIManager uiManager)
     {
         _dataService = dataService;
+        _uiManager = uiManager;
     }
 
     public IInitializable Initialize()
     {
         _observer = new DataObserver();
+
+        InitializeInputControls();
         
         InitializeInteractableObjects();
-        
-        InitializeInputControls();
 
         var interactableViewModelsContainer = new HomeInteractableViewModelsContainer(_viewModels.ToArray());
         
@@ -56,7 +59,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
 
             if (interactableObject is IView interactableView)
             {
-                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService);
+                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService, _uiManager);
                 _viewModels.Add(viewModel);
             }
             else
@@ -78,12 +81,12 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         _mainCamera = Camera.main;
     }
 
-    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService)
+    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUIManager uiManager)
     {
         switch (view)
         {
             case ComputerView:
-                return new ComputerViewModel(view, dataService); 
+                return new ComputerViewModel(view, dataService, uiManager); 
             case BedView:
                 break;
         }

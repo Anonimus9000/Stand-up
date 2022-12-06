@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Script.Initializer.Base;
+using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using UnityEngine;
 using IServiceProvider = Script.Libraries.ServiceProvider.IServiceProvider;
 
@@ -12,9 +13,10 @@ public class MonoDependencyProvider : ScriptableObject, IDependencyProvider
 {
     private readonly List<object> _initializables = new();
 
-    public void InitializeDependencies(IServiceProvider dataService)
+    public void InitializeDependencies(IServiceProvider dataService, IUIManager uiManager)
     {
         _initializables.Add(dataService);
+        _initializables.Add(uiManager);
     }
 
     public T GetInitializable<T>()
@@ -24,7 +26,7 @@ public class MonoDependencyProvider : ScriptableObject, IDependencyProvider
             return initializable;
         }
 
-        throw new Exception($"Can't fine {typeof(T)}");
+        throw new Exception($"Can't find {typeof(T)}");
     }
 }
 }

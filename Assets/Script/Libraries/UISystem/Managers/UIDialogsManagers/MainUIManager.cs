@@ -20,7 +20,7 @@ public class MainUIManager: IDialogsManager
         _mainUIPrefabs = mainUI;
     }
 
-    public IUIWindow Show<T>() where T : IUIWindow
+    public T Show<T>() where T : IUIWindow
     {
         _uiManager.CloseWindowsExceptMain();
         
@@ -35,7 +35,7 @@ public class MainUIManager: IDialogsManager
         mainUI!.OnShown();
         mainUI!.InitializeWindow(_uiManager);
 
-        return mainUI;
+        return (T) mainUI;
     }
 
     private IInstantiatable GetPrefab<T>() where T : IUIWindow
