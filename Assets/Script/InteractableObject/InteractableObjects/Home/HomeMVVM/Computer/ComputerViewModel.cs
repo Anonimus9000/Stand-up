@@ -9,9 +9,8 @@ namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer
 {
 public class ComputerViewModel : IViewModel
 {
-    public ComputerModel Model;
-
-    public ComputerView View;
+    private readonly ComputerModel _model;
+    private readonly ComputerView _view;
     private readonly IUIManager _uiManager;
 
     public ComputerViewModel(IView view, IDataService playerCharacteristicsService, IUIManager uiManager)
@@ -21,9 +20,9 @@ public class ComputerViewModel : IViewModel
             throw new Exception($"Need dependency of type {typeof(ComputerView)}");
         }
 
-        View = computerView;
-        View.Initialize(this);
-        Model = new ComputerModel();
+        _view = computerView;
+        _view.Initialize(this);
+        _model = new ComputerModel();
         _uiManager = uiManager;
 
         SubscribeOnViewEvents();
@@ -31,12 +30,12 @@ public class ComputerViewModel : IViewModel
 
     private void SubscribeOnViewEvents()
     {
-        View.ObjectClicked += OnViewObjectClicked;
+        _view.ObjectClicked += OnViewObjectClicked;
     }
 
     private void OnViewObjectClicked()
     {
-        Debug.Log($"{View.gameObject.name} was clicked");
+        Debug.Log($"{_view.gameObject.name} was clicked");
 
         _uiManager.Show<PCActionPopup>();
     }

@@ -29,6 +29,9 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
 
     [SerializeField]
     private MonoDependencyProvider _monoDependencyProvider;
+    
+    [field: SerializeField]
+    public Canvas MainCanvas { get; private set; }
 
     public IInitializable Initialize()
     {

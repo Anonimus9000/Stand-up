@@ -43,7 +43,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     {
         _logger = InitializeLogger();
         _monoDependencyProvider.AddDependency(_logger);
-        
+
         var uiManager = InitializeUISystem();
         _monoDependencyProvider.AddDependency(uiManager);
 
