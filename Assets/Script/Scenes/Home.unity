@@ -510,9 +510,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiManagerInitializer: {fileID: 989767062}
-  _sceneContainer: {fileID: 1331286968}
   _monoDependencyProvider: {fileID: 11400000, guid: 6a8dc2b2e6827b54184c96fc1a9cfd35, type: 2}
   _homeInitializer: {fileID: 937480761}
+  _homeGameObject: {fileID: 595737895}
 --- !u!4 &609094266
 Transform:
   m_ObjectHideFlags: 0
@@ -574,6 +574,8 @@ MonoBehaviour:
   _parentToCreateFullScreenUI: {fileID: 97821580}
   _parentToCreatePopupsUI: {fileID: 1217912760}
   _pathToDialogs: WindowPrefab
+  _monoDependencyProvider: {fileID: 11400000, guid: 6a8dc2b2e6827b54184c96fc1a9cfd35, type: 2}
+  <MainCanvas>k__BackingField: {fileID: 1202708890}
 --- !u!4 &989767063
 Transform:
   m_ObjectHideFlags: 0
@@ -923,36 +925,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &1634731810 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2688219413911233880, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
-  m_PrefabInstance: {fileID: 3473682886700072267}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1634731812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1634731810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b70aab331508147a68ff66bbab361e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactableObjects:
-  - {fileID: 2060642865}
---- !u!114 &2060642865 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3624884468642453557, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
-  m_PrefabInstance: {fileID: 3473682886700072267}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9336c33db18c46978076fe1d01db88c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &29165969838291004
 Transform:
   m_ObjectHideFlags: 0
@@ -2188,18 +2160,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4076216492120707158, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
-      propertyPath: _homeObject
-      value: 
-      objectReference: {fileID: 595737895}
-    - target: {fileID: 4076216492120707158, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
-      propertyPath: _monoDependencyContainers
-      value: 
-      objectReference: {fileID: 11400000, guid: 6a8dc2b2e6827b54184c96fc1a9cfd35, type: 2}
-    - target: {fileID: 4076216492120707158, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
-      propertyPath: _homeInteractableObjectInitializer
-      value: 
-      objectReference: {fileID: 1634731812}
     m_RemovedComponents:
     - {fileID: 862179923356968465, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
