@@ -1,29 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using Script.Initializer.Base;
+using Script.Initializer.MainInitializers;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.SceneSwitcherSystem.Activators;
+using Script.SceneSwitcherSystem.Activators.Base;
 using Script.SceneSwitcherSystem.Container.Scenes;
 using Script.SceneSwitcherSystem.Container.Scenes.Home;
 using Script.SceneSwitcherSystem.Switcher;
-using UnityEngine;
 
 namespace Script.SceneSwitcherSystem.Container
 {
-public class SceneContainer : MonoBehaviour, ISceneContainer
+public class SceneContainer : ISceneContainer
 {
     private List<IGameScene> _scenes;
     private IUIManager _uiManager;
 
-    public void Initialize(IUIManager uiManager)
+    public SceneContainer(IUIManager uiManager, IInitializer homeInitializer, IActivator homeLocationActivator)
     {
-        InitializeScenes();
+        InitializeScenes(homeLocationActivator, homeInitializer);
     }
 
-    public void InitializeScenes()
+    private void InitializeScenes(IActivator homeLocationActivator, IInitializer homeInitializer)
     {
         var scenes = new IGameScene[]
         {
-            new LoadingScene(),
-            new HomeScene(),
+            new ApplicationLoadingScene(),
+            new HomeScene(homeInitializer, homeLocationActivator),
             new ConcertScene(),
             new MainMenuScene()
         };

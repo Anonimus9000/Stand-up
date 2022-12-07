@@ -3,7 +3,7 @@ using Script.SceneSwitcherSystem.Switcher;
 
 namespace Script.SceneSwitcherSystem.Container.Scenes
 {
-public class ConcertScene : IGameScene
+public class ApplicationLoadingScene : IGameScene
 {
     public event Action<SceneType> SceneOpened;
     public event Action<SceneType> SceneClosed;
@@ -22,12 +22,12 @@ public class ConcertScene : IGameScene
 
     public void OnOpened()
     {
-        SceneOpened?.Invoke(SceneType.Concert);
+        SceneOpened?.Invoke(SceneType.ApplicationLoading);
     }
 
     public void OnClosed()
     {
-        SceneClosed?.Invoke(SceneType.Concert);
+        SceneClosed?.Invoke(SceneType.ApplicationLoading);
     }
 }
 }

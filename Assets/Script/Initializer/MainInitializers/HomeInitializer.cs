@@ -4,13 +4,11 @@ using Script.Initializer.MonoDependencyContainers;
 using Script.InteractableObject.InteractableObjects.Home.Initializer;
 using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using Task = System.Threading.Tasks.Task;
 
 namespace Script.Initializer.MainInitializers
 {
-public class HomeInitializer : MonoBehaviour, IMainInitializer
+public class HomeInitializer : MonoBehaviour, IInitializer
 {
     [SerializeReference]
     private HomeInteractableObjectInitializer _homeInteractableObjectInitializer;
@@ -18,13 +16,8 @@ public class HomeInitializer : MonoBehaviour, IMainInitializer
     [SerializeField]
     private MonoDependencyProvider _monoDependencyContainers;
 
-    //TODO:Move to scene manager
-    [SerializeField] 
-    private GameObject _homeObject;
-
     private IServiceProvider _serviceProvider;
 
-    //TODO: Invoke from scene manager
     public void Initialize()
     {
         InitializeElements();
@@ -32,7 +25,7 @@ public class HomeInitializer : MonoBehaviour, IMainInitializer
 
     public void InitializeElements()
     {
-        var uiManager = _monoDependencyContainers.GetInitializable<IUIManager>();
+        var uiManager = _monoDependencyContainers.GetDependency<IUIManager>();
         InitializeServiceProvider();
         
         InitializeHomeInteractableObjects(uiManager);
@@ -40,7 +33,7 @@ public class HomeInitializer : MonoBehaviour, IMainInitializer
 
     private void InitializeServiceProvider()
     {
-        _serviceProvider = _monoDependencyContainers.GetInitializable<IServiceProvider>();
+        _serviceProvider = _monoDependencyContainers.GetDependency<IServiceProvider>();
     }
 
     private void InitializeHomeInteractableObjects(IUIManager uiManager)

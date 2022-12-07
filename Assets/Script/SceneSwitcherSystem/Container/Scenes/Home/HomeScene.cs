@@ -1,32 +1,58 @@
-﻿using Script.SceneSwitcherSystem.Switcher;
+﻿using System;
+using Script.Initializer.Base;
+using Script.Initializer.MainInitializers;
+using Script.SceneSwitcherSystem.Activators.Base;
+using Script.SceneSwitcherSystem.Switcher;
 
 namespace Script.SceneSwitcherSystem.Container.Scenes.Home
 {
 public class HomeScene : IGameScene
 {
+    public event Action<SceneType> SceneOpened;
+    public event Action<SceneType> SceneClosed;
+    
+    private readonly HomeInitializer _homeInitializer;
+    private readonly IActivator _homeActivator;
+
+    public HomeScene(IInitializer homeInitializer, IActivator homeActivator)
+    {
+        _homeActivator = homeActivator;
+        _homeInitializer = homeInitializer as HomeInitializer;
+    }
+
     public void Initialize()
     {
-        throw new System.NotImplementedException();
+        _homeInitializer.Initialize();
     }
 
     public void Open()
     {
-        throw new System.NotImplementedException();
+        ShowHome();
     }
 
     public void Close()
     {
-        throw new System.NotImplementedException();
+        HideHome();
     }
 
-    public void OnOpen()
+    public void OnOpened()
     {
-        throw new System.NotImplementedException();
+        SceneOpened?.Invoke(SceneType.Home);
     }
 
-    public void OnClose()
+    public void OnClosed()
     {
-        throw new System.NotImplementedException();
+       SceneClosed?.Invoke(SceneType.Home);
+    }
+
+    private void ShowHome()
+    {
+        _homeActivator.Activate();
+    }
+
+    private void HideHome()
+    {
+        _homeActivator.Deactivate();
     }
 }
 }

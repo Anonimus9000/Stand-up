@@ -1,11 +1,14 @@
 using Script.Initializer.Base;
 using Script.Initializer.MonoDependencyContainers;
 using Script.Initializer.StartApplicationDependenciesInitializers;
+using Script.Libraries.Logger.Loggers;
 using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.SceneSwitcherSystem.Container;
+using Script.SceneSwitcherSystem.Container.Scenes;
 using Script.SceneSwitcherSystem.Switcher;
 using UnityEngine;
+using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
 
 namespace Script.Initializer.MainInitializers
 {
@@ -17,16 +20,19 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     private UIManagerDependenciesInitializer _uiManagerInitializer;
 
     [SerializeField]
-    private SceneContainer _sceneContainer;
-
-    [SerializeField]
     private MonoDependencyProvider _monoDependencyProvider;
 
-    //TODO: Replace in SceneManager
-    [SerializeField] 
+    [SerializeField]
     private HomeInitializer _homeInitializer;
 
+    //TODO: replace
+    [SerializeField]
+    private GameObject _homeGameObject;
+
     #endregion
+
+    private SceneContainer _sceneContainer;
+    private ILogger _logger;
 
     private void OnEnable()
     {
@@ -35,29 +41,46 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
 
     public void InitializeElements()
     {
-        var uiManager = InitializeUISystem();
-        var sceneSwitcher = InitializeSceneSwitcher(uiManager);
-        var initializeDataServiceProvider = InitializeDataServiceProvider();
+        _logger = InitializeLogger();
+        _monoDependencyProvider.AddDependency(_logger);
         
-        _monoDependencyProvider.InitializeDependencies(initializeDataServiceProvider, uiManager);
+        var uiManager = InitializeUISystem();
+        _monoDependencyProvider.AddDependency(uiManager);
+
+        var sceneSwitcher =
+            InitializeSceneSwitcher(uiManager, _sceneContainer, _homeInitializer, _homeGameObject, _logger);
+        sceneSwitcher.SwitchTo<ApplicationLoadingScene>();
+
+        var initializeDataServiceProvider = InitializeDataServiceProvider();
+        _monoDependencyProvider.AddDependency(initializeDataServiceProvider);
     }
 
     private IUIManager InitializeUISystem()
     {
-        _uiManagerInitializer.StartGamePressed += _homeInitializer.Initialize;
         return (IUIManager)_uiManagerInitializer.Initialize();
     }
 
-    private ISceneSwitcher InitializeSceneSwitcher(IUIManager uiManager)
+    private static ISceneSwitcher InitializeSceneSwitcher(IUIManager uiManager, ISceneContainer sceneContainer,
+        IInitializer homeInitializer, GameObject homeGameObject, ILogger logger)
     {
-        var sceneSwitcher = new SceneSwitcherDependenciesInitializer(uiManager, _sceneContainer);
+        var sceneSwitcher = new SceneSwitcherDependenciesInitializer(
+            uiManager, sceneContainer, homeInitializer, homeGameObject, logger);
+
         return (ISceneSwitcher)sceneSwitcher.Initialize();
     }
 
-    private IServiceProvider InitializeDataServiceProvider()
+    private static IServiceProvider InitializeDataServiceProvider()
     {
         var dataServiceProviderInitializer = new DataServiceProviderInitializer();
+
         return (IServiceProvider)dataServiceProviderInitializer.Initialize();
-    } 
+    }
+
+    private static ILogger InitializeLogger()
+    {
+        var logger = new UnityMainLogger();
+
+        return logger;
+    }
 }
 }

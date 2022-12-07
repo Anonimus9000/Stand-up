@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Script.Libraries.Logger.LoggerBase;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UIWindow;
 
@@ -12,18 +13,23 @@ public abstract class UIManager : IUIManager
     private readonly IDialogsManager _mainUIManager = new MainUIManager();
 
     private IUIWindow _currentWindow;
+    private readonly ILogger _logger;
 
     public UIManager(
         IInstantiater mainUIInstantiater,
         IInstantiater fullScreenUIInstantiater,
         IInstantiater popupsUIInstantiater,
-        List<IUIWindow> windows)
+        List<IUIWindow> windows, 
+        ILogger logger)
     {
+        _logger = logger;
+        
         InitializeManagers(mainUIInstantiater, fullScreenUIInstantiater, popupsUIInstantiater, windows);
     }
 
     public virtual T Show<T>() where T : IUIWindow, new()
     {
+        _logger.Log($"Show ui {typeof(T)}");
         // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
         switch (new T())
         {
@@ -40,6 +46,8 @@ public abstract class UIManager : IUIManager
 
     public virtual void Close<T>() where T : IUIWindow, new()
     {
+        _logger.Log($"Close ui {typeof(T)}");
+
         // ReSharper disable once Unity.IncorrectMonoBehaviourInstantiation
         switch (new T())
         {

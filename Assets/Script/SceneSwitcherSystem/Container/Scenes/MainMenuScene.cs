@@ -1,9 +1,13 @@
-﻿using Script.SceneSwitcherSystem.Switcher;
+﻿using System;
+using Script.SceneSwitcherSystem.Switcher;
 
 namespace Script.SceneSwitcherSystem.Container.Scenes
 {
 public class MainMenuScene : IGameScene
 {
+    public event Action<SceneType> SceneOpened;
+    public event Action<SceneType> SceneClosed;
+
     public void Initialize()
     {
     }
@@ -16,12 +20,14 @@ public class MainMenuScene : IGameScene
     {
     }
 
-    public void OnOpen()
+    public void OnOpened()
     {
+        SceneOpened?.Invoke(SceneType.MainMenu);
     }
 
-    public void OnClose()
+    public void OnClosed()
     {
+        SceneClosed?.Invoke(SceneType.MainMenu);
     }
 }
 }
