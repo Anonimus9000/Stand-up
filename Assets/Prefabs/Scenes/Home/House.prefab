@@ -364,8 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4809d575162348cd97b43d5a882994f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _homeInteractableObjectInitializer: {fileID: 0}
-  _monoDependencyContainers: {fileID: 0}
+  _homeInteractableObjectInitializer: {fileID: 7215098200774677632}
+  _monoDependencyContainers: {fileID: 11400000, guid: 6a8dc2b2e6827b54184c96fc1a9cfd35, type: 2}
 --- !u!1 &2688219413911233880
 GameObject:
   m_ObjectHideFlags: 0
