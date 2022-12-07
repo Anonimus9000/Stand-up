@@ -30,11 +30,11 @@ public class FullScreensManager : IDialogsManager
         var screenToShow = GetPrefab<T>();
 
         var screen = _instantiater.Instantiate(screenToShow) as IFullScreen;
-
-        _current = screen;
-
-        screen!.OnShown();
         screen!.InitializeDependencies(_uiManager);
+        
+        screen!.OnShown();
+        
+        _current = screen;
         _queueHiddenScreens.Add(screen);
 
         return (T) screen;

@@ -7,6 +7,7 @@ using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.SceneSwitcherSystem.Container;
 using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.FullscreenDialogs;
+using Script.UI.Dialogs.FullscreenDialogs.ApplicationEnter;
 using UnityEngine;
 using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
 
@@ -85,7 +86,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     
     private void OpenApplicationEnterDotWindow(IUIManager uiManager, ISceneSwitcher sceneSwitcher)
     {
-        var uiWindow = uiManager.Show<StartFullScreen>();
+        var uiWindow = uiManager.Show<ApplicationEnterView>();
         uiWindow.InitializeDependencies(sceneSwitcher);
     }
 }
