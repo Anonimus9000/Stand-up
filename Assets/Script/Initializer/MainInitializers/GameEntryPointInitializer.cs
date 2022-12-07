@@ -45,11 +45,12 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         _logger = InitializeLogger();
         _monoDependencyProvider.AddDependency(_logger);
 
+        var sceneSwitcher = InitializeSceneSwitcher(_sceneContainer, _homeInitializer, _homeGameObject, _logger);
+        
         var uiManager = InitializeUISystem();
         _monoDependencyProvider.AddDependency(uiManager);
 
-        var sceneSwitcher = InitializeSceneSwitcher(_sceneContainer, _homeInitializer, _homeGameObject, _logger);
-        
+
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         _monoDependencyProvider.AddDependency(initializeDataServiceProvider);
         
@@ -86,8 +87,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     
     private void OpenApplicationEnterDotWindow(IUIManager uiManager, ISceneSwitcher sceneSwitcher)
     {
-        var uiWindow = uiManager.Show<ApplicationEnterView>();
-        uiWindow.InitializeDependencies(sceneSwitcher);
+        uiManager.Show<ApplicationEnterView>();
     }
 }
 }

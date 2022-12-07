@@ -34,6 +34,8 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
     [field: SerializeField]
     public Canvas MainCanvas { get; private set; }
 
+    private ISceneSwitcher _sceneSwitcher;
+
     public IInitializable Initialize()
     {
         var logger = _monoDependencyProvider.GetDependency<ILogger>();
@@ -42,7 +44,12 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         return uiManager;
     }
 
-    private UIManagerInitializable InitializeUIManager(ILogger logger)
+    public void InitializeDependencies(ISceneSwitcher sceneSwitcher)
+    {
+        _sceneSwitcher = sceneSwitcher;
+    }
+
+    private UIManagerMVVM InitializeUIManager(ILogger logger)
     {
         var uiWindows = InitializeWindowsLoader();
 
@@ -50,7 +57,11 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
         IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
 
-        return new UIManagerInitializable(instantiaterMainUI, instantiaterFullScreens, instantiaterPopups, uiWindows,
+        return new UIManagerMVVM(
+            instantiaterMainUI,
+            instantiaterFullScreens,
+            instantiaterPopups,
+            uiWindows,
             logger);
     }
 

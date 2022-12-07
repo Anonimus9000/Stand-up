@@ -36,7 +36,7 @@ public class PopupsManager : IDialogsManager
         _currentPopup = popupDialog;
 
         popupDialog!.OnShown();
-        popupDialog!.InitializeDependencies(_uiManager);
+        popupDialog!.SetUiManager(_uiManager);
         _queueHiddenPopups.Add(popupDialog);
 
         return (T) popupDialog;

@@ -5,7 +5,7 @@ namespace Script.Libraries.UISystem.UIWindow
 {
 public interface IUIWindow : IInstantiatable
 {
-    void InitializeDependencies(IUIManager uiManager);
+    void SetUiManager(IUIManager uiManager);
     void OnShown();
 
     void OnHidden();

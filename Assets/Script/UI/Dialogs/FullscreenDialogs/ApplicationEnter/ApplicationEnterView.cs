@@ -27,7 +27,7 @@ public class ApplicationEnterView : UIViewFullscreen
         _closeButton.onClick.AddListener(CloseButton);
 
 
-        ApplicationEnterModel model = new ApplicationEnterModel();
+        var model = new ApplicationEnterModel();
         var applicationEnterViewModel = new ApplicationEnterViewModel(this, model, uiManager, sceneSwitcher);
     }
 

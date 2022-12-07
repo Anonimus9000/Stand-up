@@ -10,9 +10,12 @@ namespace Script.InteractableObject.InteractableObjects.Container.Containers
 public class HomeInteractableObjectsManager : IInteractableViewModelsContainer, IInitializable
 {
     private readonly List<IViewModel> _viewModels;
+    
     public HomeInteractableObjectsManager(params IViewModel[] viewModels)
     {
         _viewModels = new List<IViewModel>(viewModels);
+        
+        ActivateInputForAllObjects();
     }
 
     public IViewModel GetViewModel<T>() where T : IViewModel
@@ -29,7 +32,7 @@ public class HomeInteractableObjectsManager : IInteractableViewModelsContainer, 
     {
         foreach (var viewModel in _viewModels)
         {
-            
+            //viewModel
         }
     }
 }
