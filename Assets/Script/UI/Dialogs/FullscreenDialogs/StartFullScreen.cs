@@ -1,5 +1,6 @@
 ﻿using System;
 using Script.Libraries.MVVM;
+using Script.SceneSwitcherSystem.Container.Scenes.Home;
 using Script.UI.Dialogs.BaseDialogs;
 using Script.UI.Dialogs.MainUI;
 using UnityEngine;
@@ -7,12 +8,16 @@ using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.FullscreenDialogs
 {
-public class StartFullScreen: UIViewFullscreen
+public class StartFullScreen : UIViewFullscreen
 {
-    [SerializeField] private Button _startButton;
-    [SerializeField] private Button _closeButton;
+    [SerializeField]
+    private Button _startButton;
+
+    [SerializeField]
+    private Button _closeButton;
 
     public event Action OnStartPressed;
+    public override IModel Model { get; protected set; }
 
     private void Start()
     {
@@ -28,15 +33,9 @@ public class StartFullScreen: UIViewFullscreen
     private void StartButton()
     {
         OnStartPressed?.Invoke();
-        
-        uiManager.Show<MainHomeUI>();
-    }
-    
 
-    public override IViewModel ViewModel { get; }
-    public override void Initialize()
-    {
-        throw new System.NotImplementedException();
+        uiManager.Show<MainHomeUI>();
+        sceneSwitcher.SwitchTo<HomeScene>();
     }
 }
 }

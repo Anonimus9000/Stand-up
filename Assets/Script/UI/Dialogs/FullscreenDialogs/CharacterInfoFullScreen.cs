@@ -9,6 +9,8 @@ namespace Script.UI.Dialogs.FullscreenDialogs
 public class CharacterInfoFullScreen: UIViewFullscreen
 {
     [SerializeField] private Button _closeButton;
+    
+    public override IModel Model { get; protected set; }
 
     private void Start()
     {
@@ -18,12 +20,6 @@ public class CharacterInfoFullScreen: UIViewFullscreen
     private void CloseFullScreen()
     {
         uiManager.Close<CharacterInfoFullScreen>();
-    }
-
-    public override IViewModel ViewModel { get; }
-    public override void Initialize()
-    {
-        
     }
 }
 }

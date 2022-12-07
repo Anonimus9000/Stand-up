@@ -4,11 +4,10 @@ namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Bed
 {
 public class BedView : IView
 {
-    public IViewModel ViewModel { get; private set; }
-
-    public void Initialize(IViewModel viewModel)
+    private BedModel _model;
+    public void Initialize(IModel model)
     {
-        ViewModel = new BedViewModel(this);
+        _model = model as BedModel;
     }
 
     public void OnClick()

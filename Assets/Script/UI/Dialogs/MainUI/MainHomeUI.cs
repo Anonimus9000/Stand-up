@@ -12,6 +12,8 @@ public class MainHomeUI : UIViewMain
     [SerializeField] private Button _openFullscreenButton;
     [SerializeField] private Button _openCharacterInfoButton;
 
+    public override IModel Model { get; protected set; }
+
     private void Start()
     {
         _openFullscreenButton.onClick.AddListener(OpenStartFullscreen);
@@ -26,13 +28,6 @@ public class MainHomeUI : UIViewMain
     private void OpenStartFullscreen()
     {
         uiManager.Show<StartFullScreen>();
-    }
-
-    public override IViewModel ViewModel { get; }
-
-    public override void Initialize()
-    {
-        throw new NotImplementedException();
     }
 }
 }

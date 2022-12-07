@@ -20,13 +20,17 @@ public class ComputerViewModel : IViewModel
             throw new Exception($"Need dependency of type {typeof(ComputerView)}");
         }
 
-        _view = computerView;
-        _view.Initialize(this);
         _model = new ComputerModel();
+        
+        _view = computerView;
+        _view.Initialize(_model);
+        
         _uiManager = uiManager;
 
         SubscribeOnViewEvents();
     }
+
+    #region ViewEvents
 
     private void SubscribeOnViewEvents()
     {
@@ -39,5 +43,7 @@ public class ComputerViewModel : IViewModel
 
         _uiManager.Show<PCActionPopup>();
     }
+
+    #endregion
 }
 }

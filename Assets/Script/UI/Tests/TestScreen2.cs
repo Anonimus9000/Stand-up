@@ -10,11 +10,7 @@ public class TestScreen2 : UIViewFullscreen
     [SerializeField] private Button _openPopup;
     [SerializeField] private Button _closeButton;
 
-    public override IViewModel ViewModel { get; }
-    public override void Initialize()
-    {
-        
-    }
+    public override IModel Model { get; protected set; }
 
     private void Start()
     {

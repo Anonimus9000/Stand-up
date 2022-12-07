@@ -8,10 +8,11 @@ namespace Script.InteractableObject.Base
 public abstract class InteractableBase : MonoBehaviour
 {
     protected IObserver Observer { get; private set; }
-
-    public void InitializeObserver(IObserver observer)
+    protected Canvas Canvas { get; private set; }
+    public void InitializeDependency(IObserver observer, Canvas canvas)
     {
         Observer = observer;
+        Canvas = canvas;
     }
 
     #region Abstract

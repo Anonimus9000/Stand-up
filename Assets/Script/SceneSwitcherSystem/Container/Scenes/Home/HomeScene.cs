@@ -10,7 +10,7 @@ public class HomeScene : IGameScene
 {
     public event Action<SceneType> SceneOpened;
     public event Action<SceneType> SceneClosed;
-    
+
     private readonly HomeInitializer _homeInitializer;
     private readonly IActivator _homeActivator;
 
@@ -27,7 +27,6 @@ public class HomeScene : IGameScene
 
     public void Open()
     {
-        ShowHome();
     }
 
     public void Close()
@@ -37,12 +36,16 @@ public class HomeScene : IGameScene
 
     public void OnOpened()
     {
+        ShowHome();
+
         SceneOpened?.Invoke(SceneType.Home);
     }
 
     public void OnClosed()
     {
-       SceneClosed?.Invoke(SceneType.Home);
+        _homeActivator.Deactivate();
+
+        SceneClosed?.Invoke(SceneType.Home);
     }
 
     private void ShowHome()
@@ -52,7 +55,6 @@ public class HomeScene : IGameScene
 
     private void HideHome()
     {
-        _homeActivator.Deactivate();
     }
 }
 }

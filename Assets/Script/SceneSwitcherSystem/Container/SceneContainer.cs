@@ -16,7 +16,7 @@ public class SceneContainer : ISceneContainer
     private List<IGameScene> _scenes;
     private IUIManager _uiManager;
 
-    public SceneContainer(IUIManager uiManager, IInitializer homeInitializer, IActivator homeLocationActivator)
+    public SceneContainer(IInitializer homeInitializer, IActivator homeLocationActivator)
     {
         InitializeScenes(homeLocationActivator, homeInitializer);
     }

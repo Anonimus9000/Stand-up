@@ -4,6 +4,7 @@ using Script.Initializer.MonoDependencyContainers;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
+using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.FullscreenDialogs;
 using Script.UI.Manager;
 using Script.UI.UIInstantiater;
@@ -29,7 +30,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
 
     [SerializeField]
     private MonoDependencyProvider _monoDependencyProvider;
-    
+
     [field: SerializeField]
     public Canvas MainCanvas { get; private set; }
 
@@ -37,8 +38,6 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
     {
         var logger = _monoDependencyProvider.GetDependency<ILogger>();
         var uiManager = InitializeUIManager(logger);
-
-        OpenApplicationEnterDotWindow(uiManager);
 
         return uiManager;
     }
@@ -64,11 +63,6 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         unityUIWindowsLoader.LoadDialogs(_pathToDialogs);
 
         return unityUIWindowsLoader.UIWindows;
-    }
-
-    private void OpenApplicationEnterDotWindow(IUIManager uiManager)
-    {
-        var uiWindow = uiManager.Show<StartFullScreen>();
     }
 }
 }

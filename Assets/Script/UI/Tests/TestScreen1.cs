@@ -9,11 +9,7 @@ public class TestScreen1 : UIViewFullscreen
 {
     [SerializeField] private Button _openSecondScreen;
 
-    public override IViewModel ViewModel { get; }
-    public override void Initialize()
-    {
-        throw new System.NotImplementedException();
-    }
+    public override IModel Model { get; protected set; }
 
     private void Start()
     {

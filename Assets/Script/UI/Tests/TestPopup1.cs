@@ -9,11 +9,8 @@ public class TestPopup1 : UIViewPopupWindow
 {
     [SerializeField] private Button _openPopup;
     [SerializeField] private Button _closePopup;
-    
-    public override IViewModel ViewModel { get; }
-    public override void Initialize()
-    {
-    }
+
+    public override IModel Model { get; protected set; }
 
     private void Start()
     {

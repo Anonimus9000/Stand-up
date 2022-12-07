@@ -14,45 +14,36 @@ public class SceneSwitcherDependenciesInitializer : IDependenciesInitializer
 {
     private ISceneSwitcher _sceneSwitcher;
     private ISceneContainer _sceneContainer;
-    private readonly IUIManager _uiManager;
     private readonly GameObject _homeGameObject;
     private readonly IInitializer _homeInitializer;
     private readonly ILogger _logger;
 
-    public SceneSwitcherDependenciesInitializer(IUIManager uiManager, ISceneContainer sceneContainer,
+    public SceneSwitcherDependenciesInitializer(ISceneContainer sceneContainer,
         IInitializer homeInitializer, GameObject homeGameObject, ILogger logger)
     {
         _logger = logger;
         _homeGameObject = homeGameObject;
         _homeInitializer = homeInitializer;
-        _uiManager = uiManager;
         _sceneContainer = sceneContainer;
     }
 
     public IInitializable Initialize()
     {
-        _sceneContainer = InitializeSceneContainer(_uiManager, _homeInitializer, _homeGameObject);
+        _sceneContainer = InitializeSceneContainer(_homeInitializer, _homeGameObject);
 
         _sceneSwitcher = new SceneSwitcher(_sceneContainer, _logger);
-
-        OpenApplicationDotScene(_sceneSwitcher);
 
         return _sceneSwitcher as IInitializable;
     }
 
-    private static ISceneContainer InitializeSceneContainer(IUIManager uiManager, IInitializer homeInitializer,
+    private static ISceneContainer InitializeSceneContainer(IInitializer homeInitializer,
         GameObject homeGameObject)
     {
         IActivator activator = new HomeLocationActivator(homeGameObject);
 
-        var sceneContainer = new SceneContainer(uiManager, homeInitializer, activator);
+        var sceneContainer = new SceneContainer(homeInitializer, activator);
 
         return sceneContainer;
-    }
-
-    private void OpenApplicationDotScene(ISceneSwitcher sceneSwitcher)
-    {
-        sceneSwitcher.SwitchTo<MainMenuScene>();
     }
 }
 }

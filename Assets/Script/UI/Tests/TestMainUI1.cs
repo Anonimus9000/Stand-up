@@ -5,11 +5,6 @@ namespace Script.UI.Tests
 {
 public class TestMainUI1 : UIViewMain
 {
-    public override IViewModel ViewModel { get; }
-    
-    public override void Initialize()
-    {
-        
-    }
+    public override IModel Model { get; protected set; }
 }
 }

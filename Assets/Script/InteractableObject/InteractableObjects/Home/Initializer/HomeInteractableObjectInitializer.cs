@@ -6,7 +6,6 @@ using Script.Initializer.Base;
 using Script.InputChecker.Base;
 using Script.InputChecker.MouseKeyboard;
 using Script.InteractableObject.Base;
-using Script.InteractableObject.InteractableObjects.Container.Base;
 using Script.InteractableObject.InteractableObjects.Container.Containers;
 using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Bed;
 using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer;
@@ -28,9 +27,11 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
     private readonly List<IViewModel> _viewModels = new();
     private IDataService _dataService;
     private IUIManager _uiManager;
+    private Canvas _canvas;
 
-    public void InitializeDependencies(IDataService dataService, IUIManager uiManager)
+    public void InitializeDependencies(IDataService dataService, IUIManager uiManager, Canvas mainCanvas)
     {
+        _canvas = mainCanvas;
         _dataService = dataService;
         _uiManager = uiManager;
     }
@@ -40,11 +41,11 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         _observer = new DataObserver();
 
         InitializeInputControls();
-        
+
         InitializeInteractableObjects();
 
-        var interactableViewModelsContainer = new HomeInteractableViewModelsContainer(_viewModels.ToArray());
-        
+        var interactableViewModelsContainer = new HomeInteractableObjectsManager(_viewModels.ToArray());
+
         return interactableViewModelsContainer;
     }
 
@@ -54,8 +55,8 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         {
             var interactableClickChecker = GetInteractableClickChecker(interactableObject.ClickTrackCollider);
             interactableObject.InitializeClickInput(interactableClickChecker);
-            
-            interactableObject.InitializeObserver(_observer);
+
+            interactableObject.InitializeDependency(_observer, _canvas);
 
             if (interactableObject is IView interactableView)
             {
@@ -86,7 +87,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         switch (view)
         {
             case ComputerView:
-                return new ComputerViewModel(view, dataService, uiManager); 
+                return new ComputerViewModel(view, dataService, uiManager);
             case BedView:
                 break;
         }

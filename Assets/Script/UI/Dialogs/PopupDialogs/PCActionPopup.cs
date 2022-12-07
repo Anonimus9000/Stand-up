@@ -5,10 +5,6 @@ namespace Script.UI.Dialogs.PopupDialogs
 {
 public class PCActionPopup: UIViewPopupWindow
 {
-    public override IViewModel ViewModel { get; }
-    public override void Initialize()
-    {
-        
-    }
+    public override IModel Model { get; protected set; }
 }
 }

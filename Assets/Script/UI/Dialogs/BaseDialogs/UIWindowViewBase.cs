@@ -7,18 +7,16 @@ namespace Script.UI.Dialogs.BaseDialogs
 {
 public abstract class UIWindowViewBase : MonoBehaviour, IUIWindow, IView
 {
-    public abstract IViewModel ViewModel { get; }
+    public abstract IModel Model { get; protected set; }
     
     protected IUIManager uiManager;
 
-    public abstract void Initialize();
-
-    public void Initialize(IViewModel viewModel)
+    public virtual void Initialize(IModel model)
     {
-        
+        Model = model;
     }
 
-    public virtual void InitializeWindow(IUIManager uiManager)
+    public virtual void InitializeDependencies(IUIManager uiManager)
     {
         this.uiManager = uiManager;
     }

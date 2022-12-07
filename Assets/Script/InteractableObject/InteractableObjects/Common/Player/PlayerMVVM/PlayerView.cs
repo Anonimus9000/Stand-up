@@ -14,13 +14,13 @@ public class PlayerView : InteractableBase, IView
     public override event Action ObjectClicked;
     public override Collider ClickTrackCollider => _clickTrackCollider;
 
-    private PlayerViewModel _viewModel;
+    private PlayerModel _model;
     
     private IObjectClickChecker _mouseClickChecker;
 
-    public void Initialize(IViewModel viewModel)
-    { 
-        _viewModel = new PlayerViewModel(this, Observer);
+    public void Initialize(IModel model)
+    {
+        _model = model as PlayerModel;
     }
 
     public override void InitializeClickInput(IObjectClickChecker objectClickChecker)
@@ -33,7 +33,7 @@ public class PlayerView : InteractableBase, IView
 
     protected override void OnClick()
     {
-        _viewModel.OnPlayerViewClicked();
+        ObjectClicked?.Invoke();
     }
 }
 }

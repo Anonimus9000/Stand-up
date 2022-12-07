@@ -16,6 +16,9 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     [SerializeField]
     private MonoDependencyProvider _monoDependencyContainers;
 
+    [SerializeField]
+    private Canvas _mainCanvas;
+
     private IServiceProvider _serviceProvider;
 
     public void Initialize()
@@ -39,7 +42,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     private void InitializeHomeInteractableObjects(IUIManager uiManager)
     {
         var dataService = _serviceProvider.GetService<IDataService>();
-        _homeInteractableObjectInitializer.InitializeDependencies(dataService, uiManager);
+        _homeInteractableObjectInitializer.InitializeDependencies(dataService, uiManager, _mainCanvas);
         var interactableViewModelsContainer = _homeInteractableObjectInitializer.Initialize();
     }
 }

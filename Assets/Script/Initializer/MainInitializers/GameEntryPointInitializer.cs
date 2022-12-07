@@ -5,8 +5,8 @@ using Script.Libraries.Logger.Loggers;
 using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.SceneSwitcherSystem.Container;
-using Script.SceneSwitcherSystem.Container.Scenes;
 using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.Dialogs.FullscreenDialogs;
 using UnityEngine;
 using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
 
@@ -47,12 +47,12 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var uiManager = InitializeUISystem();
         _monoDependencyProvider.AddDependency(uiManager);
 
-        var sceneSwitcher =
-            InitializeSceneSwitcher(uiManager, _sceneContainer, _homeInitializer, _homeGameObject, _logger);
-        sceneSwitcher.SwitchTo<ApplicationLoadingScene>();
-
+        var sceneSwitcher = InitializeSceneSwitcher(_sceneContainer, _homeInitializer, _homeGameObject, _logger);
+        
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         _monoDependencyProvider.AddDependency(initializeDataServiceProvider);
+        
+        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher);
     }
 
     private IUIManager InitializeUISystem()
@@ -60,11 +60,11 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return (IUIManager)_uiManagerInitializer.Initialize();
     }
 
-    private static ISceneSwitcher InitializeSceneSwitcher(IUIManager uiManager, ISceneContainer sceneContainer,
+    private static ISceneSwitcher InitializeSceneSwitcher(ISceneContainer sceneContainer,
         IInitializer homeInitializer, GameObject homeGameObject, ILogger logger)
     {
         var sceneSwitcher = new SceneSwitcherDependenciesInitializer(
-            uiManager, sceneContainer, homeInitializer, homeGameObject, logger);
+            sceneContainer, homeInitializer, homeGameObject, logger);
 
         return (ISceneSwitcher)sceneSwitcher.Initialize();
     }
@@ -81,6 +81,12 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var logger = new UnityMainLogger();
 
         return logger;
+    }
+    
+    private void OpenApplicationEnterDotWindow(IUIManager uiManager, ISceneSwitcher sceneSwitcher)
+    {
+        var uiWindow = uiManager.Show<StartFullScreen>();
+        uiWindow.InitializeDependencies(sceneSwitcher);
     }
 }
 }

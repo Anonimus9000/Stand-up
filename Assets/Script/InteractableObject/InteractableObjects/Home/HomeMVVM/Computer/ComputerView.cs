@@ -3,8 +3,8 @@ using Script.InputChecker.Base;
 using Script.InteractableObject.Base;
 using Script.Libraries.MVVM;
 using Script.UI.UIFollower.Base;
-using Script.UI.UIFollower.SpaceObjectFollower;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer
 {
@@ -17,64 +17,70 @@ public class ComputerView : InteractableBase, IView
     private Transform _progressBarPosition;
 
     [SerializeField]
-    private RectTransform _progressBar;
+    private Image _progressBarImage;
 
     public override Collider ClickTrackCollider => _clickTrackCollider;
     public override event Action ObjectClicked;
 
-    private ComputerViewModel _viewModel;
+    private RectTransform _progressBar;
+    private ComputerModel _model;
     private IObjectClickChecker _mouseClickChecker;
     private IUiFollower _uiFollower;
 
-    private void OnEnable()
+    public void Initialize(IModel model)
     {
-        ActivateInput();
-    }
-
-    private void OnDisable()
-    {
-        DeactivateInput();
-    }
-
-    public void Initialize(IViewModel viewModel)
-    {
-        _viewModel = viewModel as ComputerViewModel;
+        _model = model as ComputerModel;
 
         var camera = Camera.main;
+
+        SubscribeOnModelEvents();
         
-        //_uiFollower = new UiSpaceObjectFollower();
+        //Instantiate(_progressBarImage, Canvas.transform);
+
+        //_uiFollower = new UiSpaceObjectFollower(_progressBarPosition, );
     }
 
     public override void InitializeClickInput(IObjectClickChecker objectClickChecker)
     {
         _mouseClickChecker = objectClickChecker;
-        //TODO: replace in activate outside
-        ActivateInput();
-    }
-
-    private void ActivateInput()
-    {
-        //TODO: remove if
-        if (_mouseClickChecker != null)
-        {
-            _mouseClickChecker.Activate();
-            _mouseClickChecker.ObjectClicked += OnClick;
-        }
-    }
-
-    private void DeactivateInput()
-    {
-        //TODO: remove if
-        if (_mouseClickChecker != null)
-        {
-            _mouseClickChecker.Deactivate();
-            _mouseClickChecker.ObjectClicked -= OnClick;
-        }
     }
 
     protected override void OnClick()
     {
         ObjectClicked?.Invoke();
+    }
+
+    #region ModelEvents
+
+    private void SubscribeOnModelEvents()
+    {
+        _model.InputActiveChanged += OnInputActiveChanged;
+    }
+
+    private void OnInputActiveChanged(bool isActive)
+    {
+        if (isActive)
+        {
+            ActivateInput();
+        }
+        else
+        {
+            DeactivateInput();
+        }
+    }
+
+    #endregion
+
+    private void ActivateInput()
+    {
+        _mouseClickChecker.Activate();
+        _mouseClickChecker.ObjectClicked += OnClick;
+    }
+
+    private void DeactivateInput()
+    {
+        _mouseClickChecker.Deactivate();
+        _mouseClickChecker.ObjectClicked -= OnClick;
     }
 }
 }

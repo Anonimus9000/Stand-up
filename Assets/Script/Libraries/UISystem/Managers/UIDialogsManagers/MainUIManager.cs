@@ -33,7 +33,7 @@ public class MainUIManager: IDialogsManager
         _currentMainUI = mainUI;
         
         mainUI!.OnShown();
-        mainUI!.InitializeWindow(_uiManager);
+        mainUI!.InitializeDependencies(_uiManager);
 
         return (T) mainUI;
     }

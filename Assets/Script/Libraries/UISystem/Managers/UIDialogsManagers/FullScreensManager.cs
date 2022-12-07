@@ -34,7 +34,7 @@ public class FullScreensManager : IDialogsManager
         _current = screen;
 
         screen!.OnShown();
-        screen!.InitializeWindow(_uiManager);
+        screen!.InitializeDependencies(_uiManager);
         _queueHiddenScreens.Add(screen);
 
         return (T) screen;
