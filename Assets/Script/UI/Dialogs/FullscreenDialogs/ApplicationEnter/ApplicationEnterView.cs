@@ -42,7 +42,6 @@ public class ApplicationEnterView : UIViewFullscreen
     private void CloseButton()
     {
         OnQuitPressed?.Invoke();
-        Application.Quit();
     }
 
     private void StartButton()

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Script.Initializer.Base;
-using Script.Initializer.MainInitializers;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
-using Script.SceneSwitcherSystem.Activators;
 using Script.SceneSwitcherSystem.Activators.Base;
 using Script.SceneSwitcherSystem.Container.Scenes;
 using Script.SceneSwitcherSystem.Container.Scenes.Home;
