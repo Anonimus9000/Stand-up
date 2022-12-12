@@ -8,6 +8,7 @@ using Script.SceneSwitcherSystem.Container;
 using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.FullscreenDialogs;
 using Script.UI.Dialogs.FullscreenDialogs.ApplicationEnter;
+using Script.UI.Dialogs.FullscreenDialogs.StartGameMenu;
 using UnityEngine;
 using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
 
@@ -57,9 +58,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         OpenApplicationEnterDotWindow(uiManager, sceneSwitcher);
     }
 
-    private IUIManager InitializeUISystem()
+    private IUISystem InitializeUISystem()
     {
-        return (IUIManager)_uiManagerInitializer.Initialize();
+        return (IUISystem)_uiManagerInitializer.Initialize();
     }
 
     private static ISceneSwitcher InitializeSceneSwitcher(ISceneContainer sceneContainer,
@@ -85,9 +86,10 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return logger;
     }
     
-    private void OpenApplicationEnterDotWindow(IUIManager uiManager, ISceneSwitcher sceneSwitcher)
+    private void OpenApplicationEnterDotWindow(IUISystem iuiSystem, ISceneSwitcher sceneSwitcher)
     {
-        uiManager.Show<ApplicationEnterView>();
+        var applicationEnterViewModel = new StartGameMenuViewModel(iuiSystem, sceneSwitcher);
+        iuiSystem.Show(applicationEnterViewModel);
     }
 }
 }

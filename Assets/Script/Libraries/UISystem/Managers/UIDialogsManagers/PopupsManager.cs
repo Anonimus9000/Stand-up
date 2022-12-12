@@ -2,84 +2,93 @@
 using System.Collections.Generic;
 using System.Linq;
 using Script.Libraries.UISystem.Managers.Instantiater;
+using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
-using UnityEngine.Android;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
 public class PopupsManager : IDialogsManager
 {
-    private List<IUIWindow> _popupPrefabs;
-    private IInstantiater _instantiater;
-    private IPopup _currentPopup;
+    private readonly List<IUIView> _popupPrefabs;
+    private readonly IInstantiater _instantiater;
+    private UIViewModel _currentViewModel;
+    private readonly List<UIViewModel> _queueHiddenPopups = new();
+    private readonly IUISystem _iuiSystem;
 
-    private readonly List<IPopup> _queueHiddenPopups = new List<IPopup>();
-    private IUIManager _uiManager;
-
-    public void Initialize(IInstantiater instantiater, List<IUIWindow> windows, IUIManager uiManager)
+    public PopupsManager(IInstantiater instantiater, List<IUIView> mainUIPrefabs, IUISystem iuiSystem)
     {
-        _uiManager = uiManager;
+        _iuiSystem = iuiSystem;
 
         _instantiater = instantiater;
 
-        _popupPrefabs = windows;
+        _popupPrefabs = mainUIPrefabs;
     }
 
-    public T Show<T>() where T : IUIWindow
+    public T Show<T>(UIViewModel viewModel) where T : IUIView
     {
         TryHideCurrentPopup();
 
-        var popupToShow = GetPrefab<T>();
+        var popupDialog = Create<T>();
 
-        var popupDialog = _instantiater.Instantiate(popupToShow) as IPopup;
+        _currentViewModel = viewModel;
 
-        _currentPopup = popupDialog;
-
+        popupDialog!.SetUiManager(_iuiSystem);
         popupDialog!.OnShown();
-        popupDialog!.SetUiManager(_uiManager);
-        _queueHiddenPopups.Add(popupDialog);
 
-        return (T) popupDialog;
+        _queueHiddenPopups.Add(viewModel);
+
+        return popupDialog;
     }
 
     private bool TryHideCurrentPopup()
     {
-        if (_currentPopup is null)
+        if (_currentViewModel is null)
         {
             return false;
         }
 
-        _instantiater.SetActive(_currentPopup, false);
+        Deactivate(_currentViewModel);
 
         return true;
     }
 
-    public void Close<T>() where T : IUIWindow
+    public bool TryCloseCurrent()
     {
-        if (_queueHiddenPopups.Count == 0)
+        if (_currentViewModel == null)
         {
-           return;
+            return false;
         }
-        var popupDialog = _queueHiddenPopups.Last();
-        _queueHiddenPopups.Remove(popupDialog);
-        _instantiater.Destroy(popupDialog);
 
-        if (_queueHiddenPopups.Count == 0)
-        {
-            _currentPopup = null;
-        }
+        _currentViewModel = Destroy(_currentViewModel);
+
+        _currentViewModel = null;
 
         TryShowLastHiddenPopup();
+
+        return true;
+    }
+
+    public void CloseAll()
+    {
+        foreach (var queueHiddenPopup in _queueHiddenPopups)
+        {
+            Destroy(queueHiddenPopup);
+        }
+
+        _queueHiddenPopups.Clear();
+
+        _currentViewModel = Destroy(_currentViewModel);
     }
 
     private bool TryShowLastHiddenPopup()
     {
-       //TODO: govno 
         if (_queueHiddenPopups.Count > 0)
         {
-            var popupDialog = _queueHiddenPopups.Last();
-            _instantiater.SetActive(popupDialog, true);
-            _currentPopup = popupDialog;
+            var viewModel = _queueHiddenPopups.Last();
+            _queueHiddenPopups.Remove(viewModel);
+
+            _currentViewModel = viewModel;
+            Activate(_currentViewModel);
 
             return true;
         }
@@ -87,13 +96,50 @@ public class PopupsManager : IDialogsManager
         return false;
     }
 
-    private IPopup GetPrefab<T>() where T : IUIWindow
+    private T Create<T>() where T : IUIView
+    {
+        var uiView = GetPrefab<T>();
+        var instantiate = _instantiater.Instantiate(uiView);
+
+        return (T)instantiate;
+    }
+
+    private void Activate(UIViewModel viewModel)
+    {
+        var instantiatable = viewModel.GetInstantiatable();
+        _instantiater.SetActive(instantiatable, true);
+    }
+
+    private void Deactivate(UIViewModel viewModel)
+    {
+        var popupDialog = viewModel.GetInstantiatable();
+        _instantiater.SetActive(popupDialog, false);
+    }
+
+    private UIViewModel Destroy(UIViewModel viewModel)
+    {
+        if (viewModel == null)
+        {
+            return null;
+        }
+
+        _queueHiddenPopups.Remove(viewModel);
+
+        var instantiatable = viewModel.GetInstantiatable();
+        _instantiater.Destroy(instantiatable);
+
+        viewModel = null;
+
+        return null;
+    }
+
+    private IUIView GetPrefab<T>() where T : IUIView
     {
         foreach (var popupPrefab in _popupPrefabs)
         {
-            if (popupPrefab is T)
+            if (popupPrefab is T view)
             {
-                return popupPrefab as IPopup;
+                return view;
             }
         }
 

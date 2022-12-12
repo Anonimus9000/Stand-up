@@ -2,6 +2,6 @@
 {
 public interface IView
 {
-    void Initialize(IModel model);
+    void InitializeModel(IModel model);
 }
 }

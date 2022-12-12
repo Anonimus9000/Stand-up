@@ -9,7 +9,7 @@ namespace Script.UI.UiWindowsLoader
 {
 public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
 {
-    public List<IUIWindow> UIWindows
+    public List<IUIView> UIWindows
     {
         get
         {
@@ -22,13 +22,13 @@ public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
         }
     }
 
-    private List<IUIWindow> _windows;
+    private List<IUIView> _windows;
 
     public void LoadDialogs(string pathToLoad)
     {
-        var loadedWindows = Resources.LoadAll<UIWindowViewBase>(pathToLoad);
+        var loadedWindows = Resources.LoadAll<MonoUiView>(pathToLoad);
 
-        _windows = new List<IUIWindow>(loadedWindows);
+        _windows = new List<IUIView>(loadedWindows);
 
         if (_windows.Count == 0)
         {

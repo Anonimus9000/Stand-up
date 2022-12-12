@@ -26,14 +26,14 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
     private DataObserver _observer;
     private readonly List<IViewModel> _viewModels = new();
     private IDataService _dataService;
-    private IUIManager _uiManager;
+    private IUISystem _iuiSystem;
     private Canvas _canvas;
 
-    public void InitializeDependencies(IDataService dataService, IUIManager uiManager, Canvas mainCanvas)
+    public void InitializeDependencies(IDataService dataService, IUISystem iuiSystem, Canvas mainCanvas)
     {
         _canvas = mainCanvas;
         _dataService = dataService;
-        _uiManager = uiManager;
+        _iuiSystem = iuiSystem;
     }
 
     public IInitializable Initialize()
@@ -60,7 +60,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
 
             if (interactableObject is IView interactableView)
             {
-                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService, _uiManager);
+                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService, _iuiSystem);
                 _viewModels.Add(viewModel);
             }
             else
@@ -82,12 +82,12 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         _mainCamera = Camera.main;
     }
 
-    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUIManager uiManager)
+    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUISystem iuiSystem)
     {
         switch (view)
         {
             case ComputerView:
-                return new ComputerViewModel(view, dataService, uiManager);
+                return new ComputerViewModel(view, dataService, iuiSystem);
             case BedView:
                 break;
         }

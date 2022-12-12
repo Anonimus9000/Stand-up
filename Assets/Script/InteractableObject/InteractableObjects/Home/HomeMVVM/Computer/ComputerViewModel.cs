@@ -2,7 +2,7 @@
 using Script.DataServices.Base;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
-using Script.UI.Dialogs.PopupDialogs;
+using Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup;
 using UnityEngine;
 
 namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer
@@ -11,9 +11,9 @@ public class ComputerViewModel : IViewModel
 {
     private readonly ComputerModel _model;
     private readonly ComputerView _view;
-    private readonly IUIManager _uiManager;
+    private readonly IUISystem _iuiSystem;
 
-    public ComputerViewModel(IView view, IDataService playerCharacteristicsService, IUIManager uiManager)
+    public ComputerViewModel(IView view, IDataService playerCharacteristicsService, IUISystem iuiSystem)
     {
         if (view is not ComputerView computerView)
         {
@@ -23,11 +23,14 @@ public class ComputerViewModel : IViewModel
         _model = new ComputerModel();
         
         _view = computerView;
-        _view.Initialize(_model);
+        _view.InitializeModel(_model);
         
-        _uiManager = uiManager;
+        _iuiSystem = iuiSystem;
 
         SubscribeOnViewEvents();
+        SubscribeOnModelEvents();
+
+        _model.InputActive = true;
     }
 
     #region ViewEvents
@@ -37,11 +40,22 @@ public class ComputerViewModel : IViewModel
         _view.ObjectClicked += OnViewObjectClicked;
     }
 
+    private void SubscribeOnModelEvents()
+    {
+        _model.InputActiveChanged += OnInputActiveChanged;
+    }
+
+    private void OnInputActiveChanged(bool isActive)
+    {
+        _view.ChangeClickInputActive(isActive);
+    }
+
     private void OnViewObjectClicked()
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        _uiManager.Show<PCActionPopup>();
+        var viewModel = new ComputerActionsViewModel();
+        _iuiSystem.Show(viewModel);
     }
 
     #endregion

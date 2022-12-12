@@ -10,25 +10,28 @@ public class PlayerView : InteractableBase, IView
 {
     [SerializeField]
     private Collider _clickTrackCollider;
-    
+
     public override event Action ObjectClicked;
+
     public override Collider ClickTrackCollider => _clickTrackCollider;
 
     private PlayerModel _model;
-    
+
     private IObjectClickChecker _mouseClickChecker;
 
-    public void Initialize(IModel model)
+    public void InitializeModel(IModel model)
     {
         _model = model as PlayerModel;
     }
 
-    public override void InitializeClickInput(IObjectClickChecker objectClickChecker)
+    protected override void ActivateInput()
     {
-        _mouseClickChecker = objectClickChecker;
-        
-        _mouseClickChecker.Activate();
-        _mouseClickChecker.ObjectClicked += OnClick;
+        throw new NotImplementedException();
+    }
+
+    protected override void DeactivateInput()
+    {
+        throw new NotImplementedException();
     }
 
     protected override void OnClick()

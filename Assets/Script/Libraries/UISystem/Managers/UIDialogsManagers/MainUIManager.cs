@@ -1,70 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
 using Script.Libraries.UISystem.Managers.Instantiater;
+using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
-public class MainUIManager: IDialogsManager
+public class MainUIManager : IDialogsManager
 {
-    private IUIManager _uiManager;
-    private IInstantiater _instantiater;
-    private List<IUIWindow> _mainUIPrefabs;
-    private IMainUI _currentMainUI;
+    private readonly IUISystem _iuiSystem;
+    private readonly IInstantiater _instantiater;
+    private readonly List<IUIView> _mainUIPrefabs;
+    private UIViewModel _current;
 
-    public void Initialize(IInstantiater instantiater, List<IUIWindow> mainUI, IUIManager uiManager)
+    public MainUIManager(IInstantiater instantiater, List<IUIView> mainUIPrefabs, IUISystem iuiSystem)
     {
-        _uiManager = uiManager;
+        _iuiSystem = iuiSystem;
         _instantiater = instantiater;
-
-        _mainUIPrefabs = mainUI;
+        _mainUIPrefabs = mainUIPrefabs;
     }
 
-    public T Show<T>() where T : IUIWindow
+    public T Show<T>(UIViewModel viewModel) where T : IUIView
     {
-        _uiManager.CloseWindowsExceptMain();
-        
-        TryCloseCurrentMainUI();
+        _iuiSystem.CloseWindowsExceptMain();
 
+        TryCloseCurrent();
+
+        var mainUI = Create<T>();
+
+        _current = viewModel;
+
+        mainUI!.OnShown();
+        mainUI!.SetUiManager(_iuiSystem);
+
+        return mainUI;
+    }
+
+    public void CloseAll()
+    {
+        TryCloseCurrent();
+    }
+
+    public bool TryCloseCurrent()
+    {
+        if (_current == null)
+        {
+            return false;
+        }
+
+        _current = Destroy(_current);
+
+        return true;
+    }
+
+    private UIViewModel Destroy(UIViewModel viewModel)
+    {
+        if (viewModel == null)
+        {
+            return null;
+        }
+
+        var instantiatable = viewModel.GetInstantiatable();
+        _instantiater.Destroy(instantiatable);
+
+        return null;
+    }
+
+    private T Create<T>() where T : IUIView
+    {
         var mainUIToShow = GetPrefab<T>();
 
-        var mainUI = _instantiater.Instantiate(mainUIToShow) as IMainUI;
-        
-        _currentMainUI = mainUI;
-        
-        mainUI!.OnShown();
-        mainUI!.SetUiManager(_uiManager);
+        var uiView = _instantiater.Instantiate(mainUIToShow) as IUIView;
 
-        return (T) mainUI;
+        return (T)uiView;
     }
 
-    private IInstantiatable GetPrefab<T>() where T : IUIWindow
+    private IInstantiatable GetPrefab<T>() where T : IUIView
     {
         foreach (var dialogPrefab in _mainUIPrefabs)
         {
-            if (dialogPrefab is T)
+            if (dialogPrefab is T view)
             {
-                return dialogPrefab as IMainUI;
+                return view;
             }
         }
 
         throw new Exception($"Can't find prefab {typeof(T)}");
-    }
-
-    private bool TryCloseCurrentMainUI()
-    {
-        if (_currentMainUI is null)
-        {
-            return false;
-        }
-        _instantiater.Destroy(_currentMainUI);
-        
-        return true;
-    }
-
-    public void Close<T>() where T : IUIWindow
-    {
-        _instantiater.Destroy(_currentMainUI);
     }
 }
 }

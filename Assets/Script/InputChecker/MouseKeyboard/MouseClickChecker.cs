@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Script.InputChecker.Base;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,8 +15,9 @@ public class MouseClickChecker : IObjectClickChecker
     private readonly Camera _mainCamera;
     private readonly InputAction _mouseClickInputAction;
     private readonly Collider _trackCollider;
-    
-    public MouseClickChecker(Camera mainCamera, InputAction mouseClickInputAction, Collider trackCollider, bool isU = true)
+
+    public MouseClickChecker(Camera mainCamera, InputAction mouseClickInputAction, Collider trackCollider,
+        bool isU = true)
     {
         IsBlockedByUI = isU;
         _trackCollider = trackCollider;
@@ -44,7 +46,7 @@ public class MouseClickChecker : IObjectClickChecker
         {
             return;
         }
-        
+
         var screenPointToRay = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         if (Physics.Raycast(ray: screenPointToRay, hitInfo: out var hit) && hit.collider)
@@ -65,16 +67,24 @@ public class MouseClickChecker : IObjectClickChecker
 
     private bool IsUIBlock()
     {
-        if (IsBlockedByUI)
-        {
-            var isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
-            if (isPointerOverGameObject)
-            {
-                return true;
-            }
-        }
+        if (!IsBlockedByUI) return false;
+        
+        var isPointerOverGameObject = IsPointerOverUIObject() || EventSystem.current.IsPointerOverGameObject();
+        
+        return isPointerOverGameObject;
+    }
 
-        return false;
+    private static bool IsPointerOverUIObject()
+    {
+        var eventDataCurrentPosition = new PointerEventData(EventSystem.current)
+        {
+            position = new Vector2(Input.mousePosition.x, Input.mousePosition.y)
+        };
+        
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        
+        return results.Count > 0;
     }
 }
 }

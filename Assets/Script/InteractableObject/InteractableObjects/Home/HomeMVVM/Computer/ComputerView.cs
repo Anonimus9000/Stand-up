@@ -1,5 +1,4 @@
 ﻿using System;
-using Script.InputChecker.Base;
 using Script.InteractableObject.Base;
 using Script.Libraries.MVVM;
 using Script.UI.UIFollower.Base;
@@ -23,26 +22,15 @@ public class ComputerView : InteractableBase, IView
     public override event Action ObjectClicked;
 
     private RectTransform _progressBar;
-    private ComputerModel _model;
-    private IObjectClickChecker _mouseClickChecker;
     private IUiFollower _uiFollower;
 
-    public void Initialize(IModel model)
+    public void InitializeModel(IModel model)
     {
-        _model = model as ComputerModel;
-
         var camera = Camera.main;
 
-        SubscribeOnModelEvents();
-        
         //Instantiate(_progressBarImage, Canvas.transform);
 
         //_uiFollower = new UiSpaceObjectFollower(_progressBarPosition, );
-    }
-
-    public override void InitializeClickInput(IObjectClickChecker objectClickChecker)
-    {
-        _mouseClickChecker = objectClickChecker;
     }
 
     protected override void OnClick()
@@ -50,14 +38,7 @@ public class ComputerView : InteractableBase, IView
         ObjectClicked?.Invoke();
     }
 
-    #region ModelEvents
-
-    private void SubscribeOnModelEvents()
-    {
-        _model.InputActiveChanged += OnInputActiveChanged;
-    }
-
-    private void OnInputActiveChanged(bool isActive)
+    public void ChangeClickInputActive(bool isActive)
     {
         if (isActive)
         {
@@ -69,18 +50,16 @@ public class ComputerView : InteractableBase, IView
         }
     }
 
-    #endregion
-
-    private void ActivateInput()
+    protected override void ActivateInput()
     {
-        _mouseClickChecker.Activate();
-        _mouseClickChecker.ObjectClicked += OnClick;
+        mouseClickChecker.Activate();
+        mouseClickChecker.ObjectClicked += OnClick;
     }
 
-    private void DeactivateInput()
+    protected override void DeactivateInput()
     {
-        _mouseClickChecker.Deactivate();
-        _mouseClickChecker.ObjectClicked -= OnClick;
+        mouseClickChecker.Deactivate();
+        mouseClickChecker.ObjectClicked -= OnClick;
     }
 }
 }

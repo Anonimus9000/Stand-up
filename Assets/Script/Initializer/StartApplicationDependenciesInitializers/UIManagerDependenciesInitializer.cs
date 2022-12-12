@@ -6,7 +6,7 @@ using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.FullscreenDialogs;
-using Script.UI.Manager;
+using Script.UI.System;
 using Script.UI.UIInstantiater;
 using Script.UI.UiWindowsLoader;
 using UnityEngine;
@@ -49,7 +49,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         _sceneSwitcher = sceneSwitcher;
     }
 
-    private UIManagerMVVM InitializeUIManager(ILogger logger)
+    private MonoUiSystem InitializeUIManager(ILogger logger)
     {
         var uiWindows = InitializeWindowsLoader();
 
@@ -57,7 +57,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
         IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
 
-        return new UIManagerMVVM(
+        return new MonoUiSystem(
             instantiaterMainUI,
             instantiaterFullScreens,
             instantiaterPopups,
@@ -65,7 +65,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
             logger);
     }
 
-    private List<IUIWindow> InitializeWindowsLoader()
+    private List<IUIView> InitializeWindowsLoader()
     {
         var loaderObject = new GameObject("WindowsLoader");
         loaderObject.transform.SetParent(transform);

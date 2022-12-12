@@ -1,5 +1,4 @@
 ﻿using System;
-using Script.SceneSwitcherSystem.Container;
 
 namespace Script.SceneSwitcherSystem.Switcher
 {

@@ -1,5 +1,4 @@
 ﻿using Script.Initializer;
-using UnityEngine;
 using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
 
 namespace Script.SceneSwitcherSystem.Switcher

@@ -5,7 +5,7 @@ namespace Script.Libraries.UISystem.Managers.UIWindowsLoader
 {
 public interface IWindowsLoader
 {
-    public List<IUIWindow> UIWindows { get; }
+    public List<IUIView> UIWindows { get; }
 
     void LoadDialogs(string pathToLoad);
 }

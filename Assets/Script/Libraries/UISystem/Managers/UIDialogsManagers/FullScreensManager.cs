@@ -1,43 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Script.Libraries.UISystem.Managers.Instantiater;
+using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
-using UnityEngine;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
 public class FullScreensManager : IDialogsManager
 {
-    private IFullScreen _current;
-    private List<IUIWindow> _fullScreenDialogPrefabs;
-    private IInstantiater _instantiater;
-    private readonly List<IFullScreen> _queueHiddenScreens = new List<IFullScreen>();
-    private IUIManager _uiManager;
+    private UIViewModel _current;
+    private readonly List<IUIView> _fullScreenDialogPrefabs;
+    private readonly IInstantiater _instantiater;
+    private readonly List<UIViewModel> _queueHiddenScreens = new();
+    private readonly IUISystem _iuiSystem;
 
-    public void Initialize(IInstantiater instantiater, List<IUIWindow> fullScreenDialogs, IUIManager uiManager)
+    public FullScreensManager(IInstantiater instantiater, List<IUIView> mainUIPrefabs, IUISystem iuiSystem)
     {
-        _uiManager = uiManager;
+        _iuiSystem = iuiSystem;
         _instantiater = instantiater;
-
-        _fullScreenDialogPrefabs = fullScreenDialogs;
+        _fullScreenDialogPrefabs = mainUIPrefabs;
     }
 
-    public T Show<T>() where T : IUIWindow
+    public T Show<T>(UIViewModel viewModel) where T : IUIView
     {
         TryHideCurrentScreen();
 
-        var screenToShow = GetPrefab<T>();
 
-        var screen = _instantiater.Instantiate(screenToShow) as IFullScreen;
-        screen!.SetUiManager(_uiManager);
-        
+        var screen = Create<T>();
+        screen!.SetUiManager(_iuiSystem);
         screen!.OnShown();
         
-        _current = screen;
-        _queueHiddenScreens.Add(screen);
+        _current = viewModel;
 
-        return (T) screen;
+        return screen;
+    }
+
+    public bool TryCloseCurrent()
+    {
+        if (_current == null)
+        {
+            return false;
+        }
+        
+        _queueHiddenScreens.Remove(_current);
+        
+        _current = Destroy(_current);
+
+        TryShowLastHiddenScreen();
+
+        return true;
+    }
+
+    private UIViewModel Destroy(UIViewModel viewModel)
+    {
+        if (viewModel == null)
+        {
+            return null;
+        }
+        
+        var instantiatable = viewModel.GetInstantiatable();
+        _instantiater.Destroy(instantiatable);
+
+        return null;
     }
 
     private bool TryHideCurrentScreen()
@@ -47,32 +71,35 @@ public class FullScreensManager : IDialogsManager
             return false;
         }
 
-        _instantiater.SetActive(_current, false);
+        Deactivate(_current);
+
+        _queueHiddenScreens.Add(_current);
 
         return true;
     }
 
-    public void Close<T>() where T : IUIWindow
+    public void CloseAll()
     {
-        if (_queueHiddenScreens.Count == 0)
+        foreach (var queueHiddenScreen in _queueHiddenScreens)
         {
-            return;
+            Destroy(queueHiddenScreen);
         }
-        var screen = _queueHiddenScreens.Last();
-        _queueHiddenScreens.Remove(screen);
-        _instantiater.Destroy(screen);
-        _current = null;
+        
+        _queueHiddenScreens.Clear();
 
-        TryShowLastHiddenScreen();
+        Destroy(_current);
     }
 
     private bool TryShowLastHiddenScreen()
     {
         if (_queueHiddenScreens.Count > 0)
         {
-            var screen = _queueHiddenScreens.Last();
-            _instantiater.SetActive(screen, true);
-            _current = screen;
+            var viewModel = _queueHiddenScreens[^1];
+
+            _queueHiddenScreens.Remove(viewModel);
+
+            _current = viewModel;
+            Activate(_current);
 
             return true;
         }
@@ -80,13 +107,34 @@ public class FullScreensManager : IDialogsManager
         return false;
     }
 
-    private IFullScreen GetPrefab<T>() where T : IUIWindow
+    private void Activate(UIViewModel viewModel)
+    {
+        var instantiatable = viewModel.GetInstantiatable();
+        _instantiater.SetActive(instantiatable, true);
+    }
+
+    private void Deactivate(UIViewModel viewModel)
+    {
+        var instantiatable = viewModel.GetInstantiatable();
+        _instantiater.SetActive(instantiatable, false);
+    }
+
+    private T Create<T>() where T : IUIView
+    {
+        var screenToShow = GetPrefab<T>();
+
+        var uiView = _instantiater.Instantiate(screenToShow) as IUIView;
+
+        return (T)uiView;
+    }
+
+    private T GetPrefab<T>() where T : IUIView
     {
         foreach (var dialogPrefab in _fullScreenDialogPrefabs)
         {
-            if (dialogPrefab is T)
+            if (dialogPrefab is T view)
             {
-                return dialogPrefab as IFullScreen;
+                return view;
             }
         }
 
