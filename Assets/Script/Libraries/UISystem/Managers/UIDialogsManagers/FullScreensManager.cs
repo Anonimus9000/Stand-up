@@ -23,6 +23,7 @@ public class FullScreensManager : IDialogsManager
 
     public T Show<T>(UIViewModel viewModel) where T : IUIView
     {
+        _iuiSystem.CloseAllPopups();
         TryHideCurrentScreen();
 
         var screen = Create<T>();

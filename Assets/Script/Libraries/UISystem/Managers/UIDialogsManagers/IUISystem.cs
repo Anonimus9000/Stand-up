@@ -7,5 +7,6 @@ public interface IUISystem
     UIViewModel Show(UIViewModel viewModel);
     void Close(UIViewModel viewModel);
     void CloseWindowsExceptMain();
+    void CloseAllPopups();
 }
 }

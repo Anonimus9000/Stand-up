@@ -43,6 +43,11 @@ public abstract class UISystem : IUISystem
         _fullScreensManager.CloseAll();
     }
 
+    public void CloseAllPopups()
+    {
+        _popupsManager.CloseAll();
+    }
+
     private void InitializeManagers(
         IInstantiater mainUIInstantiater,
         IInstantiater fullScreenUIInstantiater,
