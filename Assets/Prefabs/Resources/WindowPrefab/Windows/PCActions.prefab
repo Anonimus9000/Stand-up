@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3274004035368931876}
   - component: {fileID: 7467708410633382188}
   - component: {fileID: 2475798276689976248}
-  - component: {fileID: 5675273148676562186}
   m_Layer: 5
   m_Name: PCActions
   m_TagString: Untagged
@@ -93,27 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18a9d1eb66943a082a7d16cac1c94ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!223 &5675273148676562186
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3905708840049170150}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!1 &4137960061002513414
 GameObject:
   m_ObjectHideFlags: 0

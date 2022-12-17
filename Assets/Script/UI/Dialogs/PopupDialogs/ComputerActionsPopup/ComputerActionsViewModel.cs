@@ -1,9 +1,10 @@
 ﻿using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UiMVVM;
+using Script.UI.System;
 
 namespace Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup
 {
-public class ComputerActionsViewModel : UIViewModel
+public class ComputerActionsViewModel : UiViewModelBehaviour
 {
     private ComputerActionsView _view;
     private readonly ComputerActionsModel _model;

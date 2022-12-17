@@ -25,7 +25,7 @@ public class HomeUIView : MonoUIMain
 
     private void OpenStartFullscreen()
     {
-        uiSystem.Show(new StartGameMenuViewModel(uiSystem, sceneSwitcher));
+        uiSystem.Show(new StartGameMenuViewModel(uiSystem));
     }
 }
 }

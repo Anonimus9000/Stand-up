@@ -1,26 +1,23 @@
 ﻿using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.UiMVVM;
 using Script.SceneSwitcherSystem.Container.Scenes.Home;
-using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.System;
 
 namespace Script.UI.Dialogs.MainUI.MainHome
 {
-public class HomeUIViewModel : UIViewModel
+public class HomeUIViewModel : UiViewModelBehaviour
 {
     private HomeUIView _view;
     private readonly HomeUIModel _model;
-    private readonly ISceneSwitcher _sceneSwitcher;
 
-    public HomeUIViewModel(ISceneSwitcher sceneSwitcher)
+    public HomeUIViewModel()
     {
         _model = new HomeUIModel();
-        _sceneSwitcher = sceneSwitcher;
     }
     
     public override void ShowView()
     {
         _view = mainUiManager.Show<HomeUIView>(this);
-        _sceneSwitcher.SwitchTo<HomeScene>();
+        sceneSwitcher.SwitchTo<HomeScene>();
     }
 
     public override void CloseView()

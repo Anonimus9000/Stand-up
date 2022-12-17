@@ -48,19 +48,22 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
 
         var sceneSwitcher = InitializeSceneSwitcher(_sceneContainer, _homeInitializer, _homeGameObject, _logger);
         
-        var uiManager = InitializeUISystem();
+        var uiManager = InitializeUISystem(sceneSwitcher);
         _monoDependencyProvider.AddDependency(uiManager);
 
 
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         _monoDependencyProvider.AddDependency(initializeDataServiceProvider);
         
-        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher);
+        OpenApplicationEnterDotWindow(uiManager);
     }
 
-    private IUISystem InitializeUISystem()
+    private IUISystem InitializeUISystem(ISceneSwitcher sceneSwitcher)
     {
-        return (IUISystem)_uiManagerInitializer.Initialize();
+        var uiManagerDependenciesInitializer = _uiManagerInitializer;
+        uiManagerDependenciesInitializer.InitializeDependencies(sceneSwitcher);
+        
+        return (IUISystem)uiManagerDependenciesInitializer.Initialize();
     }
 
     private static ISceneSwitcher InitializeSceneSwitcher(ISceneContainer sceneContainer,
@@ -86,9 +89,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return logger;
     }
     
-    private void OpenApplicationEnterDotWindow(IUISystem iuiSystem, ISceneSwitcher sceneSwitcher)
+    private void OpenApplicationEnterDotWindow(IUISystem iuiSystem)
     {
-        var applicationEnterViewModel = new StartGameMenuViewModel(iuiSystem, sceneSwitcher);
+        var applicationEnterViewModel = new StartGameMenuViewModel(iuiSystem);
         iuiSystem.Show(applicationEnterViewModel);
     }
 }

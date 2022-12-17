@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Script.Initializer;
 using Script.Libraries.Logger.LoggerBase;
 using Script.Libraries.UISystem.Managers.Instantiater;
@@ -9,25 +10,34 @@ using Script.SceneSwitcherSystem.Switcher;
 
 namespace Script.UI.System
 {
-public class MonoUiSystem : UISystem, IInitializable
+public class UiSystemBehaviour : UISystem, IInitializable
 {
     private readonly ISceneSwitcher _sceneSwitcher;
     private readonly ILogger _logger;
 
-    public MonoUiSystem(IInstantiater mainUIInstantiater,
+    public UiSystemBehaviour(IInstantiater mainUIInstantiater,
         IInstantiater fullScreenUIInstantiater,
         IInstantiater popupsUIInstantiater,
         List<IUIView> windows,
-        ILogger logger) : base(mainUIInstantiater, fullScreenUIInstantiater, popupsUIInstantiater, windows)
+        ILogger logger,
+        ISceneSwitcher sceneSwitcher) : base(mainUIInstantiater, fullScreenUIInstantiater, popupsUIInstantiater, windows)
     {
+        _sceneSwitcher = sceneSwitcher;
         _logger = logger;
     }
 
     public override UIViewModel Show(UIViewModel viewModel)
     {
         _logger.Log($"Show {viewModel.GetType()}");
+
+        if (viewModel is not UiViewModelBehaviour uiViewModelBehaviour)
+        {
+            throw new Exception("Need use UiViewModelBehaviour");
+        }
         
-        return base.Show(viewModel);
+        uiViewModelBehaviour.InitializeDependency(_sceneSwitcher);
+        
+        return base.Show(uiViewModelBehaviour);
     }
 
     public override void Close(UIViewModel viewModel)

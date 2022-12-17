@@ -1,10 +1,11 @@
 ﻿using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.UiMVVM;
+using Script.UI.System;
 using NotImplementedException = System.NotImplementedException;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterInfo
 {
-public class CharacterInfoViewModel : UIViewModel
+public class CharacterInfoViewModel : UiViewModelBehaviour
 {
     private CharacterInfoView _view;
     private readonly CharacterInfoModel _model;

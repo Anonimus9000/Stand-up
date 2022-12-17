@@ -61,6 +61,8 @@ public class PopupsManager : IDialogsManager
 
         _currentViewModel = Destroy(_currentViewModel);
 
+        _queueHiddenPopups.Remove(_currentViewModel);
+
         _currentViewModel = null;
 
         TryShowLastHiddenPopup();
@@ -122,8 +124,6 @@ public class PopupsManager : IDialogsManager
         {
             return null;
         }
-
-        _queueHiddenPopups.Remove(viewModel);
 
         var instantiatable = viewModel.GetInstantiatable();
         _instantiater.Destroy(instantiatable);

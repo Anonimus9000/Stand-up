@@ -39,7 +39,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
     public IInitializable Initialize()
     {
         var logger = _monoDependencyProvider.GetDependency<ILogger>();
-        var uiManager = InitializeUIManager(logger);
+        var uiManager = InitializeUIManager(logger, _sceneSwitcher);
 
         return uiManager;
     }
@@ -49,7 +49,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         _sceneSwitcher = sceneSwitcher;
     }
 
-    private MonoUiSystem InitializeUIManager(ILogger logger)
+    private UiSystemBehaviour InitializeUIManager(ILogger logger, ISceneSwitcher sceneSwitcher)
     {
         var uiWindows = InitializeWindowsLoader();
 
@@ -57,12 +57,13 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
         IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
 
-        return new MonoUiSystem(
+        return new UiSystemBehaviour(
             instantiaterMainUI,
             instantiaterFullScreens,
             instantiaterPopups,
             uiWindows,
-            logger);
+            logger,
+            sceneSwitcher);
     }
 
     private List<IUIView> InitializeWindowsLoader()
