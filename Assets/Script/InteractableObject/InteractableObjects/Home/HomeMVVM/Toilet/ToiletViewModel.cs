@@ -1,28 +1,30 @@
 ﻿using System;
 using Script.DataServices.Base;
+using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup;
+using Script.UI.Dialogs.PopupDialogs.ToiletActionsPopup;
 using UnityEngine;
 
-namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer
+namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Toilet
 {
-public class ComputerViewModel : IViewModel
+public class ToiletViewModel: IViewModel
 {
-    private readonly ComputerModel _model;
-    private readonly ComputerView _view;
+    private readonly ToiletModel _model;
+    private readonly ToiletView _view;
     private readonly IUISystem _iuiSystem;
 
-    public ComputerViewModel(IView view, IDataService playerCharacteristicsService, IUISystem iuiSystem)
+    public ToiletViewModel(IView view, IDataService playerCharacteristicsService, IUISystem iuiSystem)
     {
-        if (view is not ComputerView computerView)
+        if (view is not ToiletView toiletView)
         {
-            throw new Exception($"Need dependency of type {typeof(ComputerView)}");
+            throw new Exception($"Need dependency of type {typeof(ToiletView)}");
         }
 
-        _model = new ComputerModel();
+        _model = new ToiletModel();
         
-        _view = computerView;
+        _view = toiletView;
         _view.InitializeModel(_model);
         
         _iuiSystem = iuiSystem;
@@ -54,7 +56,7 @@ public class ComputerViewModel : IViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ComputerActionsViewModel();
+        var viewModel = new ToiletUIActionsViewModel();
         _iuiSystem.CloseAllPopups();
         _iuiSystem.Show(viewModel);
     }

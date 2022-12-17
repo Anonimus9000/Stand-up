@@ -540,6 +540,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &895642011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4556845675120397704, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+  m_PrefabInstance: {fileID: 3473682886700072267}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2473ef9a01a24301b57b137f0ce60273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &937480761 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4076216492120707158, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
@@ -2109,6 +2120,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 222086620443044930, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: m_Size.x
+      value: 2.0049381
+      objectReference: {fileID: 0}
+    - target: {fileID: 222086620443044930, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: m_Size.z
+      value: 1.2416754
+      objectReference: {fileID: 0}
+    - target: {fileID: 222086620443044930, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: m_Center.x
+      value: 0.0939607
+      objectReference: {fileID: 0}
+    - target: {fileID: 222086620443044930, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: m_Center.z
+      value: -0.21718502
+      objectReference: {fileID: 0}
     - target: {fileID: 1193672837625928146, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
       propertyPath: m_Name
       value: House
@@ -2157,6 +2184,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7215098200774677632, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: _interactableObjects.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7215098200774677632, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: _interactableObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 895642011}
     m_RemovedComponents:
     - {fileID: 862179923356968465, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}

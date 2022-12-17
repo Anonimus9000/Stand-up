@@ -9,6 +9,7 @@ using Script.InteractableObject.Base;
 using Script.InteractableObject.InteractableObjects.Container.Containers;
 using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Bed;
 using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer;
+using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Toilet;
 using Script.Libraries.MVVM;
 using Script.Libraries.Observer.DataObserver;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
@@ -88,11 +89,13 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         {
             case ComputerView:
                 return new ComputerViewModel(view, dataService, iuiSystem);
+            case ToiletView:
+                return new ToiletViewModel(view, dataService, iuiSystem);
             case BedView:
                 break;
         }
 
-        throw new Exception("");
+        throw new Exception("Need add new interactable object in switch");
     }
 }
 }

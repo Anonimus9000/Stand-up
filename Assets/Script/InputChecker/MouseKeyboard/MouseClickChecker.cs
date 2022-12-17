@@ -50,7 +50,7 @@ public class MouseClickChecker : IObjectClickChecker
         var screenPointToRay = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         if (Physics.Raycast(ray: screenPointToRay, hitInfo: out var hit) && hit.collider)
-        {
+         {
             if (hit.collider == _trackCollider)
             {
                 OnObjectClicked();
