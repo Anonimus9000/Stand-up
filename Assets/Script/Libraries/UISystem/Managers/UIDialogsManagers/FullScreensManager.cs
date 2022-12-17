@@ -8,7 +8,8 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
 public class FullScreensManager : IDialogsManager
 {
-    private UIViewModel _current;
+    public UIViewModel Current { get; private set; }
+    
     private readonly List<IUIView> _fullScreenDialogPrefabs;
     private readonly IInstantiater _instantiater;
     private readonly List<UIViewModel> _queueHiddenScreens = new();
@@ -30,26 +31,26 @@ public class FullScreensManager : IDialogsManager
         screen!.SetUiManager(_iuiSystem);
         screen!.OnShown();
 
-        if (_current != null)
+        if (Current != null)
         {
-            _queueHiddenScreens.Add(_current);
+            _queueHiddenScreens.Add(Current);
         }
         
-        _current = viewModel;
+        Current = viewModel;
 
         return screen;
     }
 
     public bool TryCloseCurrent()
     {
-        if (_current == null)
+        if (Current == null)
         {
             return false;
         }
         
-        _queueHiddenScreens.Remove(_current);
+        _queueHiddenScreens.Remove(Current);
         
-        _current = Destroy(_current);
+        Current = Destroy(Current);
 
         TryShowLastHiddenScreen();
 
@@ -71,14 +72,14 @@ public class FullScreensManager : IDialogsManager
 
     private bool TryHideCurrentScreen()
     {
-        if (_current == null)
+        if (Current == null)
         {
             return false;
         }
 
-        Deactivate(_current);
+        Deactivate(Current);
 
-        _queueHiddenScreens.Add(_current);
+        _queueHiddenScreens.Add(Current);
 
         return true;
     }
@@ -92,7 +93,7 @@ public class FullScreensManager : IDialogsManager
         
         _queueHiddenScreens.Clear();
 
-        Destroy(_current);
+        Destroy(Current);
     }
 
     private bool TryShowLastHiddenScreen()
@@ -103,8 +104,8 @@ public class FullScreensManager : IDialogsManager
 
             _queueHiddenScreens.Remove(viewModel);
 
-            _current = viewModel;
-            Activate(_current);
+            Current = viewModel;
+            Activate(Current);
 
             return true;
         }

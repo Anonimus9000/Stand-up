@@ -3,9 +3,9 @@ using Script.UI.Dialogs.BaseDialogs;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup
+namespace Script.UI.Dialogs.PopupDialogs. ComputerActionsPopup
 {
-public class ComputerActionsView: MonoUiViewPopup
+public class ComputerActionsUIView: MonoUiViewPopup
 {
     [SerializeField] private Button _closeButton;
 

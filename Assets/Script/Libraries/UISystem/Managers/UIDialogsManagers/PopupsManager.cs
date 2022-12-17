@@ -9,9 +9,10 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
 public class PopupsManager : IDialogsManager
 {
+    public UIViewModel Current { get; private set; }
+    
     private readonly List<IUIView> _popupPrefabs;
     private readonly IInstantiater _instantiater;
-    private UIViewModel _currentViewModel;
     private readonly List<UIViewModel> _queueHiddenPopups = new();
     private readonly IUISystem _iuiSystem;
 
@@ -30,12 +31,12 @@ public class PopupsManager : IDialogsManager
 
         var popupDialog = Create<T>();
 
-        if (_currentViewModel != null)
+        if (Current != null)
         {
-            _queueHiddenPopups.Add(_currentViewModel);
+            _queueHiddenPopups.Add(Current);
         }
 
-        _currentViewModel = viewModel;
+        Current = viewModel;
 
         popupDialog!.SetUiManager(_iuiSystem);
         popupDialog!.OnShown();
@@ -45,28 +46,28 @@ public class PopupsManager : IDialogsManager
 
     private bool TryHideCurrentPopup()
     {
-        if(_currentViewModel == null)
+        if(Current == null)
         {
             return false;
         }
 
-        Deactivate(_currentViewModel);
+        Deactivate(Current);
 
         return true;
     }
 
     public bool TryCloseCurrent()
     {
-        if (_currentViewModel == null)
+        if (Current == null)
         {
             return false;
         }
 
-        _currentViewModel = Destroy(_currentViewModel);
+        Current = Destroy(Current);
 
-        _queueHiddenPopups.Remove(_currentViewModel);
+        _queueHiddenPopups.Remove(Current);
 
-        _currentViewModel = null;
+        Current = null;
 
         TryShowLastHiddenPopup();
 
@@ -82,7 +83,7 @@ public class PopupsManager : IDialogsManager
 
         _queueHiddenPopups.Clear();
 
-        _currentViewModel = Destroy(_currentViewModel);
+        Current = Destroy(Current);
     }
 
     private bool TryShowLastHiddenPopup()
@@ -92,8 +93,8 @@ public class PopupsManager : IDialogsManager
             var viewModel = _queueHiddenPopups.Last();
             _queueHiddenPopups.Remove(viewModel);
 
-            _currentViewModel = viewModel;
-            Activate(_currentViewModel);
+            Current = viewModel;
+            Activate(Current);
 
             return true;
         }

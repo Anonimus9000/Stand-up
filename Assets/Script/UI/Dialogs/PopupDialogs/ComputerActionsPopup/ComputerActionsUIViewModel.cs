@@ -1,25 +1,22 @@
 ﻿using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
-using Script.Libraries.UISystem.UiMVVM;
 using Script.UI.System;
-using NotImplementedException = System.NotImplementedException;
 
 namespace Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup
 {
-public class ComputerActionsViewModel : UiViewModelBehaviour
+public class ComputerActionsUIViewModel : UiViewModelBehaviour
 {
-    private ComputerActionsView _view;
+    private ComputerActionsUIView _view;
     private readonly ComputerActionsModel _model;
 
 
-    public ComputerActionsViewModel()
+    public ComputerActionsUIViewModel()
     {
         _model = new ComputerActionsModel();
     }
 
     public override void ShowView()
     {
-        _view = popupsUiManager.Show<ComputerActionsView>(this);
+        _view = popupsUiManager.Show<ComputerActionsUIView>(this);
         SubscribeOnViewEvent(_view);
     }
 
@@ -33,7 +30,7 @@ public class ComputerActionsViewModel : UiViewModelBehaviour
         return _view;
     }
 
-    private void SubscribeOnViewEvent(ComputerActionsView view)
+    private void SubscribeOnViewEvent(ComputerActionsUIView view)
     {
         view.OnClosePressed += OnCloseButtonPressed;
     }

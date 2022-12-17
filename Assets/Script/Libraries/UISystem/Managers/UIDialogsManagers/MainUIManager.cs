@@ -8,10 +8,10 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
 public class MainUIManager : IDialogsManager
 {
+    public UIViewModel Current { get; private set; }
     private readonly IUISystem _iuiSystem;
     private readonly IInstantiater _instantiater;
     private readonly List<IUIView> _mainUIPrefabs;
-    private UIViewModel _current;
 
     public MainUIManager(IInstantiater instantiater, List<IUIView> mainUIPrefabs, IUISystem iuiSystem)
     {
@@ -28,7 +28,7 @@ public class MainUIManager : IDialogsManager
 
         var mainUI = Create<T>();
 
-        _current = viewModel;
+        Current = viewModel;
 
         mainUI!.OnShown();
         mainUI!.SetUiManager(_iuiSystem);
@@ -43,12 +43,12 @@ public class MainUIManager : IDialogsManager
 
     public bool TryCloseCurrent()
     {
-        if (_current == null)
+        if (Current == null)
         {
             return false;
         }
 
-        _current = Destroy(_current);
+        Current = Destroy(Current);
 
         return true;
     }

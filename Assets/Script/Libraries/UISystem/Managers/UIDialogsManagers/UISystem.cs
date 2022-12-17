@@ -8,6 +8,10 @@ namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
 public abstract class UISystem : IUISystem
 {
+    public UIViewModel CurrentMain => _mainUIManager.Current;
+    public UIViewModel CurrentFullScreen => _fullScreensManager.Current;
+    public UIViewModel CurrentPopup => _popupsManager.Current;
+
     private IDialogsManager _popupsManager;
     private IDialogsManager _fullScreensManager;
     private IDialogsManager _mainUIManager;
