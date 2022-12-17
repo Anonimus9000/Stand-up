@@ -25,10 +25,14 @@ public class FullScreensManager : IDialogsManager
     {
         TryHideCurrentScreen();
 
-
         var screen = Create<T>();
         screen!.SetUiManager(_iuiSystem);
         screen!.OnShown();
+
+        if (_current != null)
+        {
+            _queueHiddenScreens.Add(_current);
+        }
         
         _current = viewModel;
 

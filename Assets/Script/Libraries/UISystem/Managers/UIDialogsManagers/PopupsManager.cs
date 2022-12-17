@@ -30,19 +30,22 @@ public class PopupsManager : IDialogsManager
 
         var popupDialog = Create<T>();
 
+        if (_currentViewModel != null)
+        {
+            _queueHiddenPopups.Add(_currentViewModel);
+        }
+
         _currentViewModel = viewModel;
 
         popupDialog!.SetUiManager(_iuiSystem);
         popupDialog!.OnShown();
-
-        _queueHiddenPopups.Add(viewModel);
-
+        
         return popupDialog;
     }
 
     private bool TryHideCurrentPopup()
     {
-        if (_currentViewModel is null)
+        if(_currentViewModel == null)
         {
             return false;
         }
