@@ -54,6 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _openFullscreenButton: {fileID: 7053232568383818558}
   _openCharacterInfoButton: {fileID: 3532985935002860191}
+  _openMenuButton: {fileID: 7053232568383818558}
   _upgradePointsIcon: {fileID: 2417996680254169532}
   _flyBubblePrefab: {fileID: 4388927563890866029, guid: 4d7ee36acea17234ba660fa7e8622e6e, type: 3}
   _bubblesParent: {fileID: 3353274381142116824}

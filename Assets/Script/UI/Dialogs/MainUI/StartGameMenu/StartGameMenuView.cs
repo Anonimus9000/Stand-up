@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.MainUI.StartGameMenu
 {
+//TODO: raname all start game menu(префабы и тд блять)
 public class StartGameMenuView : UiViewBehaviour, IMainUI
 {
     [SerializeField]
@@ -15,12 +16,13 @@ public class StartGameMenuView : UiViewBehaviour, IMainUI
     [SerializeField]
     private Button _closeButton;
 
-    [SerializeField] private Button _createCharacterButton;
+    [SerializeField] 
+    private Button _createCharacterButton;
     
-    public event Action OnQuitPressed;
+    public event Action QuitPressed;
 
-    public event Action OnStartPressed;
-    public event Action OnCreatePressed;
+    public event Action StartPressed;
+    public event Action CharacterCreationButtonPressed;
 
     public override event Action ViewShown;
     public override event Action ViewHidden;
@@ -29,28 +31,29 @@ public class StartGameMenuView : UiViewBehaviour, IMainUI
     {
         _startButton.onClick.AddListener(StartButton);
         _closeButton.onClick.AddListener(CloseButton);
+        _createCharacterButton.onClick.AddListener(CreateCharacterButtonPressed);
     }
 
     public override void Hide()
     {
         _startButton.onClick.RemoveListener(StartButton);
         _closeButton.onClick.RemoveListener(CloseButton);
-        _createCharacterButton.onClick.AddListener(CreateCharacterButtonPressed);
+        _createCharacterButton.onClick.RemoveListener(CreateCharacterButtonPressed);
     }
     
     private void CreateCharacterButtonPressed()
     {
-        OnCreatePressed?.Invoke();
+        CharacterCreationButtonPressed?.Invoke();
     }
 
     private void CloseButton()
     {
-        OnQuitPressed?.Invoke();
+        QuitPressed?.Invoke();
     }
 
     private void StartButton()
     {
-        OnStartPressed?.Invoke();
+        StartPressed?.Invoke();
     }
 }
 }

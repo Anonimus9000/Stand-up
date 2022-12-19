@@ -40,7 +40,7 @@ public class CharacterInfoViewModel : IUIViewModel
 
     public void HideView()
     {
-        _view.Show();
+        _view.Hide();
         
         ViewHidden?.Invoke(this);
     }

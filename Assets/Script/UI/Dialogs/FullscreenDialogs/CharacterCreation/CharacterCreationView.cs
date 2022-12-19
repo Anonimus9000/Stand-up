@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using Script.UI.Dialogs.BaseDialogs;
-using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
+using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Dialogs.BaseBehaviour;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterCreation
 {
-public class CharacterCreationView: MonoUiViewFullscreen
+public class CharacterCreationView: UiViewBehaviour, IFullScreen
 {
-    
     [SerializeField]
     private TextMeshProUGUI _nameField;
 
@@ -20,28 +17,28 @@ public class CharacterCreationView: MonoUiViewFullscreen
     [SerializeField]
     private Button _rightArrow;
 
-    [SerializeField] private Button _leftArrow;
+    [SerializeField] 
+    private Button _leftArrow;
+    
+    public override event Action ViewShown;
+    public override event Action ViewHidden;
 
     public event Action OnRightPressed;
 
     public event Action OnLeftPressed;
     
-    public override void OnShown()
+    public override void Show()
     {
-        base.OnShown();
-
         _leftArrow.onClick.AddListener(LeftArrowButton);
         _rightArrow.onClick.AddListener(RightArrowButton);
     }
 
-    public override void OnHidden()
+    public override void Hide()
     {
-        base.OnHidden();
-
         _leftArrow.onClick.RemoveListener(LeftArrowButton);
         _rightArrow.onClick.RemoveListener(RightArrowButton);
     }
-
+    
     public void SetCharacterLook(Sprite look)
     {
         _characterLook.sprite = look;

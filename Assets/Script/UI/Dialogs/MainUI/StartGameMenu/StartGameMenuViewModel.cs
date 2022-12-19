@@ -5,6 +5,8 @@ using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Container.Scenes;
 using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation;
+using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.MainUI.MainHome;
 using UnityEngine;
 
@@ -20,12 +22,15 @@ public class StartGameMenuViewModel : IUIViewModel
     private readonly ISceneSwitcher _sceneSwitcher;
     private readonly IUIService _mainUIService;
     private readonly IUIService _fullScreenUIService;
+    private readonly CharacterCreationData _characterData;
 
     public StartGameMenuViewModel(
         IUIService mainUIService,
         IUIService fullScreenUIServiceISceneSwitcher,
-        ISceneSwitcher sceneSwitcher)
+        ISceneSwitcher sceneSwitcher,
+        CharacterCreationData characterCreationData)
     {
+        _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
         _mainUIService = mainUIService;
         _fullScreenUIService = fullScreenUIServiceISceneSwitcher;
@@ -55,6 +60,8 @@ public class StartGameMenuViewModel : IUIViewModel
         _view.Show();
         
         ViewHidden?.Invoke(this);
+        
+        SubscribeOnViewEvent(_view);
     }
 
     public void HideView()
@@ -62,6 +69,8 @@ public class StartGameMenuViewModel : IUIViewModel
         _view.Hide();
         
         ViewHidden?.Invoke(this);
+        
+        UnsubscribeOnViewEvent(_view);
     }
     
     public IInstantiatable GetInstantiatable()
@@ -71,18 +80,32 @@ public class StartGameMenuViewModel : IUIViewModel
 
     private void SubscribeOnViewEvent(StartGameMenuView menuView)
     {
-        menuView.OnStartPressed += OnStartButtonPressed;
-        menuView.OnQuitPressed += OnQuitPressed;
+        menuView.StartPressed += OnStartButtonPressed;
+        menuView.QuitPressed += OnQuitButtonPressed;
+        menuView.CharacterCreationButtonPressed += OnCharacterCreationButtonPressed;
+    }
+    
+    private void UnsubscribeOnViewEvent(StartGameMenuView menuView)
+    {
+        menuView.StartPressed -= OnStartButtonPressed;
+        menuView.QuitPressed -= OnQuitButtonPressed;
+        menuView.CharacterCreationButtonPressed -= OnCharacterCreationButtonPressed;
     }
 
-    private void OnQuitPressed()
+    private void OnQuitButtonPressed()
     {
         Application.Quit();
     }
 
+    private void OnCharacterCreationButtonPressed()
+    {
+        var characterCreationViewModel = new CharacterCreationViewModel(_sceneSwitcher, _fullScreenUIService, _characterData.CharacterList);
+        _fullScreenUIService.Show<CharacterCreationView>(characterCreationViewModel);
+    }
+
     private void OnStartButtonPressed()
     {
-        var homeUIViewModel = new HomeIUIViewModel(_sceneSwitcher, _mainUIService, _fullScreenUIService);
+        var homeUIViewModel = new HomeIuiViewModel(_sceneSwitcher, _mainUIService, _fullScreenUIService, _characterData);
         _mainUIService.Show<HomeUIView>(homeUIViewModel);
     }
 }

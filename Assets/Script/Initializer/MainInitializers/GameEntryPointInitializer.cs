@@ -6,10 +6,7 @@ using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.SceneSwitcherSystem.Container;
 using Script.SceneSwitcherSystem.Switcher;
-using Script.UI.Dialogs.FullscreenDialogs;
-using Script.UI.Dialogs.FullscreenDialogs.ApplicationEnter;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
-using Script.UI.Dialogs.FullscreenDialogs.StartGameMenu;
 using Script.UI.Dialogs.MainUI.StartGameMenu;
 using UnityEngine;
 using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
@@ -29,7 +26,8 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     [SerializeField]
     private HomeInitializer _homeInitializer;
     
-    [SerializeField] private CharacterCreationData _characterCreationData;
+    [SerializeField] 
+    private CharacterCreationData _characterCreationData;
 
     //TODO: replace
     [SerializeField]

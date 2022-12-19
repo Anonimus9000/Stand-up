@@ -5,24 +5,27 @@ using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Container.Scenes.Home;
 using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterInfo;
 using Script.UI.Dialogs.MainUI.StartGameMenu;
 using UnityEngine;
 
 namespace Script.UI.Dialogs.MainUI.MainHome
 {
-public class HomeIUIViewModel : IUIViewModel
+public class HomeIuiViewModel : IUIViewModel
 {
     private HomeUIView _view;
     private readonly HomeUIModel _model;
     private readonly ISceneSwitcher _sceneSwitcher;
     private readonly IUIService _fullScreensUIService;
     private readonly IUIService _mainUiService;
+    private readonly CharacterCreationData _characterData;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
-    public HomeIUIViewModel(ISceneSwitcher sceneSwitcher, IUIService mainUIService, IUIService fullScreenService)
+    public HomeIuiViewModel(ISceneSwitcher sceneSwitcher, IUIService mainUIService, IUIService fullScreenService, CharacterCreationData characterCreationData)
     {
+        _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
         _mainUiService = mainUIService;
         _fullScreensUIService = fullScreenService;
@@ -114,7 +117,8 @@ public class HomeIUIViewModel : IUIViewModel
 
     private void OnOpenStartGameMenuButtonPressed()
     {
-        _mainUiService.Show<StartGameMenuView>(new StartGameMenuViewModel(_mainUiService, _fullScreensUIService, _sceneSwitcher));
+        _mainUiService.Show<StartGameMenuView>(new StartGameMenuViewModel(_mainUiService,
+            _fullScreensUIService, _sceneSwitcher, _characterData));
     }
 
     private void OnOpenCharacterInfoButtonPressed()

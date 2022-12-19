@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
-using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using UnityEngine;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterCreation
@@ -10,25 +9,23 @@ namespace Script.UI.Dialogs.FullscreenDialogs.CharacterCreation
 public class CharacterCreationModel:IModel
 {
     private readonly List<Sprite> _characterList;
-    private readonly IUISystem _uiSystem;
     private int _currentSpriteIndex;
 
     public event Action<Sprite> OnSpriteChanged;
 
-    public event Action OnRightButtonDisable; 
-    public event Action OnLeftButtonDisable; 
-    public event Action OnLeftButtonEnable; 
-    public event Action OnRightButtonEnable; 
-    public CharacterCreationModel(IUISystem uiSystem, List<Sprite> CharacterList)
+    public event Action OnRightButtonDisabled; 
+    public event Action OnLeftButtonDisabled; 
+    public event Action OnLeftButtonEnabled; 
+    public event Action OnRightButtonEnabled; 
+    public CharacterCreationModel(List<Sprite> CharacterList)
     {
         _characterList = CharacterList;
-        _uiSystem = uiSystem;
     }
 
     public void SetStartConditions()
     {
         OnSpriteChanged?.Invoke(_characterList[0]);
-        OnLeftButtonDisable?.Invoke();
+        OnLeftButtonDisabled?.Invoke();
     }
 
     public void SetNextSprite()
@@ -37,21 +34,18 @@ public class CharacterCreationModel:IModel
         {
             if (i == _characterList.Count - 1)
             {
-                OnRightButtonDisable?.Invoke();
+                OnRightButtonDisabled?.Invoke();
                 return;
             }
 
             if (i == _currentSpriteIndex)
             {
-                OnLeftButtonEnable?.Invoke();
+                OnLeftButtonEnabled?.Invoke();
                 OnSpriteChanged?.Invoke(_characterList[i+1]);
                 _currentSpriteIndex = i + 1;
                 return;
             }
-
-           
         }
-        
     }
 
     public void SetPreviousSprite()
@@ -60,20 +54,18 @@ public class CharacterCreationModel:IModel
         {
             if (_currentSpriteIndex == 0)
             {
-                OnLeftButtonDisable?.Invoke();
+                OnLeftButtonDisabled?.Invoke();
                 return;
             }
             
             if (i == _currentSpriteIndex)
             {
-                OnRightButtonEnable?.Invoke();
+                OnRightButtonEnabled?.Invoke();
                 OnSpriteChanged?.Invoke(_characterList[i-1]);
                 _currentSpriteIndex = i - 1;
                 return;
             }
         }
-        
     }
-    
 }
 }

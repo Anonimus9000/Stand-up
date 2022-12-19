@@ -3,13 +3,13 @@ using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.BaseBehaviour;
-using Script.UI.Dialogs.FullscreenDialogs.CharacterInfo;
 using Script.UI.Dialogs.MainUI.MainHome.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.MainUI.MainHome
 {
+//TODO: refactoring names by Katya
 public class HomeUIView : UiViewBehaviour, IMainUI
 {
     [SerializeField]
@@ -17,6 +17,9 @@ public class HomeUIView : UiViewBehaviour, IMainUI
 
     [SerializeField]
     private Button _openCharacterInfoButton;
+
+    [SerializeField] 
+    private Button _openMenuButton;
 
     [SerializeField]
     private Transform _upgradePointsIcon;
@@ -37,13 +40,8 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     public event Action OpenStartGameMenuButtonPressed;
     public event Action OpenCharacterInfoButtonPressed;
 
-    private void CharacterInfoButton()
-    {
-        _openFullscreenButton.onClick.AddListener(OpenStartFullscreen);
-        _openCharacterInfoButton.onClick.AddListener(OpenCharacterInfo);
-    }
 
-    public override void OnShown()
+    public override void Show()
     {
         SubscribeOnEvents();
         
@@ -70,33 +68,20 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     private void SubscribeOnEvents()
     {
         _openMenuButton.onClick.AddListener(MenuButtonPressed);
-        _openCharacterInfoButton.onClick.AddListener(CharacterInfoButton);
+        _openCharacterInfoButton.onClick.AddListener(OnOpenCharacterInfoButtonPressed);
     }
 
     private void UnsubscribeOnEvents()
     {
         _openMenuButton.onClick.RemoveListener(MenuButtonPressed);
-        _openCharacterInfoButton.onClick.RemoveListener(CharacterInfoButton);
+        _openCharacterInfoButton.onClick.RemoveListener(OnOpenCharacterInfoButtonPressed);
     }
 
-    private void OpenCharacterInfo()
-    {
-    }
-
-    private void OpenStartFullscreen()
-    {
-    }
-    
-    private void OnOpenStartGameMenuButtonPressed()
-    {
-        OpenStartGameMenuButtonPressed?.Invoke();
-    }
-
-    private void OnOpenCharacterButtonPressed()
+    private void OnOpenCharacterInfoButtonPressed()
     {
         OpenCharacterInfoButtonPressed?.Invoke();
     }
-    
+
     private void MenuButtonPressed()
     {
         OpenStartGameMenuButtonPressed?.Invoke();

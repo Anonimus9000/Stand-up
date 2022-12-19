@@ -67,14 +67,14 @@ public class ComputerViewModel : IViewModel
         var viewModel = new ComputerActionsIUIViewModel(_popupsUIService);
         _popupsUIService.Show<ComputerActionsUIView>(viewModel);
         
-        var homeUIViewModel = _mainUIService.CurrentUI as HomeIUIViewModel;
+        var homeUIViewModel = _mainUIService.CurrentUI as HomeIuiViewModel;
         
         var applicationQuitTokenSource = new ApplicationQuitTokenSource();
         
         TestBubble(homeUIViewModel, applicationQuitTokenSource.Token);
     }
 
-    private async void TestBubble(HomeIUIViewModel viewModel, CancellationToken token)
+    private async void TestBubble(HomeIuiViewModel viewModel, CancellationToken token)
     {
         while (true)
         {

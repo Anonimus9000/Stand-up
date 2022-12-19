@@ -15,17 +15,16 @@ public class CharacterInfoView : UiViewBehaviour, IFullScreen
     public override event Action ViewShown;
     public override event Action ViewHidden;
 
-    private void Start()
-    {
-        _closeButton.onClick.AddListener(OnCloseButtonPressed);
-    }
-
     public override void Show()
     {
+        _closeButton.onClick.AddListener(OnCloseButtonPressed);
+        ViewShown?.Invoke();
     }
 
     public override void Hide()
     {
+        _closeButton.onClick.RemoveListener(OnCloseButtonPressed);
+        ViewHidden?.Invoke();
     }
 
     private void OnCloseButtonPressed()
