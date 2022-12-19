@@ -37,30 +37,13 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     public event Action OpenStartGameMenuButtonPressed;
     public event Action OpenCharacterInfoButtonPressed;
 
-    private void Start()
+    private void CharacterInfoButton()
     {
-        _openFullscreenButton.onClick.AddListener(OnOpenStartGameMenuButtonPressed);
-        _openCharacterInfoButton.onClick.AddListener(OnOpenCharacterButtonPressed);
+        _openFullscreenButton.onClick.AddListener(OpenStartFullscreen);
+        _openCharacterInfoButton.onClick.AddListener(OpenCharacterInfo);
     }
 
-    private void OnOpenStartGameMenuButtonPressed()
-    {
-        OpenStartGameMenuButtonPressed?.Invoke();
-    }
-
-    private void OnOpenCharacterButtonPressed()
-    {
-        OpenCharacterInfoButtonPressed?.Invoke();
-    }
-
-    public void InitializeDependencies(IUIServiceProvider serviceProvider, ISceneSwitcher sceneSwitcher)
-    {
-        _serviceProvider = serviceProvider;
-        _fullScreensUIService = _serviceProvider.GetService<FullScreensUIService>();
-        _sceneSwitcher = sceneSwitcher;
-    }
-    
-    public override void Show()
+    public override void OnShown()
     {
         SubscribeOnEvents();
         
@@ -76,8 +59,6 @@ public class HomeUIView : UiViewBehaviour, IMainUI
 
     public void ShowMoveBubble(Vector3 startPosition, int bodyInfo)
     {
-        if(_upgradePointsIcon == null) return;
-        
         var flyBubble = Instantiate(_flyBubblePrefab, _bubblesParent);
         var upgradePointsLocalPosition = _upgradePointsIcon.transform.position;
         
@@ -88,10 +69,14 @@ public class HomeUIView : UiViewBehaviour, IMainUI
 
     private void SubscribeOnEvents()
     {
+        _openMenuButton.onClick.AddListener(MenuButtonPressed);
+        _openCharacterInfoButton.onClick.AddListener(CharacterInfoButton);
     }
 
     private void UnsubscribeOnEvents()
     {
+        _openMenuButton.onClick.RemoveListener(MenuButtonPressed);
+        _openCharacterInfoButton.onClick.RemoveListener(CharacterInfoButton);
     }
 
     private void OpenCharacterInfo()
@@ -100,6 +85,21 @@ public class HomeUIView : UiViewBehaviour, IMainUI
 
     private void OpenStartFullscreen()
     {
+    }
+    
+    private void OnOpenStartGameMenuButtonPressed()
+    {
+        OpenStartGameMenuButtonPressed?.Invoke();
+    }
+
+    private void OnOpenCharacterButtonPressed()
+    {
+        OpenCharacterInfoButtonPressed?.Invoke();
+    }
+    
+    private void MenuButtonPressed()
+    {
+        OpenStartGameMenuButtonPressed?.Invoke();
     }
 
     private void OnMoveBubblePrefabCompleted(FlyBubble bubble)

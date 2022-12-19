@@ -501,6 +501,7 @@ GameObject:
   - component: {fileID: 3302323501905108627}
   - component: {fileID: 994944742697650717}
   - component: {fileID: 927592476256793290}
+  - component: {fileID: 3378011375524417220}
   m_Layer: 5
   m_Name: CharacterCreation
   m_TagString: Untagged
@@ -569,6 +570,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3378011375524417220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3641720704272702372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8748188cbbf34781b035b77b230b84b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nameField: {fileID: 3428873467241665494}
+  _characterLook: {fileID: 179831880379520761}
+  _rightArrow: {fileID: 7393035714195842886}
+  _leftArrow: {fileID: 8740335908569234200}
 --- !u!1 &5797965320593345695
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,7 +864,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 358c17b4dd4c0461f8bcaf75f245f54e, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

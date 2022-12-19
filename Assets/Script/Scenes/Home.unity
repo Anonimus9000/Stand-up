@@ -624,6 +624,7 @@ MonoBehaviour:
   _uiManagerInitializer: {fileID: 989767062}
   _monoDependencyProvider: {fileID: 11400000, guid: 6a8dc2b2e6827b54184c96fc1a9cfd35, type: 2}
   _homeInitializer: {fileID: 937480761}
+  _characterCreationData: {fileID: 11400000, guid: 9629d165e3bd3124e9f9f404e38aa66a, type: 2}
   _homeGameObject: {fileID: 595737895}
 --- !u!4 &609094266
 Transform:

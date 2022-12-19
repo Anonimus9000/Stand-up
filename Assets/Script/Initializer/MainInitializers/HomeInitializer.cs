@@ -4,6 +4,7 @@ using Script.Initializer.MonoDependencyContainers;
 using Script.InteractableObject.InteractableObjects.Home.Initializer;
 using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using UnityEngine;
 
 namespace Script.Initializer.MainInitializers
