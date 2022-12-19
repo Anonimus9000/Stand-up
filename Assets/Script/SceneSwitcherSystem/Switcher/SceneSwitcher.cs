@@ -17,6 +17,11 @@ public class SceneSwitcher : ISceneSwitcher, IInitializable
 
     public T SwitchTo<T>() where T : IGameScene
     {
+        if (_currentScene is T scene)
+        {
+            return scene;
+        }
+        
         TryCloseCurrentScene();
 
         var gameScene = _sceneContainer.GetScene<T>();

@@ -2,10 +2,8 @@
 using Script.Initializer.Base;
 using Script.Initializer.MonoDependencyContainers;
 using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Switcher;
-using Script.UI.Dialogs.FullscreenDialogs;
 using Script.UI.System;
 using Script.UI.UIInstantiater;
 using Script.UI.UiWindowsLoader;
@@ -49,7 +47,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         _sceneSwitcher = sceneSwitcher;
     }
 
-    private UiSystemBehaviour InitializeUIManager(ILogger logger, ISceneSwitcher sceneSwitcher)
+    private UiServiceProviderInitializable InitializeUIManager(ILogger logger, ISceneSwitcher sceneSwitcher)
     {
         var uiWindows = InitializeWindowsLoader();
 
@@ -57,7 +55,7 @@ public class UIManagerDependenciesInitializer : MonoBehaviour, IDependenciesInit
         IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
         IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
 
-        return new UiSystemBehaviour(
+        return new UiServiceProviderInitializable(
             instantiaterMainUI,
             instantiaterFullScreens,
             instantiaterPopups,

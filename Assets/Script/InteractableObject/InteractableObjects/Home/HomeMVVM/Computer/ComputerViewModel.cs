@@ -16,9 +16,13 @@ public class ComputerViewModel : IViewModel
 {
     private readonly ComputerModel _model;
     private readonly ComputerView _view;
-    private readonly IUISystem _uiSystem;
+    private readonly IUIService _popupsUIService;
+    private readonly IUIService _mainUIService;
 
-    public ComputerViewModel(IView view, IDataService playerCharacteristicsService, IUISystem uiSystem)
+    public ComputerViewModel(IView view,
+        IDataService playerCharacteristicsService,
+        IUIService popupsUIService, 
+        IUIService mainUIService)
     {
         if (view is not ComputerView computerView)
         {
@@ -30,7 +34,8 @@ public class ComputerViewModel : IViewModel
         _view = computerView;
         _view.InitializeModel(_model);
         
-        _uiSystem = uiSystem;
+        _popupsUIService = popupsUIService;
+        _mainUIService = mainUIService;
 
         SubscribeOnViewEvents();
         SubscribeOnModelEvents();
@@ -59,16 +64,17 @@ public class ComputerViewModel : IViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ComputerActionsUIViewModel();
-        _uiSystem.Show(viewModel);
-        var homeUIViewModel = _uiSystem.CurrentMain as HomeUIViewModel;
+        var viewModel = new ComputerActionsIUIViewModel(_popupsUIService);
+        _popupsUIService.Show<ComputerActionsUIView>(viewModel);
+        
+        var homeUIViewModel = _mainUIService.CurrentUI as HomeIUIViewModel;
         
         var applicationQuitTokenSource = new ApplicationQuitTokenSource();
         
         TestBubble(homeUIViewModel, applicationQuitTokenSource.Token);
     }
 
-    private async void TestBubble(HomeUIViewModel viewModel, CancellationToken token)
+    private async void TestBubble(HomeIUIViewModel viewModel, CancellationToken token)
     {
         while (true)
         {

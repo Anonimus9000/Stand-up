@@ -1,23 +1,34 @@
 ﻿using System;
-using Script.Libraries.MVVM;
-using Script.UI.Dialogs.BaseDialogs;
+using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Dialogs.BaseBehaviour;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterInfo
 {
-public class CharacterInfoView: MonoUiViewFullscreen
+public class CharacterInfoView : UiViewBehaviour, IFullScreen
 {
-    [SerializeField] private Button _closeButton;
-    
+    [SerializeField]
+    private Button _closeButton;
+
     public event Action CloseButtonPressed;
+    public override event Action ViewShown;
+    public override event Action ViewHidden;
 
     private void Start()
     {
-        _closeButton.onClick.AddListener(CloseFullScreen);
+        _closeButton.onClick.AddListener(OnCloseButtonPressed);
     }
 
-    private void CloseFullScreen()
+    public override void Show()
+    {
+    }
+
+    public override void Hide()
+    {
+    }
+
+    private void OnCloseButtonPressed()
     {
         CloseButtonPressed?.Invoke();
     }

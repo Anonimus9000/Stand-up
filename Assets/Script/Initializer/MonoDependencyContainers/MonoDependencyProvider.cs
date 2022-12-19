@@ -14,7 +14,7 @@ public class MonoDependencyProvider : ScriptableObject, IDependencyProvider
 {
     private readonly List<object> _dependencyes = new();
 
-    public void InitializeDependencies(IServiceProvider dataService, IUISystem iuiSystem, ILogger logger)
+    public void InitializeDependencies(IServiceProvider dataService, IUIServiceProvider iuiSystem, ILogger logger)
     {
         _dependencyes.Add(dataService);
         _dependencyes.Add(iuiSystem);

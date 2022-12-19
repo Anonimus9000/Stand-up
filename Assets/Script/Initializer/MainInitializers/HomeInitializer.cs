@@ -28,7 +28,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
 
     public void InitializeElements()
     {
-        var uiManager = _monoDependencyContainers.GetDependency<IUISystem>();
+        var uiManager = _monoDependencyContainers.GetDependency<IUIServiceProvider>();
         InitializeServiceProvider();
         
         InitializeHomeInteractableObjects(uiManager);
@@ -39,7 +39,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
         _serviceProvider = _monoDependencyContainers.GetDependency<IServiceProvider>();
     }
 
-    private void InitializeHomeInteractableObjects(IUISystem iuiSystem)
+    private void InitializeHomeInteractableObjects(IUIServiceProvider iuiSystem)
     {
         var dataService = _serviceProvider.GetService<IDataService>();
         _homeInteractableObjectInitializer.InitializeDependencies(dataService, iuiSystem, _mainCanvas);

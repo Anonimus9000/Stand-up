@@ -12,7 +12,7 @@ namespace Script.SceneSwitcherSystem.Container
 public class SceneContainer : ISceneContainer
 {
     private List<IGameScene> _scenes;
-    private IUISystem _iuiSystem;
+    private IUIServiceProvider _iuiSystem;
 
     public SceneContainer(IInitializer homeInitializer, IActivator homeLocationActivator)
     {

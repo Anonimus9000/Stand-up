@@ -1,13 +1,14 @@
-﻿using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+﻿using System;
+using Script.Libraries.UISystem.Managers.Instantiater;
 
 namespace Script.Libraries.UISystem.UIWindow
 {
 public interface IUIView : IInstantiatable
 {
-    void SetUiManager(IUISystem uiSystem);
-    void OnShown();
-    void OnHidden();
-    void OnClose();
+    event Action ViewShown;
+    event Action ViewHidden;
+    
+    void Show();
+    void Hide();
 }
 }

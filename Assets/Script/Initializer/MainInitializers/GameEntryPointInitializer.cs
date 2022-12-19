@@ -7,8 +7,7 @@ using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.SceneSwitcherSystem.Container;
 using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.FullscreenDialogs;
-using Script.UI.Dialogs.FullscreenDialogs.ApplicationEnter;
-using Script.UI.Dialogs.FullscreenDialogs.StartGameMenu;
+using Script.UI.Dialogs.MainUI.StartGameMenu;
 using UnityEngine;
 using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
 
@@ -55,15 +54,15 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         _monoDependencyProvider.AddDependency(initializeDataServiceProvider);
         
-        OpenApplicationEnterDotWindow(uiManager);
+        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher);
     }
 
-    private IUISystem InitializeUISystem(ISceneSwitcher sceneSwitcher)
+    private IUIServiceProvider InitializeUISystem(ISceneSwitcher sceneSwitcher)
     {
         var uiManagerDependenciesInitializer = _uiManagerInitializer;
         uiManagerDependenciesInitializer.InitializeDependencies(sceneSwitcher);
         
-        return (IUISystem)uiManagerDependenciesInitializer.Initialize();
+        return (IUIServiceProvider)uiManagerDependenciesInitializer.Initialize();
     }
 
     private static ISceneSwitcher InitializeSceneSwitcher(ISceneContainer sceneContainer,
@@ -89,10 +88,13 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return logger;
     }
     
-    private void OpenApplicationEnterDotWindow(IUISystem iuiSystem)
+    private void OpenApplicationEnterDotWindow(IUIServiceProvider uiServiceProvider, ISceneSwitcher sceneSwitcher)
     {
-        var applicationEnterViewModel = new StartGameMenuViewModel(iuiSystem);
-        iuiSystem.Show(applicationEnterViewModel);
+        var fullScreensUIService = uiServiceProvider.GetService<FullScreensUIService>();
+        var mainUIService = uiServiceProvider.GetService<MainUIService>();
+        
+        var applicationEnterViewModel = new StartGameMenuViewModel(mainUIService, fullScreensUIService, sceneSwitcher);
+        mainUIService.Show<StartGameMenuView>(applicationEnterViewModel);
     }
 }
 }

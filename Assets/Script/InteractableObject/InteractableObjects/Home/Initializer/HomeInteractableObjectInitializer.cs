@@ -27,10 +27,10 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
     private DataObserver _observer;
     private readonly List<IViewModel> _viewModels = new();
     private IDataService _dataService;
-    private IUISystem _iuiSystem;
+    private IUIServiceProvider _iuiSystem;
     private Canvas _canvas;
 
-    public void InitializeDependencies(IDataService dataService, IUISystem iuiSystem, Canvas mainCanvas)
+    public void InitializeDependencies(IDataService dataService, IUIServiceProvider iuiSystem, Canvas mainCanvas)
     {
         _canvas = mainCanvas;
         _dataService = dataService;
@@ -83,14 +83,17 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         _mainCamera = Camera.main;
     }
 
-    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUISystem iuiSystem)
+    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUIServiceProvider uiServiceProvider)
     {
+        var popupsUIService = uiServiceProvider.GetService<PopupsUIService>();
+        var mainUIService = uiServiceProvider.GetService<MainUIService>();
+        
         switch (view)
         {
             case ComputerView:
-                return new ComputerViewModel(view, dataService, iuiSystem);
+                return new ComputerViewModel(view, dataService, popupsUIService, mainUIService);
             case ToiletView:
-                return new ToiletViewModel(view, dataService, iuiSystem);
+                return new ToiletViewModel(view, dataService, popupsUIService);
             case BedView:
                 break;
         }

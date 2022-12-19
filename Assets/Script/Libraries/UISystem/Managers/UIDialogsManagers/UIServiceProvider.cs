@@ -1,24 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 
 namespace Script.Libraries.UISystem.Managers.UIDialogsManagers
 {
-public abstract class UISystem : IUISystem
+public abstract class UIServiceProvider : IUIServiceProvider
 {
-    public UIViewModel CurrentMain => _mainUIManager.Current;
-    public UIViewModel CurrentFullScreen => _fullScreensManager.Current;
-    public UIViewModel CurrentPopup => _popupsManager.Current;
+    protected readonly List<IUIService> services = new();
 
-    private IDialogsManager _popupsManager;
-    private IDialogsManager _fullScreensManager;
-    private IDialogsManager _mainUIManager;
-
-    private IUIView _currentWindow;
-
-    public UISystem(
+    public UIServiceProvider(
         IInstantiater mainUIInstantiater,
         IInstantiater fullScreenUIInstantiater,
         IInstantiater popupsUIInstantiater,
@@ -27,29 +18,17 @@ public abstract class UISystem : IUISystem
         InitializeManagers(mainUIInstantiater, fullScreenUIInstantiater, popupsUIInstantiater, windows);
     }
 
-    public virtual UIViewModel Show(UIViewModel viewModel)
+    public T GetService<T>() where T : IUIService
     {
-        viewModel.InitializeUiManagers(_mainUIManager, _popupsManager, _fullScreensManager);
-        viewModel.ShowView();
+        foreach (var dialogsManager in services)
+        {
+            if (dialogsManager is T manager)
+            {
+                return manager;
+            }
+        }
 
-        return viewModel;
-    }
-
-    public virtual void Close(UIViewModel viewModel)
-    {
-        viewModel.CloseView();
-    }
-
-    public void CloseWindowsExceptMain()
-    {
-        _popupsManager.CloseAll();
-
-        _fullScreensManager.CloseAll();
-    }
-
-    public void CloseAllPopups()
-    {
-        _popupsManager.CloseAll();
+        throw new Exception($"Can't contains {typeof(T)} service");
     }
 
     private void InitializeManagers(
@@ -80,9 +59,13 @@ public abstract class UISystem : IUISystem
             }
         }
 
-        _popupsManager = new PopupsManager(popupsUIInstantiater, popupDialogs, this);
-        _fullScreensManager = new FullScreensManager(fullScreenUIInstantiater, fullScreenDialogs, this);
-        _mainUIManager = new MainUIManager(mainUIInstantiater, mainUIs, this);
+        var popupsUIService = new PopupsUIService(popupsUIInstantiater, popupDialogs);
+        var fullScreensUIService = new FullScreensUIService(fullScreenUIInstantiater, fullScreenDialogs, popupsUIService);
+        var mainUIService = new MainUIService(mainUIInstantiater, mainUIs, popupsUIService, fullScreensUIService);
+
+        services.Add(popupsUIService);
+        services.Add(fullScreensUIService);
+        services.Add(mainUIService);
     }
 }
 }

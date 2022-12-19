@@ -1,9 +1,7 @@
 ﻿using System;
 using Script.DataServices.Base;
-using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
-using Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup;
 using Script.UI.Dialogs.PopupDialogs.ToiletActionsPopup;
 using UnityEngine;
 
@@ -13,9 +11,9 @@ public class ToiletViewModel: IViewModel
 {
     private readonly ToiletModel _model;
     private readonly ToiletView _view;
-    private readonly IUISystem _iuiSystem;
+    private readonly PopupsUIService _popupsUIService;
 
-    public ToiletViewModel(IView view, IDataService playerCharacteristicsService, IUISystem iuiSystem)
+    public ToiletViewModel(IView view, IDataService playerCharacteristicsService, PopupsUIService popupsUIService)
     {
         if (view is not ToiletView toiletView)
         {
@@ -27,7 +25,7 @@ public class ToiletViewModel: IViewModel
         _view = toiletView;
         _view.InitializeModel(_model);
         
-        _iuiSystem = iuiSystem;
+        _popupsUIService = popupsUIService;
 
         SubscribeOnViewEvents();
         SubscribeOnModelEvents();
@@ -56,9 +54,10 @@ public class ToiletViewModel: IViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ToiletUIActionsViewModel();
-        _iuiSystem.CloseAllPopups();
-        _iuiSystem.Show(viewModel);
+        var viewModel = new ToiletIUIActionsViewModel(_popupsUIService);
+        
+        _popupsUIService.CloseAll();
+        _popupsUIService.Show<ToiletUIActionsView>(viewModel);
     }
 
     #endregion

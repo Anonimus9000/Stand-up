@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Script.Libraries.UISystem.Managers.UIWindowsLoader;
 using Script.Libraries.UISystem.UIWindow;
-using Script.UI.Dialogs.BaseDialogs;
+using Script.UI.Dialogs.BaseBehaviour;
 using UnityEngine;
 
 namespace Script.UI.UiWindowsLoader
@@ -26,7 +26,7 @@ public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
 
     public void LoadDialogs(string pathToLoad)
     {
-        var loadedWindows = Resources.LoadAll<MonoUiView>(pathToLoad);
+        var loadedWindows = Resources.LoadAll<UiViewBehaviour>(pathToLoad);
 
         _windows = new List<IUIView>(loadedWindows);
 

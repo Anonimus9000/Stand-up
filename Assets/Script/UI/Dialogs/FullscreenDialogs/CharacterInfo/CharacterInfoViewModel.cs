@@ -1,33 +1,51 @@
-﻿using Script.Libraries.UISystem.Managers.Instantiater;
+﻿using System;
+using Script.Libraries.UISystem.Managers.Instantiater;
+using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UiMVVM;
-using Script.UI.System;
-using NotImplementedException = System.NotImplementedException;
+using Script.Libraries.UISystem.UIWindow;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterInfo
 {
-public class CharacterInfoViewModel : UiViewModelBehaviour
+public class CharacterInfoViewModel : IUIViewModel
 {
+    public event Action<IUIViewModel> ViewShown;
+    public event Action<IUIViewModel> ViewHidden;
+    
     private CharacterInfoView _view;
     private readonly CharacterInfoModel _model;
+    private readonly IUIService _fullScreenService;
 
-    public CharacterInfoViewModel()
+    public CharacterInfoViewModel(IUIService fullScreensUIService)
     {
+        _fullScreenService = fullScreensUIService;
         _model = new CharacterInfoModel();
     }
-    
-    public override void ShowView()
+
+    public void ShowView(IUIView view)
     {
-        _view = fullScreensUiManager.Show<CharacterInfoView>(this);
+        _view = view as CharacterInfoView;
         
         SubscribeOnViewEvents(_view);
+        _view!.Show();
+        
+        ViewShown?.Invoke(this);
     }
 
-    public override void CloseView()
+    public void ShowHiddenView()
     {
-        fullScreensUiManager.TryCloseCurrent();
+        _view.Hide();
+        
+        ViewShown?.Invoke(this);
     }
 
-    public override IInstantiatable GetInstantiatable()
+    public void HideView()
+    {
+        _view.Show();
+        
+        ViewHidden?.Invoke(this);
+    }
+
+    public IInstantiatable GetInstantiatable()
     {
         return _view;
     }
@@ -39,7 +57,7 @@ public class CharacterInfoViewModel : UiViewModelBehaviour
 
     private void OnCloseButtonPressed()
     {
-        fullScreensUiManager.TryCloseCurrent();
+        _fullScreenService.CloseCurrentView();
     }
 }
 }
