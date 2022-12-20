@@ -12,19 +12,19 @@ public class CharacterCreationView: UiViewBehaviour, IFullScreen
     [SerializeField]
     private TextMeshProUGUI _nameField;
 
-    [SerializeField] private Image _characterLook;
+    [SerializeField] 
+    private RawImage _characterLook;
 
     [SerializeField]
     private Button _rightArrow;
 
     [SerializeField] 
     private Button _leftArrow;
-    
+
     public override event Action ViewShown;
     public override event Action ViewHidden;
 
     public event Action OnRightPressed;
-
     public event Action OnLeftPressed;
     
     public override void Show()
@@ -38,12 +38,12 @@ public class CharacterCreationView: UiViewBehaviour, IFullScreen
         _leftArrow.onClick.RemoveListener(LeftArrowButton);
         _rightArrow.onClick.RemoveListener(RightArrowButton);
     }
-    
-    public void SetCharacterLook(Sprite look)
-    {
-        _characterLook.sprite = look;
-    }
 
+    public void SetRendererCharacterTexture(Texture texture)
+    {
+        _characterLook.texture = texture;
+    }
+    
     public void DisableRightButton()
     {
         _rightArrow.interactable = false;

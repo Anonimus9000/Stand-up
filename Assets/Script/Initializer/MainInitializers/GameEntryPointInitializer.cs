@@ -33,6 +33,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     [SerializeField]
     private GameObject _homeGameObject;
 
+    [SerializeField]
+    private CharacterSelector _characterSelector;
+
     #endregion
 
     private SceneContainer _sceneContainer;
@@ -57,7 +60,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         _monoDependencyProvider.AddDependency(initializeDataServiceProvider);
         
-        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher, _characterCreationData);
+        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher, _characterCreationData, _characterSelector);
     }
 
     private IUIServiceProvider InitializeUISystem(ISceneSwitcher sceneSwitcher)
@@ -91,12 +94,12 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return logger;
     }
     
-    private void OpenApplicationEnterDotWindow(IUIServiceProvider uiServiceProvider, ISceneSwitcher sceneSwitcher, CharacterCreationData characterCreationData)
+    private void OpenApplicationEnterDotWindow(IUIServiceProvider uiServiceProvider, ISceneSwitcher sceneSwitcher, CharacterCreationData characterCreationData, CharacterSelector characterSelector)
     {
         var fullScreensUIService = uiServiceProvider.GetService<FullScreensUIService>();
         var mainUIService = uiServiceProvider.GetService<MainUIService>();
-        
-        var applicationEnterViewModel = new StartGameMenuViewModel(mainUIService, fullScreensUIService, sceneSwitcher, characterCreationData);
+
+        var applicationEnterViewModel = new StartGameMenuViewModel(mainUIService, fullScreensUIService, sceneSwitcher, characterCreationData, characterSelector);
         mainUIService.Show<StartGameMenuView>(applicationEnterViewModel);
     }
 }

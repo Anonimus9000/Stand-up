@@ -23,18 +23,21 @@ public class StartGameMenuViewModel : IUIViewModel
     private readonly IUIService _mainUIService;
     private readonly IUIService _fullScreenUIService;
     private readonly CharacterCreationData _characterData;
+    private CharacterSelector _characterSelector;
 
     public StartGameMenuViewModel(
         IUIService mainUIService,
         IUIService fullScreenUIServiceISceneSwitcher,
         ISceneSwitcher sceneSwitcher,
-        CharacterCreationData characterCreationData)
+        CharacterCreationData characterCreationData,
+        CharacterSelector characterSelector)
     {
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
         _mainUIService = mainUIService;
         _fullScreenUIService = fullScreenUIServiceISceneSwitcher;
         _model = new StartGameMenuEnterModel();
+        _characterSelector = characterSelector;
     }
 
     public void ShowView(IUIView view)
@@ -99,13 +102,13 @@ public class StartGameMenuViewModel : IUIViewModel
 
     private void OnCharacterCreationButtonPressed()
     {
-        var characterCreationViewModel = new CharacterCreationViewModel(_sceneSwitcher, _fullScreenUIService, _characterData.CharacterList);
+        var characterCreationViewModel = new CharacterCreationViewModel(_sceneSwitcher, _fullScreenUIService, _characterData.CharacterList, _characterSelector);
         _fullScreenUIService.Show<CharacterCreationView>(characterCreationViewModel);
     }
 
     private void OnStartButtonPressed()
     {
-        var homeUIViewModel = new HomeIuiViewModel(_sceneSwitcher, _mainUIService, _fullScreenUIService, _characterData);
+        var homeUIViewModel = new HomeIuiViewModel(_sceneSwitcher, _mainUIService, _fullScreenUIService, _characterData, _characterSelector);
         _mainUIService.Show<HomeUIView>(homeUIViewModel);
     }
 }

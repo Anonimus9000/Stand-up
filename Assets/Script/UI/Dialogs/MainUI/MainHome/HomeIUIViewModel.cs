@@ -20,16 +20,22 @@ public class HomeIuiViewModel : IUIViewModel
     private readonly IUIService _fullScreensUIService;
     private readonly IUIService _mainUiService;
     private readonly CharacterCreationData _characterData;
+    private CharacterSelector _characterSelector;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
-    public HomeIuiViewModel(ISceneSwitcher sceneSwitcher, IUIService mainUIService, IUIService fullScreenService, CharacterCreationData characterCreationData)
+    public HomeIuiViewModel(ISceneSwitcher sceneSwitcher, 
+        IUIService mainUIService, 
+        IUIService fullScreenService, 
+        CharacterCreationData characterCreationData, 
+        CharacterSelector characterSelector)
     {
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
         _mainUiService = mainUIService;
         _fullScreensUIService = fullScreenService;
         _model = new HomeUIModel();
+        _characterSelector = characterSelector;
     }
 
     public void ShowView(IUIView view)
@@ -118,7 +124,7 @@ public class HomeIuiViewModel : IUIViewModel
     private void OnOpenStartGameMenuButtonPressed()
     {
         _mainUiService.Show<StartGameMenuView>(new StartGameMenuViewModel(_mainUiService,
-            _fullScreensUIService, _sceneSwitcher, _characterData));
+            _fullScreensUIService, _sceneSwitcher, _characterData, _characterSelector));
     }
 
     private void OnOpenCharacterInfoButtonPressed()

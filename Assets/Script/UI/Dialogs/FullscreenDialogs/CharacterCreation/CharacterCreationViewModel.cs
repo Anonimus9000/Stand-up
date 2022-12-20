@@ -6,7 +6,9 @@ using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Container.Scenes;
 using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterCreation
 {
@@ -14,20 +16,26 @@ public class CharacterCreationViewModel : IUIViewModel
 {
     private readonly CharacterCreationModel _model;
     private CharacterCreationView _view;
-    private readonly List<Sprite> _characterCreationData;
+    private readonly List<GameObject> _characterCreationData;
     private readonly ISceneSwitcher _sceneSwitcher;
     private readonly IUIService _fullScreenUIService;
+    private CharacterSelector _characterSelector;
     
     public event Action<IUIViewModel> ViewShown;
     public event Action<IUIViewModel> ViewHidden;
 
 
-    public CharacterCreationViewModel(ISceneSwitcher sceneSwitcher, IUIService fullScreenUIService, List<Sprite> characterCreationData)
+    public CharacterCreationViewModel(
+        ISceneSwitcher sceneSwitcher, 
+        IUIService fullScreenUIService,
+        List<GameObject> characterCreationData,
+        CharacterSelector characterSelector)
     {
         _sceneSwitcher = sceneSwitcher;
         _characterCreationData = characterCreationData;
         _model = new CharacterCreationModel(characterCreationData);
         _fullScreenUIService = fullScreenUIService;
+        _characterSelector = characterSelector;
     }
     
     public void ShowView(IUIView view)
@@ -35,6 +43,9 @@ public class CharacterCreationViewModel : IUIViewModel
         _view = view as CharacterCreationView;
         _view!.Show();
         _sceneSwitcher.SwitchTo<MainMenuScene>();
+        
+        _view.SetRendererCharacterTexture(_characterSelector.RenderTexture);
+        
         SubscribeOnViewEvent(_view);
         SubscribeOnModelEvent(_model);
         SetStartSprite();
@@ -59,7 +70,7 @@ public class CharacterCreationViewModel : IUIViewModel
 
     private void SubscribeOnModelEvent(CharacterCreationModel model)
     {
-        model.OnSpriteChanged += SpriteChanged;
+        model.OnCharacterChanged += CharacterChanged;
         model.OnRightButtonDisabled += RightButtonDisabled;
         model.OnLeftButtonDisabled += LeftButtonDisabled;
         model.OnRightButtonEnabled += RightButtonEnabled;
@@ -74,7 +85,7 @@ public class CharacterCreationViewModel : IUIViewModel
     
     private void UnsubscribeOnModelEvent(CharacterCreationModel model)
     {
-        model.OnSpriteChanged -= SpriteChanged;
+        model.OnCharacterChanged -= CharacterChanged;
         model.OnRightButtonDisabled -= RightButtonDisabled;
         model.OnLeftButtonDisabled -= LeftButtonDisabled;
         model.OnRightButtonEnabled -= RightButtonEnabled;
@@ -122,9 +133,9 @@ public class CharacterCreationViewModel : IUIViewModel
         _view.DisableRightButton();
     }
 
-    private void SpriteChanged(Sprite look)
+    private void CharacterChanged(GameObject look)
     {
-        _view.SetCharacterLook(look);
+        _characterSelector.SetCharacter(look);
     }
 
 

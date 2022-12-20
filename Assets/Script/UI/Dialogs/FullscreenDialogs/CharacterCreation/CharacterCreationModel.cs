@@ -1,34 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using Script.Libraries.MVVM;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using UnityEngine;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterCreation
 {
 public class CharacterCreationModel:IModel
 {
-    private readonly List<Sprite> _characterList;
-    private int _currentSpriteIndex;
-
-    public event Action<Sprite> OnSpriteChanged;
-
+    public event Action<GameObject> OnCharacterChanged;
     public event Action OnRightButtonDisabled; 
     public event Action OnLeftButtonDisabled; 
     public event Action OnLeftButtonEnabled; 
     public event Action OnRightButtonEnabled; 
-    public CharacterCreationModel(List<Sprite> CharacterList)
+    
+    private readonly List<GameObject> _characterList;
+    private int _currentSpriteIndex;
+    
+    public CharacterCreationModel(List<GameObject> characterList)
     {
-        _characterList = CharacterList;
+        _characterList = characterList;
     }
 
     public void SetStartConditions()
     {
-        OnSpriteChanged?.Invoke(_characterList[0]);
+        OnCharacterChanged?.Invoke(_characterList[0]);
         OnLeftButtonDisabled?.Invoke();
     }
-    
-    
 
     public void SetNextSprite()
     {
@@ -37,7 +34,7 @@ public class CharacterCreationModel:IModel
             if (i == _currentSpriteIndex)
             {
                 OnLeftButtonEnabled?.Invoke();
-                OnSpriteChanged?.Invoke(_characterList[i+1]);
+                OnCharacterChanged?.Invoke(_characterList[i+1]);
                 _currentSpriteIndex = i + 1;
                 if (_currentSpriteIndex == 3)
                 {
@@ -55,7 +52,7 @@ public class CharacterCreationModel:IModel
             if (i == _currentSpriteIndex)
             {
                 OnRightButtonEnabled?.Invoke();
-                OnSpriteChanged?.Invoke(_characterList[i-1]);
+                OnCharacterChanged?.Invoke(_characterList[i-1]);
                 _currentSpriteIndex = i - 1;
                 if (_currentSpriteIndex == 0)
                 {
