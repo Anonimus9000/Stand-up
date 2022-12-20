@@ -48,6 +48,7 @@ public class CharacterCreationViewModel : IUIViewModel
         SubscribeOnModelEvent(_model);
         SetStartSprite();
     }
+    
 
     public void HideView()
     {

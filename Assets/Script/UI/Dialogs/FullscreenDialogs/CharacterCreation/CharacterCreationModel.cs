@@ -27,22 +27,22 @@ public class CharacterCreationModel:IModel
         OnSpriteChanged?.Invoke(_characterList[0]);
         OnLeftButtonDisabled?.Invoke();
     }
+    
+    
 
     public void SetNextSprite()
     {
         for (int i = 0; i < _characterList.Count; i++)
         {
-            if (i == _characterList.Count - 1)
-            {
-                OnRightButtonDisabled?.Invoke();
-                return;
-            }
-
             if (i == _currentSpriteIndex)
             {
                 OnLeftButtonEnabled?.Invoke();
                 OnSpriteChanged?.Invoke(_characterList[i+1]);
                 _currentSpriteIndex = i + 1;
+                if (_currentSpriteIndex == 3)
+                {
+                    OnRightButtonDisabled?.Invoke();
+                }
                 return;
             }
         }
@@ -52,17 +52,15 @@ public class CharacterCreationModel:IModel
     {
         for (int i = 0; i < _characterList.Count; i++)
         {
-            if (_currentSpriteIndex == 0)
-            {
-                OnLeftButtonDisabled?.Invoke();
-                return;
-            }
-            
             if (i == _currentSpriteIndex)
             {
                 OnRightButtonEnabled?.Invoke();
                 OnSpriteChanged?.Invoke(_characterList[i-1]);
                 _currentSpriteIndex = i - 1;
+                if (_currentSpriteIndex == 0)
+                {
+                    OnLeftButtonDisabled?.Invoke();
+                }
                 return;
             }
         }
