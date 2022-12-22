@@ -27,10 +27,6 @@ public class ComputerView : InteractableBase, IView
     public void InitializeModel(IModel model)
     {
         var camera = Camera.main;
-
-        //Instantiate(_progressBarImage, Canvas.transform);
-
-        //_uiFollower = new UiSpaceObjectFollower(_progressBarPosition, );
     }
 
     protected override void OnClick()
