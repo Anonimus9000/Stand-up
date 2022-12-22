@@ -5,6 +5,7 @@ using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Container.Scenes.Home;
 using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.Converter;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterInfo;
 using Script.UI.Dialogs.MainUI.StartGameMenu;
@@ -12,7 +13,7 @@ using UnityEngine;
 
 namespace Script.UI.Dialogs.MainUI.MainHome
 {
-public class HomeIuiViewModel : IUIViewModel
+public class HomeUIViewModel : IUIViewModel
 {
     private HomeUIView _view;
     private readonly HomeUIModel _model;
@@ -20,21 +21,24 @@ public class HomeIuiViewModel : IUIViewModel
     private readonly IUIService _fullScreensUIService;
     private readonly IUIService _mainUiService;
     private readonly CharacterCreationData _characterData;
-    private CharacterSelector _characterSelector;
+    private readonly CharacterSelector _characterSelector;
+    private readonly PositionsConverter _positionsConverter;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
-    public HomeIuiViewModel(ISceneSwitcher sceneSwitcher, 
+    public HomeUIViewModel(ISceneSwitcher sceneSwitcher, 
         IUIService mainUIService, 
         IUIService fullScreenService, 
         CharacterCreationData characterCreationData, 
-        CharacterSelector characterSelector)
+        CharacterSelector characterSelector, 
+        PositionsConverter positionsConverter)
     {
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
         _mainUiService = mainUIService;
         _fullScreensUIService = fullScreenService;
-        _model = new HomeUIModel();
+        _positionsConverter = positionsConverter;
+        _model = new HomeUIModel(_positionsConverter);
         _characterSelector = characterSelector;
     }
 
@@ -83,6 +87,13 @@ public class HomeIuiViewModel : IUIViewModel
         _view.ShowMoveBubble(startMovePosition, upgradePointsDifference);
     }
 
+    public void ShowProgressBar(float duration, Vector3 worldPosition)
+    {
+        var viewTransform = _view.transform as RectTransform;
+        var progressBarPosition = _model.GetScreenPointPositionByWorld(worldPosition, viewTransform);
+        _view.ShowProgressBar(duration, progressBarPosition);
+    }
+
     private void SubscribeOnModelEvents()
     {
         _model.UpgradePointsChanged += OnUpgradePointsChanged;
@@ -100,6 +111,7 @@ public class HomeIuiViewModel : IUIViewModel
         _view.OpenStartGameMenuButtonPressed += OnOpenStartGameMenuButtonPressed;
         _view.ViewShown += OnViewShown;
         _view.ViewHidden += OnViewHidden;
+        _view.ProgressCompleted += OnProgressBarCompleted;
     }
 
     private void UnsubscribeOnViewEvents()
@@ -109,6 +121,12 @@ public class HomeIuiViewModel : IUIViewModel
         _view.OpenStartGameMenuButtonPressed -= OnOpenStartGameMenuButtonPressed;
         _view.ViewShown -= OnViewShown;
         _view.ViewHidden -= OnViewHidden;
+        _view.ProgressCompleted -= OnProgressBarCompleted;
+    }
+
+    private void OnProgressBarCompleted()
+    {
+        _view.CloseProgressBar();
     }
 
     private void OnViewShown()
@@ -123,8 +141,14 @@ public class HomeIuiViewModel : IUIViewModel
 
     private void OnOpenStartGameMenuButtonPressed()
     {
-        _mainUiService.Show<StartGameMenuView>(new StartGameMenuViewModel(_mainUiService,
-            _fullScreensUIService, _sceneSwitcher, _characterData, _characterSelector));
+        _mainUiService.Show<StartGameMenuView>(
+            new StartGameMenuViewModel(
+                _mainUiService, 
+                _fullScreensUIService,
+                _sceneSwitcher, 
+                _characterData,
+                _characterSelector,
+                _positionsConverter));
     }
 
     private void OnOpenCharacterInfoButtonPressed()

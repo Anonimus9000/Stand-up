@@ -5,6 +5,7 @@ using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Container.Scenes;
 using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.Converter;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.MainUI.MainHome;
@@ -23,15 +24,18 @@ public class StartGameMenuViewModel : IUIViewModel
     private readonly IUIService _mainUIService;
     private readonly IUIService _fullScreenUIService;
     private readonly CharacterCreationData _characterData;
-    private CharacterSelector _characterSelector;
+    private readonly CharacterSelector _characterSelector;
+    private readonly PositionsConverter _positionsConverter;
 
     public StartGameMenuViewModel(
         IUIService mainUIService,
         IUIService fullScreenUIServiceISceneSwitcher,
         ISceneSwitcher sceneSwitcher,
         CharacterCreationData characterCreationData,
-        CharacterSelector characterSelector)
+        CharacterSelector characterSelector,
+        PositionsConverter positionsConverter)
     {
+        _positionsConverter = positionsConverter;
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
         _mainUIService = mainUIService;
@@ -108,7 +112,14 @@ public class StartGameMenuViewModel : IUIViewModel
 
     private void OnStartButtonPressed()
     {
-        var homeUIViewModel = new HomeIuiViewModel(_sceneSwitcher, _mainUIService, _fullScreenUIService, _characterData, _characterSelector);
+        var homeUIViewModel = new HomeUIViewModel(
+            _sceneSwitcher, 
+            _mainUIService, 
+            _fullScreenUIService, 
+            _characterData,
+            _characterSelector,
+            _positionsConverter);
+        
         _mainUIService.Show<HomeUIView>(homeUIViewModel);
     }
 }

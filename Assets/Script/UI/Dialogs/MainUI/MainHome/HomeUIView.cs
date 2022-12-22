@@ -30,6 +30,12 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     [SerializeField]
     private Transform _bubblesParent;
 
+    [SerializeField]
+    private ProgressBar _progressBarPrefab;
+
+    [SerializeField]
+    private Transform _progressBarParent;
+
     private IUIServiceProvider _serviceProvider;
     private FullScreensUIService _fullScreensUIService;
     private ISceneSwitcher _sceneSwitcher;
@@ -39,6 +45,7 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     public event Action<int> MoveBubbleCompleted;
     public event Action OpenStartGameMenuButtonPressed;
     public event Action OpenCharacterInfoButtonPressed;
+    public event Action ProgressCompleted; 
 
 
     public override void Show()
@@ -53,6 +60,19 @@ public class HomeUIView : UiViewBehaviour, IMainUI
         UnsubscribeOnEvents();
         
         ViewHidden?.Invoke();
+    }
+
+    public void ShowProgressBar(float duration, Vector2 screenPosition)
+    {
+        var progressBar = Instantiate(_progressBarPrefab, _progressBarParent);
+        progressBar.transform.position = screenPosition;
+        
+        progressBar.ShowProgress(duration);
+    }
+
+    public void CloseProgressBar()
+    {
+        _progressBarPrefab.HideProgressBar();
     }
 
     public void ShowMoveBubble(Vector3 startPosition, int bodyInfo)

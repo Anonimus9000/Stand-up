@@ -7,9 +7,12 @@ using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.SceneSwitcherSystem.Container;
 using Script.SceneSwitcherSystem.Switcher;
+using Script.UI.Converter;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.MainUI.StartGameMenu;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Serialization;
 using ILogger = Script.Libraries.Logger.LoggerBase.ILogger;
 
 namespace Script.Initializer.MainInitializers
@@ -36,6 +39,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
 
     [SerializeField]
     private CharacterSelector _characterSelector;
+
+    [SerializeField]
+    private Canvas _uiCanvas;
 
     #endregion
 
@@ -100,7 +106,16 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var fullScreensUIService = uiServiceProvider.GetService<FullScreensUIService>();
         var mainUIService = uiServiceProvider.GetService<MainUIService>();
 
-        var applicationEnterViewModel = new StartGameMenuViewModel(mainUIService, fullScreensUIService, sceneSwitcher, characterCreationData, characterSelector);
+        var positionsConverter = new PositionsConverter(_uiCanvas, Camera.main);
+        
+        var applicationEnterViewModel = 
+            new StartGameMenuViewModel(
+                mainUIService, 
+                fullScreensUIService,
+                sceneSwitcher, 
+                characterCreationData,
+                characterSelector,
+                positionsConverter);
         mainUIService.Show<StartGameMenuView>(applicationEnterViewModel);
     }
 }

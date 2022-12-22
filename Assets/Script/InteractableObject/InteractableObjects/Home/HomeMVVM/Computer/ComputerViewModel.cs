@@ -32,7 +32,6 @@ public class ComputerViewModel : IViewModel
         _model = new ComputerModel();
         
         _view = computerView;
-        _view.InitializeModel(_model);
         
         _popupsUIService = popupsUIService;
         _mainUIService = mainUIService;
@@ -67,14 +66,15 @@ public class ComputerViewModel : IViewModel
         var viewModel = new ComputerActionsIUIViewModel(_popupsUIService);
         _popupsUIService.Show<ComputerActionsUIView>(viewModel);
         
-        var homeUIViewModel = _mainUIService.CurrentUI as HomeIuiViewModel;
+        var homeUIViewModel = _mainUIService.CurrentUI as HomeUIViewModel;
         
         var applicationQuitTokenSource = new ApplicationQuitTokenSource();
         
         TestBubble(homeUIViewModel, applicationQuitTokenSource.Token);
+        homeUIViewModel.ShowProgressBar(5, _view.ProgressBarTransform.position);
     }
 
-    private async void TestBubble(HomeIuiViewModel viewModel, CancellationToken token)
+    private async void TestBubble(HomeUIViewModel viewModel, CancellationToken token)
     {
         while (true)
         {

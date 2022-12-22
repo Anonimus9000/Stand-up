@@ -23,7 +23,6 @@ public class ToiletViewModel: IViewModel
         _model = new ToiletModel();
         
         _view = toiletView;
-        _view.InitializeModel(_model);
         
         _popupsUIService = popupsUIService;
 

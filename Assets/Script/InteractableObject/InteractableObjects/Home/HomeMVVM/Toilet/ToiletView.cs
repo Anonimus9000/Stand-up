@@ -21,11 +21,6 @@ public class ToiletView : InteractableBase, IView
     private RectTransform _progressBar;
     private IUiFollower _uiFollower;
 
-    public void InitializeModel(IModel model)
-    {
-
-    }
-
     protected override void OnClick()
     {
         ObjectClicked?.Invoke();
