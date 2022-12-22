@@ -1,3 +1,4 @@
+using IngameDebugConsole;
 using Script.Initializer.Base;
 using Script.Initializer.MonoDependencyContainers;
 using Script.Initializer.StartApplicationDependenciesInitializers;

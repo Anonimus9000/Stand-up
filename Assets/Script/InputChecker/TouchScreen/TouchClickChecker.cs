@@ -5,71 +5,69 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace Script.InputChecker.MouseKeyboard
+namespace Script.InputChecker.TouchScreen
 {
-public class MouseClickChecker : IObjectClickChecker
+// ReSharper disable once UnusedType.Global
+public class TouchClickChecker : IObjectClickChecker
 {
-    public bool IsBlockedByUI { get; }
-    public event Action ObjectClicked;
-
+    private readonly Collider _trackCollider;
     private readonly Camera _mainCamera;
     private readonly InputAction _mouseClickInputAction;
-    private readonly Collider _trackCollider;
-
-    public MouseClickChecker(Camera mainCamera, InputAction mouseClickInputAction, Collider trackCollider,
-        bool isU = true)
+    public bool IsBlockedByUI { get; }
+    public event Action ObjectClicked;
+    
+    public TouchClickChecker(
+        Camera mainCamera, 
+        InputAction mouseClickInputAction,
+        Collider trackCollider,
+        bool isBlockByUI = true)
     {
-        IsBlockedByUI = isU;
+        IsBlockedByUI = isBlockByUI;
         _trackCollider = trackCollider;
         _mainCamera = mainCamera;
         _mouseClickInputAction = mouseClickInputAction;
     }
-
-    public void Activate()
-    {
-        _mouseClickInputAction.performed += OnMouseInputPerformed;
-    }
-
-    public void Deactivate()
-    {
-        _mouseClickInputAction.performed -= OnMouseInputPerformed;
-    }
-
     public void OnObjectClicked()
     {
         ObjectClicked?.Invoke();
     }
 
-    private void OnMouseInputPerformed(InputAction.CallbackContext context)
+    public void Activate()
     {
-        if (IsBlocked())
+        _mouseClickInputAction.performed += OnTouch;
+    }
+
+    public void Deactivate()
+    {
+        _mouseClickInputAction.performed -= OnTouch;
+    }
+
+    private void OnTouch(InputAction.CallbackContext context)
+    {
+        Debug.Log("OnMouseInputPerformed");
+
+        if (IsUIBlock())
         {
             return;
         }
 
-        var screenPointToRay = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Debug.Log("Screen to point ray");
+        var screenPointToRay = _mainCamera.ScreenPointToRay(context.ReadValue<Vector2>());
 
         if (Physics.Raycast(ray: screenPointToRay, hitInfo: out var hit) && hit.collider)
-         {
+        {
             if (hit.collider == _trackCollider)
             {
                 OnObjectClicked();
             }
         }
     }
-
-    private bool IsBlocked()
-    {
-        var isBlocked = IsUIBlock();
-
-        return isBlocked;
-    }
-
+    
     private bool IsUIBlock()
     {
         if (!IsBlockedByUI) return false;
         
-        var isPointerOverGameObject = IsPointerOverUIObject() || EventSystem.current.IsPointerOverGameObject();
+        var isPointerOverGameObject = IsPointerOverUIObject();
         
         return isPointerOverGameObject;
     }

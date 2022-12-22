@@ -28,7 +28,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
             ""id"": ""1f3344f5-c7e6-425c-8a07-88968979f91e"",
             ""actions"": [
                 {
-                    ""name"": ""Mouse"",
+                    ""name"": ""LeftButtonMousePress"",
                     ""type"": ""Button"",
                     ""id"": ""9b7fa326-f251-4d2c-93d7-3adb18fc19e9"",
                     ""expectedControlType"": ""Button"",
@@ -45,7 +45,55 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Mouse"",
+                    ""action"": ""LeftButtonMousePress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""TochScreen"",
+            ""id"": ""2d37f190-5a7a-40ef-b22b-0bd97d1a301b"",
+            ""actions"": [
+                {
+                    ""name"": ""SingleTouch"",
+                    ""type"": ""Value"",
+                    ""id"": ""8ce98c89-647e-4080-b3a2-4711bb4f9d01"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MultiTouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""423e45b5-a541-4a58-a8ba-4233e4220b30"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ca53541d-e9c8-4c84-bbe7-d0572b6620fc"",
+                    ""path"": ""<Touchscreen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SingleTouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a9ae8bb-208a-4662-87a5-b9f2a5c37a6d"",
+                    ""path"": ""<Touchscreen>/touch*/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MultiTouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -56,7 +104,11 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
 }");
         // MouseKeyboard
         m_MouseKeyboard = asset.FindActionMap("MouseKeyboard", throwIfNotFound: true);
-        m_MouseKeyboard_Mouse = m_MouseKeyboard.FindAction("Mouse", throwIfNotFound: true);
+        m_MouseKeyboard_LeftButtonMousePress = m_MouseKeyboard.FindAction("LeftButtonMousePress", throwIfNotFound: true);
+        // TochScreen
+        m_TochScreen = asset.FindActionMap("TochScreen", throwIfNotFound: true);
+        m_TochScreen_SingleTouch = m_TochScreen.FindAction("SingleTouch", throwIfNotFound: true);
+        m_TochScreen_MultiTouch = m_TochScreen.FindAction("MultiTouch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -116,12 +168,12 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
     // MouseKeyboard
     private readonly InputActionMap m_MouseKeyboard;
     private IMouseKeyboardActions m_MouseKeyboardActionsCallbackInterface;
-    private readonly InputAction m_MouseKeyboard_Mouse;
+    private readonly InputAction m_MouseKeyboard_LeftButtonMousePress;
     public struct MouseKeyboardActions
     {
         private @InputControls m_Wrapper;
         public MouseKeyboardActions(@InputControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Mouse => m_Wrapper.m_MouseKeyboard_Mouse;
+        public InputAction @LeftButtonMousePress => m_Wrapper.m_MouseKeyboard_LeftButtonMousePress;
         public InputActionMap Get() { return m_Wrapper.m_MouseKeyboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -131,22 +183,68 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_MouseKeyboardActionsCallbackInterface != null)
             {
-                @Mouse.started -= m_Wrapper.m_MouseKeyboardActionsCallbackInterface.OnMouse;
-                @Mouse.performed -= m_Wrapper.m_MouseKeyboardActionsCallbackInterface.OnMouse;
-                @Mouse.canceled -= m_Wrapper.m_MouseKeyboardActionsCallbackInterface.OnMouse;
+                @LeftButtonMousePress.started -= m_Wrapper.m_MouseKeyboardActionsCallbackInterface.OnLeftButtonMousePress;
+                @LeftButtonMousePress.performed -= m_Wrapper.m_MouseKeyboardActionsCallbackInterface.OnLeftButtonMousePress;
+                @LeftButtonMousePress.canceled -= m_Wrapper.m_MouseKeyboardActionsCallbackInterface.OnLeftButtonMousePress;
             }
             m_Wrapper.m_MouseKeyboardActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Mouse.started += instance.OnMouse;
-                @Mouse.performed += instance.OnMouse;
-                @Mouse.canceled += instance.OnMouse;
+                @LeftButtonMousePress.started += instance.OnLeftButtonMousePress;
+                @LeftButtonMousePress.performed += instance.OnLeftButtonMousePress;
+                @LeftButtonMousePress.canceled += instance.OnLeftButtonMousePress;
             }
         }
     }
     public MouseKeyboardActions @MouseKeyboard => new MouseKeyboardActions(this);
+
+    // TochScreen
+    private readonly InputActionMap m_TochScreen;
+    private ITochScreenActions m_TochScreenActionsCallbackInterface;
+    private readonly InputAction m_TochScreen_SingleTouch;
+    private readonly InputAction m_TochScreen_MultiTouch;
+    public struct TochScreenActions
+    {
+        private @InputControls m_Wrapper;
+        public TochScreenActions(@InputControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SingleTouch => m_Wrapper.m_TochScreen_SingleTouch;
+        public InputAction @MultiTouch => m_Wrapper.m_TochScreen_MultiTouch;
+        public InputActionMap Get() { return m_Wrapper.m_TochScreen; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TochScreenActions set) { return set.Get(); }
+        public void SetCallbacks(ITochScreenActions instance)
+        {
+            if (m_Wrapper.m_TochScreenActionsCallbackInterface != null)
+            {
+                @SingleTouch.started -= m_Wrapper.m_TochScreenActionsCallbackInterface.OnSingleTouch;
+                @SingleTouch.performed -= m_Wrapper.m_TochScreenActionsCallbackInterface.OnSingleTouch;
+                @SingleTouch.canceled -= m_Wrapper.m_TochScreenActionsCallbackInterface.OnSingleTouch;
+                @MultiTouch.started -= m_Wrapper.m_TochScreenActionsCallbackInterface.OnMultiTouch;
+                @MultiTouch.performed -= m_Wrapper.m_TochScreenActionsCallbackInterface.OnMultiTouch;
+                @MultiTouch.canceled -= m_Wrapper.m_TochScreenActionsCallbackInterface.OnMultiTouch;
+            }
+            m_Wrapper.m_TochScreenActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SingleTouch.started += instance.OnSingleTouch;
+                @SingleTouch.performed += instance.OnSingleTouch;
+                @SingleTouch.canceled += instance.OnSingleTouch;
+                @MultiTouch.started += instance.OnMultiTouch;
+                @MultiTouch.performed += instance.OnMultiTouch;
+                @MultiTouch.canceled += instance.OnMultiTouch;
+            }
+        }
+    }
+    public TochScreenActions @TochScreen => new TochScreenActions(this);
     public interface IMouseKeyboardActions
     {
-        void OnMouse(InputAction.CallbackContext context);
+        void OnLeftButtonMousePress(InputAction.CallbackContext context);
+    }
+    public interface ITochScreenActions
+    {
+        void OnSingleTouch(InputAction.CallbackContext context);
+        void OnMultiTouch(InputAction.CallbackContext context);
     }
 }

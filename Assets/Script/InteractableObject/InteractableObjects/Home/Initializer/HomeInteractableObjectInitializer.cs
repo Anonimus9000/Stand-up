@@ -5,6 +5,9 @@ using Script.Initializer;
 using Script.Initializer.Base;
 using Script.InputChecker.Base;
 using Script.InputChecker.MouseKeyboard;
+#if UNITY_ANDROID
+using Script.InputChecker.TouchScreen;
+#endif
 using Script.InteractableObject.Base;
 using Script.InteractableObject.InteractableObjects.Container.Containers;
 using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Bed;
@@ -73,7 +76,12 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
 
     private IObjectClickChecker GetInteractableClickChecker(Collider clickAreaCollider)
     {
-        return new MouseClickChecker(_mainCamera, _inputControls.MouseKeyboard.Mouse, clickAreaCollider);
+ #if UNITY_EDITOR
+         return new MouseLeftClickChecker(_mainCamera, _inputControls.MouseKeyboard.LeftButtonMousePress,
+             clickAreaCollider);
+#elif UNITY_ANDROID
+        return new TouchClickChecker(_mainCamera, _inputControls.TochScreen.SingleTouch, clickAreaCollider);
+#endif
     }
 
     private void InitializeInputControls()

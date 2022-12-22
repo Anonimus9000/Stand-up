@@ -6,7 +6,7 @@
             "id": "1f3344f5-c7e6-425c-8a07-88968979f91e",
             "actions": [
                 {
-                    "name": "Mouse",
+                    "name": "LeftButtonMousePress",
                     "type": "Button",
                     "id": "9b7fa326-f251-4d2c-93d7-3adb18fc19e9",
                     "expectedControlType": "Button",
@@ -23,7 +23,55 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Mouse",
+                    "action": "LeftButtonMousePress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "TochScreen",
+            "id": "2d37f190-5a7a-40ef-b22b-0bd97d1a301b",
+            "actions": [
+                {
+                    "name": "SingleTouch",
+                    "type": "Value",
+                    "id": "8ce98c89-647e-4080-b3a2-4711bb4f9d01",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MultiTouch",
+                    "type": "Button",
+                    "id": "423e45b5-a541-4a58-a8ba-4233e4220b30",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ca53541d-e9c8-4c84-bbe7-d0572b6620fc",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SingleTouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a9ae8bb-208a-4662-87a5-b9f2a5c37a6d",
+                    "path": "<Touchscreen>/touch*/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MultiTouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
