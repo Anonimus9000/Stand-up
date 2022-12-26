@@ -16,6 +16,7 @@ using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Toilet;
 using Script.Libraries.MVVM;
 using Script.Libraries.Observer.DataObserver;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.UI.Dialogs.PopupDialogs.Components;
 using UnityEngine;
 
 namespace Script.InteractableObject.InteractableObjects.Home.Initializer
@@ -32,12 +33,14 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
     private IDataService _dataService;
     private IUIServiceProvider _iuiSystem;
     private Canvas _canvas;
+    private InteractableObjectsData _interactableObjectsData;
 
-    public void InitializeDependencies(IDataService dataService, IUIServiceProvider iuiSystem, Canvas mainCanvas)
+    public void InitializeDependencies(IDataService dataService, IUIServiceProvider iuiSystem, Canvas mainCanvas, InteractableObjectsData interactableObjectsData)
     {
         _canvas = mainCanvas;
         _dataService = dataService;
         _iuiSystem = iuiSystem;
+        _interactableObjectsData = interactableObjectsData;
     }
 
     public IInitializable Initialize()
@@ -64,7 +67,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
 
             if (interactableObject is IView interactableView)
             {
-                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService, _iuiSystem);
+                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService, _iuiSystem, _interactableObjectsData);
                 _viewModels.Add(viewModel);
             }
             else
@@ -91,7 +94,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         _mainCamera = Camera.main;
     }
 
-    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUIServiceProvider uiServiceProvider)
+    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUIServiceProvider uiServiceProvider, InteractableObjectsData interactableObjectsData)
     {
         var popupsUIService = uiServiceProvider.GetService<PopupsUIService>();
         var mainUIService = uiServiceProvider.GetService<MainUIService>();
@@ -99,7 +102,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         switch (view)
         {
             case ComputerView:
-                return new ComputerViewModel(view, dataService, popupsUIService, mainUIService);
+                return new ComputerViewModel(view, dataService, popupsUIService, mainUIService, interactableObjectsData);
             case ToiletView:
                 return new ToiletViewModel(view, dataService, popupsUIService);
             case BedView:

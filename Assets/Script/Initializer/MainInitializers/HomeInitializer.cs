@@ -5,6 +5,7 @@ using Script.InteractableObject.InteractableObjects.Home.Initializer;
 using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
+using Script.UI.Dialogs.PopupDialogs.Components;
 using UnityEngine;
 
 namespace Script.Initializer.MainInitializers
@@ -19,6 +20,8 @@ public class HomeInitializer : MonoBehaviour, IInitializer
 
     [SerializeField]
     private Canvas _mainCanvas;
+
+    [SerializeField] private InteractableObjectsData _interactableObjectsData; 
 
     private IServiceProvider _serviceProvider;
 
@@ -43,7 +46,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     private void InitializeHomeInteractableObjects(IUIServiceProvider iuiSystem)
     {
         var dataService = _serviceProvider.GetService<IDataService>();
-        _homeInteractableObjectInitializer.InitializeDependencies(dataService, iuiSystem, _mainCanvas);
+        _homeInteractableObjectInitializer.InitializeDependencies(dataService, iuiSystem, _mainCanvas, _interactableObjectsData);
         var interactableViewModelsContainer = _homeInteractableObjectInitializer.Initialize();
     }
 }

@@ -1347,7 +1347,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 747873695166442745, guid: 31fabcc315354fb4b8d60cc59bfa253f, type: 3}
       propertyPath: m_text
-      value: Appearence
+      value: Appearance
       objectReference: {fileID: 0}
     - target: {fileID: 1935204645131862887, guid: 31fabcc315354fb4b8d60cc59bfa253f, type: 3}
       propertyPath: m_Sprite

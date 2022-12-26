@@ -5,6 +5,7 @@ using Script.DataServices.Base;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.MainUI.MainHome;
+using Script.UI.Dialogs.PopupDialogs.Components;
 using Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup;
 using Script.Utils.ThreadUtils;
 using UnityEngine;
@@ -18,11 +19,13 @@ public class ComputerViewModel : IViewModel
     private readonly ComputerView _view;
     private readonly IUIService _popupsUIService;
     private readonly IUIService _mainUIService;
+    private readonly InteractableObjectsData _interactableObjectsData;
 
     public ComputerViewModel(IView view,
         IDataService playerCharacteristicsService,
         IUIService popupsUIService, 
-        IUIService mainUIService)
+        IUIService mainUIService,
+        InteractableObjectsData interactableObjectsData)
     {
         if (view is not ComputerView computerView)
         {
@@ -35,6 +38,7 @@ public class ComputerViewModel : IViewModel
         
         _popupsUIService = popupsUIService;
         _mainUIService = mainUIService;
+        _interactableObjectsData = interactableObjectsData;
 
         SubscribeOnViewEvents();
         SubscribeOnModelEvents();
@@ -63,7 +67,7 @@ public class ComputerViewModel : IViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ComputerActionsIUIViewModel(_popupsUIService);
+        var viewModel = new ComputerActionsIUIViewModel(_popupsUIService, _interactableObjectsData.InteractableObjects[0]); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
         _popupsUIService.Show<ComputerActionsUIView>(viewModel);
         
         var homeUIViewModel = _mainUIService.CurrentUI as HomeUIViewModel;

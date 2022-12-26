@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.BaseBehaviour;
+using Script.UI.Dialogs.PopupDialogs.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,14 +13,35 @@ public class ComputerActionsUIView : UiViewBehaviour, IPopup
     [SerializeField]
     private Button _closeButton;
 
+    [SerializeField] private ActionFieldsSetter _actionFieldsSetter;
+    [SerializeField] private Transform _actionTransform;
+    
+
     public event Action OnClosePressed;
 
     public override event Action ViewShown;
     public override event Action ViewHidden;
 
-    public override void Show()
+
+
+    public void Init(List<ActionField> fields)
     {
+        foreach (var actionField in fields)
+        {
+            var actionFieldsSetter = Instantiate(_actionFieldsSetter, _actionTransform);
+            actionFieldsSetter.Init(actionField.ActionTitle, actionField.ActionRewards);
+        }
+    }
+    
+    public override void Show()
+    { 
         _closeButton.onClick.AddListener(CloseButton);
+
+    }
+
+    public void SetWriteActionData()
+    {
+       
     }
 
     public override void Hide()

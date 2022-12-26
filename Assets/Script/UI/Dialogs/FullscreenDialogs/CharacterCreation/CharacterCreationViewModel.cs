@@ -45,7 +45,7 @@ public class CharacterCreationViewModel : IUIViewModel
         _sceneSwitcher.SwitchTo<MainMenuScene>();
         
         _view.SetRendererCharacterTexture(_characterSelector.RenderTexture);
-        
+
         SubscribeOnViewEvent(_view);
         SubscribeOnModelEvent(_model);
         SetStartSprite();

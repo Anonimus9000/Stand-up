@@ -3,6 +3,8 @@ using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Dialogs.PopupDialogs.Components;
+using UnityEngine;
 
 namespace Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup
 {
@@ -14,10 +16,13 @@ public class ComputerActionsIUIViewModel : IUIViewModel
     private ComputerActionsUIView _view;
     private readonly ComputerActionsModel _model;
     private readonly IUIService _popupUIService;
+    private readonly PCActionData _pcActionData;
+    private ActionFieldsSetter _actionFieldsSetter;
 
-    public ComputerActionsIUIViewModel(IUIService popupUIService)
+    public ComputerActionsIUIViewModel(IUIService popupUIService, ScriptableObject pcActionData)
     {
         _popupUIService = popupUIService;
+        _pcActionData = pcActionData as PCActionData;
         _model = new ComputerActionsModel();
     }
 
@@ -29,8 +34,10 @@ public class ComputerActionsIUIViewModel : IUIViewModel
         }
 
         _view = computerActionsUIView;
-        _view.Show();
         
+        _view.Show();
+        _view.Init(_pcActionData.ActionFields);
+
         SubscribeOnViewEvents(_view);
 
         ViewShown?.Invoke(this);
