@@ -4,39 +4,40 @@ using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.PopupDialogs.Components;
+using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
 using UnityEngine;
 
-namespace Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup
+namespace Script.UI.Dialogs.PopupDialogs.ActionsPopup
 {
-public class ComputerActionsIUIViewModel : IUIViewModel
+public class ActionsIuiViewModel : IUIViewModel
 {
     public event Action<IUIViewModel> ViewShown;
     public event Action<IUIViewModel> ViewHidden;
     
-    private ComputerActionsUIView _view;
-    private readonly ComputerActionsModel _model;
+    private ActionsUIView _view;
+    private readonly ActionsModel _model;
     private readonly IUIService _popupUIService;
-    private readonly PCActionData _pcActionData;
+    private readonly ActionData _actionData;
     private ActionFieldsSetter _actionFieldsSetter;
 
-    public ComputerActionsIUIViewModel(IUIService popupUIService, ScriptableObject pcActionData)
+    public ActionsIuiViewModel(IUIService popupUIService, ActionData actionData)
     {
         _popupUIService = popupUIService;
-        _pcActionData = pcActionData as PCActionData;
-        _model = new ComputerActionsModel();
+        _actionData = actionData;
+        _model = new ActionsModel();
     }
 
     public void ShowView(IUIView view)
     {
-        if (view is not ComputerActionsUIView computerActionsUIView)
+        if (view is not ActionsUIView ActionsUIView)
         {
-            throw new Exception($"Incorrect type {view.GetType()}; Need {typeof(ComputerActionsUIView)}");
+            throw new Exception($"Incorrect type {view.GetType()}; Need {typeof(ActionsUIView)}");
         }
 
-        _view = computerActionsUIView;
+        _view = ActionsUIView;
         
         _view.Show();
-        _view.Init(_pcActionData.ActionFields);
+        _view.Init(_actionData.ActionFields);
 
         SubscribeOnViewEvents(_view);
 
@@ -65,12 +66,12 @@ public class ComputerActionsIUIViewModel : IUIViewModel
         return _view;
     }
 
-    private void SubscribeOnViewEvents(ComputerActionsUIView view)
+    private void SubscribeOnViewEvents(ActionsUIView view)
     {
         view.OnClosePressed += OnCloseButtonPressed;
     }
 
-    private void UnsubscribeInViewEvents(ComputerActionsUIView view)
+    private void UnsubscribeInViewEvents(ActionsUIView view)
     {
         view.OnClosePressed -= OnCloseButtonPressed;
     }

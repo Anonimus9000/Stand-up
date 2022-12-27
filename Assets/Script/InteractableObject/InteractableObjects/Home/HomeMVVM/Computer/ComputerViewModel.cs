@@ -5,8 +5,9 @@ using Script.DataServices.Base;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.MainUI.MainHome;
+using Script.UI.Dialogs.PopupDialogs.ActionsPopup;
 using Script.UI.Dialogs.PopupDialogs.Components;
-using Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup;
+using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
 using Script.Utils.ThreadUtils;
 using UnityEngine;
 using Random = System.Random;
@@ -67,8 +68,8 @@ public class ComputerViewModel : IViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ComputerActionsIUIViewModel(_popupsUIService, _interactableObjectsData.InteractableObjects[0]); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
-        _popupsUIService.Show<ComputerActionsUIView>(viewModel);
+        var viewModel = new ActionsIuiViewModel(_popupsUIService, _interactableObjectsData.InteractableObjects[0]); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
+        _popupsUIService.Show<ActionsUIView>(viewModel);
         
         var homeUIViewModel = _mainUIService.CurrentUI as HomeUIViewModel;
         

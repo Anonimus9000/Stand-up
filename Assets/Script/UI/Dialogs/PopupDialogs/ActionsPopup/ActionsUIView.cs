@@ -6,9 +6,9 @@ using Script.UI.Dialogs.PopupDialogs.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Script.UI.Dialogs.PopupDialogs.ComputerActionsPopup
+namespace Script.UI.Dialogs.PopupDialogs.ActionsPopup
 {
-public class ComputerActionsUIView : UiViewBehaviour, IPopup
+public class ActionsUIView : UiViewBehaviour, IPopup
 {
     [SerializeField]
     private Button _closeButton;
@@ -29,7 +29,7 @@ public class ComputerActionsUIView : UiViewBehaviour, IPopup
         foreach (var actionField in fields)
         {
             var actionFieldsSetter = Instantiate(_actionFieldsSetter, _actionTransform);
-            actionFieldsSetter.Init(actionField.ActionTitle, actionField.ActionRewards);
+            actionFieldsSetter.Init(actionField.ActionIcon,actionField.ActionTitle, actionField.ActionRewards);
         }
     }
     
@@ -38,11 +38,7 @@ public class ComputerActionsUIView : UiViewBehaviour, IPopup
         _closeButton.onClick.AddListener(CloseButton);
 
     }
-
-    public void SetWriteActionData()
-    {
-       
-    }
+    
 
     public override void Hide()
     {

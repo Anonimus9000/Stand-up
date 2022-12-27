@@ -3,6 +3,9 @@ using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Dialogs.PopupDialogs.Components;
+using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
+using UnityEngine;
 
 namespace Script.UI.Dialogs.PopupDialogs.ToiletActionsPopup
 {
@@ -14,8 +17,10 @@ public class ToiletIUIActionsViewModel : IUIViewModel
     private ToiletUIActionsView _view;
     private readonly ToiletUIActionsModel _model;
     private readonly PopupsUIService _popupService;
+    private readonly ToiletActionData _pcActionData;
+    private ActionFieldsSetter _actionFieldsSetter;
 
-    public ToiletIUIActionsViewModel(PopupsUIService popupsUIService)
+    public ToiletIUIActionsViewModel(PopupsUIService popupsUIService, ScriptableObject toiletActionData)
     {
         _popupService = popupsUIService;
         _model = new ToiletUIActionsModel();

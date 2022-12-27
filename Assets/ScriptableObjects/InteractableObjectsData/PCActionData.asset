@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6a9908bda64afa82fb1ebb9af43bb4, type: 3}
   m_Name: PCActionData
   m_EditorClassIdentifier: 
-  <ActionFields>k__BackingField:
+  _actionFields:
   - ActionTitle: Write some jokes
+    ActionIcon: {fileID: 21300000, guid: e3d7fbbfc88f0014e9669d2aab050189, type: 3}
     ActionTime: 30
     ActionRewards:
     - RewardValue: 5
@@ -21,6 +22,7 @@ MonoBehaviour:
     - RewardValue: 10
       RewardTitle: 5
   - ActionTitle: Watch standup
+    ActionIcon: {fileID: 21300000, guid: 47e6045a64cf05640a9e03eabd722b88, type: 3}
     ActionTime: 30
     ActionRewards:
     - RewardValue: 5
@@ -29,7 +31,8 @@ MonoBehaviour:
       RewardTitle: 1
     - RewardValue: -5
       RewardTitle: 5
-  - ActionTitle: Study comedy literature
+  - ActionTitle: Read comedy literature
+    ActionIcon: {fileID: 21300000, guid: 62e5d13df67b04c4997738337d610a74, type: 3}
     ActionTime: 30
     ActionRewards:
     - RewardValue: 5

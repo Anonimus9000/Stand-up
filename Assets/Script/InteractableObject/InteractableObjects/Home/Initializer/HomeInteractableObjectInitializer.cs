@@ -17,6 +17,7 @@ using Script.Libraries.MVVM;
 using Script.Libraries.Observer.DataObserver;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.PopupDialogs.Components;
+using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
 using UnityEngine;
 
 namespace Script.InteractableObject.InteractableObjects.Home.Initializer
@@ -104,7 +105,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
             case ComputerView:
                 return new ComputerViewModel(view, dataService, popupsUIService, mainUIService, interactableObjectsData);
             case ToiletView:
-                return new ToiletViewModel(view, dataService, popupsUIService);
+                return new ToiletViewModel(view, dataService, popupsUIService, interactableObjectsData);
             case BedView:
                 break;
         }

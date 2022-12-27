@@ -6,6 +6,7 @@ using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.PopupDialogs.Components;
+using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
 using UnityEngine;
 
 namespace Script.Initializer.MainInitializers
