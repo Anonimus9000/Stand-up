@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: ToiletActionData
   m_EditorClassIdentifier: 
   _actionFields:
-  - ActionTitle: Cry
-    ActionIcon: {fileID: 21300000, guid: 48753d9eb2e5c984787f08eaa2c75049, type: 3}
-    ActionTime: 30
-    ActionRewards:
-    - RewardValue: -15
-      RewardTitle: 5
-    - RewardValue: -5
-      RewardTitle: 4
-  - ActionTitle: Beat the meat
-    ActionIcon: {fileID: 21300000, guid: d0cb6ef6469232c4790ef0b6254d8328, type: 3}
-    ActionTime: 30
-    ActionRewards:
-    - RewardValue: -10
-      RewardTitle: 5
+  - _actionTitle: Cry
+    _actionIcon: {fileID: 21300000, guid: 48753d9eb2e5c984787f08eaa2c75049, type: 3}
+    _actionTime: 30
+    _actionRewards:
+    - _rewardValue: -25
+      _rewardTitle: 5
+    - _rewardValue: -5
+      _rewardTitle: 4
+  - _actionTitle: Beat the meat
+    _actionIcon: {fileID: 21300000, guid: d0cb6ef6469232c4790ef0b6254d8328, type: 3}
+    _actionTime: 30
+    _actionRewards:
+    - _rewardValue: -10
+      _rewardTitle: 5

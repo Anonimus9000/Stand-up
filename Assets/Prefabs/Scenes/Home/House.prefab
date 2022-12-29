@@ -367,6 +367,7 @@ MonoBehaviour:
   _homeInteractableObjectInitializer: {fileID: 7215098200774677632}
   _monoDependencyContainers: {fileID: 11400000, guid: 6a8dc2b2e6827b54184c96fc1a9cfd35, type: 2}
   _mainCanvas: {fileID: 0}
+  _interactableObjectsData: {fileID: 0}
 --- !u!1 &2688219413911233880
 GameObject:
   m_ObjectHideFlags: 0
@@ -4658,9 +4659,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2473ef9a01a24301b57b137f0ce60273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _progressBarTransform: {fileID: 0}
   _clickTrackCollider: {fileID: 222086620443044930}
   _progressBarPosition: {fileID: 0}
   _progressBarImage: {fileID: 0}
+  Position: {x: 0, y: 0, z: 0}
 --- !u!114 &4556845675120397704 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 901360558660099544, guid: daa0d59953cf2fe489f3256b3222dde6, type: 3}

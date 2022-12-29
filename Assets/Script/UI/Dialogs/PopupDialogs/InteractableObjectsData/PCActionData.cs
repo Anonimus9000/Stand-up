@@ -10,9 +10,9 @@ namespace Script.UI.Dialogs.PopupDialogs.InteractableObjectsData
 public class PCActionData : ActionData
 {
     [FormerlySerializedAs("ActionFields")]
-    [SerializeField] private List<ActionField> _actionFields;
+    [SerializeField] private List<ActionFieldContent> _actionFields;
 
-    public override List<ActionField> ActionFields => _actionFields;
+    public override List<ActionFieldContent> ActionFields => _actionFields;
 
 }
 }

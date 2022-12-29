@@ -31,6 +31,7 @@ Transform:
   m_Children:
   - {fileID: 2717344208105261669}
   - {fileID: 5012227892382157321}
+  - {fileID: 528396663062392640}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,9 +47,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2473ef9a01a24301b57b137f0ce60273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _progressBarTransform: {fileID: 528396663062392640}
   _clickTrackCollider: {fileID: 3506737040714103826}
-  _progressBarPosition: {fileID: 0}
+  _progressBarPosition: {fileID: 528396663062392640}
   _progressBarImage: {fileID: 0}
+--- !u!1 &4765695506797992286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 528396663062392640}
+  m_Layer: 0
+  m_Name: ProgressBarPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &528396663062392640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4765695506797992286}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.702, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3290418652345044661}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4986883659739322748
 GameObject:
   m_ObjectHideFlags: 0

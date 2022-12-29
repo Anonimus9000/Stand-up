@@ -6,7 +6,7 @@ namespace Script.UI.Dialogs.PopupDialogs.InteractableObjectsData
 {
 public abstract class ActionData : ScriptableObject
 {
-    public abstract List<ActionField> ActionFields { get; }
+    public abstract List<ActionFieldContent> ActionFields { get; }
     
 }
 }

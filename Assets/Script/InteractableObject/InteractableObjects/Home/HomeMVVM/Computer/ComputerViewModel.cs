@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Script.DataServices.Base;
+using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.MainUI.MainHome;
@@ -18,15 +19,15 @@ public class ComputerViewModel : IViewModel
 {
     private readonly ComputerModel _model;
     private readonly ComputerView _view;
-    private readonly IUIService _popupsUIService;
-    private readonly IUIService _mainUIService;
+    private readonly IUIServiceProvider _serviceProvider;
     private readonly InteractableObjectsData _interactableObjectsData;
+    private readonly ActionProgressHandler _actionProgressHandler;
 
     public ComputerViewModel(IView view,
         IDataService playerCharacteristicsService,
-        IUIService popupsUIService, 
-        IUIService mainUIService,
-        InteractableObjectsData interactableObjectsData)
+        IUIServiceProvider serviceProvider, 
+        InteractableObjectsData interactableObjectsData,
+        ActionProgressHandler actionProgressHandler)
     {
         if (view is not ComputerView computerView)
         {
@@ -37,9 +38,9 @@ public class ComputerViewModel : IViewModel
         
         _view = computerView;
         
-        _popupsUIService = popupsUIService;
-        _mainUIService = mainUIService;
+        _serviceProvider = serviceProvider;
         _interactableObjectsData = interactableObjectsData;
+        _actionProgressHandler = actionProgressHandler;
 
         SubscribeOnViewEvents();
         SubscribeOnModelEvents();
@@ -68,10 +69,13 @@ public class ComputerViewModel : IViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ActionsIuiViewModel(_popupsUIService, _interactableObjectsData.InteractableObjects[0]); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
-        _popupsUIService.Show<ActionsUIView>(viewModel);
+        var viewModel = new ActionsUIViewModel(_serviceProvider, _interactableObjectsData.InteractableObjects[0], _actionProgressHandler, _view.ProgressBarTransform.position); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
+        var popupsUIService = _serviceProvider.GetService<PopupsUIService>();
+        popupsUIService.Show<ActionsUIView>(viewModel);
         
-        var homeUIViewModel = _mainUIService.CurrentUI as HomeUIViewModel;
+        var mainUIService = _serviceProvider.GetService<MainUIService>();
+        
+        var homeUIViewModel = mainUIService.CurrentUI as HomeUIViewModel;
         
         var applicationQuitTokenSource = new ApplicationQuitTokenSource();
         

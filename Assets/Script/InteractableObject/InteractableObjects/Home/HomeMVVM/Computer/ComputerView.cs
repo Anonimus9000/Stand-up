@@ -11,7 +11,12 @@ public class ComputerView : InteractableBase, IView
     [SerializeField]
     private Collider _clickTrackCollider;
 
+    [SerializeField] private Transform _progressBarTransformPosition;
+
+    public Transform ProgressBarTransform => _progressBarTransformPosition;
+
     public override Collider ClickTrackCollider => _clickTrackCollider;
+
     public override event Action ObjectClicked;
 
     private IUiFollower _uiFollower;

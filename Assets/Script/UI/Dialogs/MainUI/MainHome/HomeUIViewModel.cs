@@ -1,4 +1,5 @@
 ﻿using System;
+using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UiMVVM;
@@ -9,6 +10,7 @@ using Script.UI.Converter;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterInfo;
 using Script.UI.Dialogs.MainUI.StartGameMenu;
+using Script.UI.Dialogs.PopupDialogs.Components;
 using UnityEngine;
 
 namespace Script.UI.Dialogs.MainUI.MainHome
@@ -23,6 +25,7 @@ public class HomeUIViewModel : IUIViewModel
     private readonly CharacterCreationData _characterData;
     private readonly CharacterSelector _characterSelector;
     private readonly PositionsConverter _positionsConverter;
+    private readonly ActionProgressHandler _actionProgressHandler;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
@@ -31,7 +34,8 @@ public class HomeUIViewModel : IUIViewModel
         IUIService fullScreenService, 
         CharacterCreationData characterCreationData, 
         CharacterSelector characterSelector, 
-        PositionsConverter positionsConverter)
+        PositionsConverter positionsConverter,
+        ActionProgressHandler actionProgressHandler)
     {
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
@@ -40,6 +44,7 @@ public class HomeUIViewModel : IUIViewModel
         _positionsConverter = positionsConverter;
         _model = new HomeUIModel(_positionsConverter);
         _characterSelector = characterSelector;
+        _actionProgressHandler = actionProgressHandler;
     }
 
     public void ShowView(IUIView view)
@@ -148,7 +153,8 @@ public class HomeUIViewModel : IUIViewModel
                 _sceneSwitcher, 
                 _characterData,
                 _characterSelector,
-                _positionsConverter));
+                _positionsConverter,
+                _actionProgressHandler));
     }
 
     private void OnOpenCharacterInfoButtonPressed()

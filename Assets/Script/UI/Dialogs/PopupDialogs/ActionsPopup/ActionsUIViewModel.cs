@@ -1,30 +1,43 @@
 ﻿using System;
+using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Dialogs.MainUI.MainHome;
 using Script.UI.Dialogs.PopupDialogs.Components;
 using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
 using UnityEngine;
 
 namespace Script.UI.Dialogs.PopupDialogs.ActionsPopup
 {
-public class ActionsIuiViewModel : IUIViewModel
+public class ActionsUIViewModel : IUIViewModel
 {
     public event Action<IUIViewModel> ViewShown;
     public event Action<IUIViewModel> ViewHidden;
     
     private ActionsUIView _view;
     private readonly ActionsModel _model;
-    private readonly IUIService _popupUIService;
+    private readonly IUIService _popupService;
+    private readonly MainUIService _mainUiService;
     private readonly ActionData _actionData;
-    private ActionFieldsSetter _actionFieldsSetter;
+    private ActionFields _actionFields;
+    private HomeUIViewModel _homeUIViewModel;
+    private readonly ActionProgressHandler _actionProgressHandler;
+    private readonly Vector3 _position;
 
-    public ActionsIuiViewModel(IUIService popupUIService, ActionData actionData)
+    public ActionsUIViewModel(
+        IUIServiceProvider serviceProvider,
+        ActionData actionData,
+        ActionProgressHandler actionProgressHandler,
+        Vector3 position)
     {
-        _popupUIService = popupUIService;
+        _popupService = serviceProvider.GetService<PopupsUIService>();
+        _mainUiService = serviceProvider.GetService<MainUIService>();
         _actionData = actionData;
         _model = new ActionsModel();
+        _actionProgressHandler = actionProgressHandler;
+        _position = position;
     }
 
     public void ShowView(IUIView view)
@@ -37,7 +50,7 @@ public class ActionsIuiViewModel : IUIViewModel
         _view = ActionsUIView;
         
         _view.Show();
-        _view.Init(_actionData.ActionFields);
+        _view.Init(_actionData.ActionFields, _mainUiService, _actionProgressHandler, _position);
 
         SubscribeOnViewEvents(_view);
 
@@ -78,7 +91,9 @@ public class ActionsIuiViewModel : IUIViewModel
 
     private void OnCloseButtonPressed()
     {
-        _popupUIService.CloseCurrentView();
+        _popupService.CloseCurrentView();
     }
+
+   
 }
 }

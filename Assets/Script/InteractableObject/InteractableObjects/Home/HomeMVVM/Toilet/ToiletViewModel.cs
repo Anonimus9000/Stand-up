@@ -1,5 +1,6 @@
 ﻿using System;
 using Script.DataServices.Base;
+using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.UI.Dialogs.PopupDialogs.ActionsPopup;
@@ -13,13 +14,15 @@ public class ToiletViewModel: IViewModel
 {
     private readonly ToiletModel _model;
     private readonly ToiletView _view;
-    private readonly PopupsUIService _popupsUIService;
+    private readonly IUIServiceProvider _uiServiceProvider;
     private readonly InteractableObjectsData _interactableObjectsData;
+    private readonly ActionProgressHandler _actionProgressHandler;
 
     public ToiletViewModel(IView view, 
         IDataService playerCharacteristicsService, 
-        PopupsUIService popupsUIService,
-        InteractableObjectsData interactableObjectsData)
+        IUIServiceProvider uiServiceProvider,
+        InteractableObjectsData interactableObjectsData,
+        ActionProgressHandler actionProgressHandler)
     {
         if (view is not ToiletView toiletView)
         {
@@ -30,9 +33,10 @@ public class ToiletViewModel: IViewModel
         
         _view = toiletView;
         
-        _popupsUIService = popupsUIService;
+        _uiServiceProvider = uiServiceProvider;
         
         _interactableObjectsData = interactableObjectsData;
+        _actionProgressHandler = actionProgressHandler;
 
         SubscribeOnViewEvents();
         SubscribeOnModelEvents();
@@ -61,10 +65,11 @@ public class ToiletViewModel: IViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ActionsIuiViewModel(_popupsUIService, _interactableObjectsData.InteractableObjects[1]);
+        var popupsUIService = _uiServiceProvider.GetService<PopupsUIService>();
+        var viewModel = new ActionsUIViewModel(_uiServiceProvider, _interactableObjectsData.InteractableObjects[1], _actionProgressHandler, _view.ProgressBarPosition.position);
         
-        _popupsUIService.CloseAll();
-        _popupsUIService.Show<ActionsUIView>(viewModel);
+        popupsUIService.CloseAll();
+        popupsUIService.Show<ActionsUIView>(viewModel);
     }
 
     #endregion

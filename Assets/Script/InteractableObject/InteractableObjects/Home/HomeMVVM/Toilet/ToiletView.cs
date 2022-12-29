@@ -16,6 +16,7 @@ public class ToiletView : InteractableBase, IView
     [SerializeField] private Image _progressBarImage;
 
     public override Collider ClickTrackCollider => _clickTrackCollider;
+    public Transform ProgressBarPosition => _progressBarPosition;
     public override event Action ObjectClicked;
 
     private RectTransform _progressBar;

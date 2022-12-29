@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Script.DataServices.Base;
 using Script.Initializer;
 using Script.Initializer.Base;
+using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.InputChecker.Base;
 using Script.InputChecker.MouseKeyboard;
 #if UNITY_ANDROID
@@ -35,13 +36,20 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
     private IUIServiceProvider _iuiSystem;
     private Canvas _canvas;
     private InteractableObjectsData _interactableObjectsData;
+    private ActionProgressHandler _actionProgressHandler;
 
-    public void InitializeDependencies(IDataService dataService, IUIServiceProvider iuiSystem, Canvas mainCanvas, InteractableObjectsData interactableObjectsData)
+    public void InitializeDependencies(
+        IDataService dataService, 
+        IUIServiceProvider iuiSystem,
+        Canvas mainCanvas,
+        InteractableObjectsData interactableObjectsData,
+        ActionProgressHandler actionProgressHandler)
     {
         _canvas = mainCanvas;
         _dataService = dataService;
         _iuiSystem = iuiSystem;
         _interactableObjectsData = interactableObjectsData;
+        _actionProgressHandler = actionProgressHandler;
     }
 
     public IInitializable Initialize()
@@ -68,7 +76,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
 
             if (interactableObject is IView interactableView)
             {
-                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService, _iuiSystem, _interactableObjectsData);
+                var viewModel = InitializeViewModelByViewAndGet(interactableView, _dataService, _iuiSystem, _interactableObjectsData, _actionProgressHandler);
                 _viewModels.Add(viewModel);
             }
             else
@@ -95,7 +103,12 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         _mainCamera = Camera.main;
     }
 
-    private IViewModel InitializeViewModelByViewAndGet(IView view, IDataService dataService, IUIServiceProvider uiServiceProvider, InteractableObjectsData interactableObjectsData)
+    private IViewModel InitializeViewModelByViewAndGet(
+        IView view, 
+        IDataService dataService, 
+        IUIServiceProvider uiServiceProvider, 
+        InteractableObjectsData interactableObjectsData,
+        ActionProgressHandler actionProgressHandler)
     {
         var popupsUIService = uiServiceProvider.GetService<PopupsUIService>();
         var mainUIService = uiServiceProvider.GetService<MainUIService>();
@@ -103,9 +116,9 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
         switch (view)
         {
             case ComputerView:
-                return new ComputerViewModel(view, dataService, popupsUIService, mainUIService, interactableObjectsData);
+                return new ComputerViewModel(view, dataService, uiServiceProvider, interactableObjectsData, actionProgressHandler);
             case ToiletView:
-                return new ToiletViewModel(view, dataService, popupsUIService, interactableObjectsData);
+                return new ToiletViewModel(view, dataService, uiServiceProvider, interactableObjectsData, actionProgressHandler);
             case BedView:
                 break;
         }

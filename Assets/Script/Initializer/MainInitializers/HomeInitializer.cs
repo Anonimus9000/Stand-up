@@ -1,6 +1,7 @@
 ﻿using Script.DataServices.Base;
 using Script.Initializer.Base;
 using Script.Initializer.MonoDependencyContainers;
+using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.InteractableObject.InteractableObjects.Home.Initializer;
 using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
@@ -25,6 +26,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     [SerializeField] private InteractableObjectsData _interactableObjectsData; 
 
     private IServiceProvider _serviceProvider;
+    private ActionProgressHandler _actionProgressHandler;
 
     public void Initialize()
     {
@@ -35,7 +37,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     {
         var uiManager = _monoDependencyContainers.GetDependency<IUIServiceProvider>();
         InitializeServiceProvider();
-        
+        _actionProgressHandler = new ActionProgressHandler();
         InitializeHomeInteractableObjects(uiManager);
     }
 
@@ -47,7 +49,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     private void InitializeHomeInteractableObjects(IUIServiceProvider iuiSystem)
     {
         var dataService = _serviceProvider.GetService<IDataService>();
-        _homeInteractableObjectInitializer.InitializeDependencies(dataService, iuiSystem, _mainCanvas, _interactableObjectsData);
+        _homeInteractableObjectInitializer.InitializeDependencies(dataService, iuiSystem, _mainCanvas, _interactableObjectsData, _actionProgressHandler);
         var interactableViewModelsContainer = _homeInteractableObjectInitializer.Initialize();
     }
 }

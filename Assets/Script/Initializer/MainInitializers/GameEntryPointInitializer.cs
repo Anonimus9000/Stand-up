@@ -33,6 +33,8 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     [SerializeField] 
     private CharacterCreationData _characterCreationData;
 
+    [SerializeField] private ActionProgressHandler _actionProgressHandler;
+
     //TODO: replace
     [SerializeField]
     private GameObject _homeGameObject;
@@ -67,7 +69,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         _monoDependencyProvider.AddDependency(initializeDataServiceProvider);
         
-        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher, _characterCreationData, _characterSelector);
+        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher, _characterCreationData, _characterSelector, _actionProgressHandler);
     }
 
     private IUIServiceProvider InitializeUISystem(ISceneSwitcher sceneSwitcher)
@@ -101,7 +103,12 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return logger;
     }
     
-    private void OpenApplicationEnterDotWindow(IUIServiceProvider uiServiceProvider, ISceneSwitcher sceneSwitcher, CharacterCreationData characterCreationData, CharacterSelector characterSelector)
+    private void OpenApplicationEnterDotWindow(
+        IUIServiceProvider uiServiceProvider, 
+        ISceneSwitcher sceneSwitcher, 
+        CharacterCreationData characterCreationData, 
+        CharacterSelector characterSelector,
+        ActionProgressHandler actionProgressHandler)
     {
         var fullScreensUIService = uiServiceProvider.GetService<FullScreensUIService>();
         var mainUIService = uiServiceProvider.GetService<MainUIService>();
@@ -115,7 +122,8 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
                 sceneSwitcher, 
                 characterCreationData,
                 characterSelector,
-                positionsConverter);
+                positionsConverter,
+                actionProgressHandler);
         mainUIService.Show<StartGameMenuView>(applicationEnterViewModel);
     }
 }

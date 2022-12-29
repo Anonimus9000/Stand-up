@@ -1,4 +1,5 @@
 ﻿using System;
+using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UIDialogsManagers;
 using Script.Libraries.UISystem.UiMVVM;
@@ -26,6 +27,7 @@ public class StartGameMenuViewModel : IUIViewModel
     private readonly CharacterCreationData _characterData;
     private readonly CharacterSelector _characterSelector;
     private readonly PositionsConverter _positionsConverter;
+    private readonly ActionProgressHandler _actionProgressHandler;
 
     public StartGameMenuViewModel(
         IUIService mainUIService,
@@ -33,7 +35,8 @@ public class StartGameMenuViewModel : IUIViewModel
         ISceneSwitcher sceneSwitcher,
         CharacterCreationData characterCreationData,
         CharacterSelector characterSelector,
-        PositionsConverter positionsConverter)
+        PositionsConverter positionsConverter,
+        ActionProgressHandler actionProgressHandler)
     {
         _positionsConverter = positionsConverter;
         _characterData = characterCreationData;
@@ -42,6 +45,7 @@ public class StartGameMenuViewModel : IUIViewModel
         _fullScreenUIService = fullScreenUIServiceISceneSwitcher;
         _model = new StartGameMenuEnterModel();
         _characterSelector = characterSelector;
+        _actionProgressHandler = actionProgressHandler;
     }
 
     public void ShowView(IUIView view)
@@ -118,7 +122,8 @@ public class StartGameMenuViewModel : IUIViewModel
             _fullScreenUIService, 
             _characterData,
             _characterSelector,
-            _positionsConverter);
+            _positionsConverter,
+            _actionProgressHandler);
         
         _mainUIService.Show<HomeUIView>(homeUIViewModel);
     }

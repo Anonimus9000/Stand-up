@@ -80,6 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _progressBarTransform: {fileID: 6832286963503753562}
   _clickTrackCollider: {fileID: 4653584279182320858}
+  _progressBarTransformPosition: {fileID: 6832286963503753562}
 --- !u!1 &3640115815117156710
 GameObject:
   m_ObjectHideFlags: 0

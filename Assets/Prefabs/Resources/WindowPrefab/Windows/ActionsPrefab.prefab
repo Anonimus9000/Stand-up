@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _closeButton: {fileID: 3831109859086022338}
-  _actionFieldsSetter: {fileID: 3446284692689155705, guid: 22c46bc0806e6c74b85f8acb77d70744, type: 3}
+  _actionFieldPrefab: {fileID: 3446284692689155705, guid: 22c46bc0806e6c74b85f8acb77d70744, type: 3}
   _actionTransform: {fileID: 3377820511488281928}
 --- !u!114 &7509186820373609815
 MonoBehaviour:

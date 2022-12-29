@@ -6,13 +6,16 @@ namespace Script.UI.Dialogs.PopupDialogs.Components
 [Serializable]
 public class ActionRewardConstructor
 {
-    public float RewardValue;
-    public CharacteristicsEnum RewardTitle;
+    [SerializeField] private float _rewardValue;
+    [SerializeField] private CharacteristicsEnum _rewardTitle;
+
+    public float RewardValue => _rewardValue;
+    public CharacteristicsEnum RewardTitle => _rewardTitle;
 
     public ActionRewardConstructor(float rewardValue, CharacteristicsEnum rewardTitle)
     {
-        RewardValue = rewardValue;
-        RewardTitle = rewardTitle;
+        _rewardValue = rewardValue;
+        _rewardTitle = rewardTitle;
     }
 }
 }

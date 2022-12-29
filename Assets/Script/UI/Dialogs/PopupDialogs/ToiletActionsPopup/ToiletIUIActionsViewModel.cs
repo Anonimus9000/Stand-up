@@ -18,7 +18,7 @@ public class ToiletIUIActionsViewModel : IUIViewModel
     private readonly ToiletUIActionsModel _model;
     private readonly PopupsUIService _popupService;
     private readonly ToiletActionData _pcActionData;
-    private ActionFieldsSetter _actionFieldsSetter;
+    private ActionFields _actionFields;
 
     public ToiletIUIActionsViewModel(PopupsUIService popupsUIService, ScriptableObject toiletActionData)
     {
