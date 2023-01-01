@@ -1,7 +1,8 @@
 ﻿using System;
-using Script.Initializer.StartApplicationDependenciesInitializers;
+using Script.InteractableObject.ActionProgressSystem;
 using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Container.Scenes;
@@ -18,7 +19,7 @@ public class StartGameMenuViewModel : IUIViewModel
 {
     public event Action<IUIViewModel> ViewShown;
     public event Action<IUIViewModel> ViewHidden;
-    
+
     private StartGameMenuEnterModel _model;
     private StartGameMenuView _view;
     private readonly ISceneSwitcher _sceneSwitcher;
@@ -27,7 +28,9 @@ public class StartGameMenuViewModel : IUIViewModel
     private readonly CharacterCreationData _characterData;
     private readonly CharacterSelector _characterSelector;
     private readonly PositionsConverter _positionsConverter;
-    private readonly ActionProgressHandler _actionProgressHandler;
+
+    private readonly HomeActionProgressHandler _homeActionProgressHandler;
+    private IAnimatorService _animatorService;
 
     public StartGameMenuViewModel(
         IUIService mainUIService,
@@ -36,7 +39,7 @@ public class StartGameMenuViewModel : IUIViewModel
         CharacterCreationData characterCreationData,
         CharacterSelector characterSelector,
         PositionsConverter positionsConverter,
-        ActionProgressHandler actionProgressHandler)
+        HomeActionProgressHandler homeActionProgressHandler)
     {
         _positionsConverter = positionsConverter;
         _characterData = characterCreationData;
@@ -45,49 +48,58 @@ public class StartGameMenuViewModel : IUIViewModel
         _fullScreenUIService = fullScreenUIServiceISceneSwitcher;
         _model = new StartGameMenuEnterModel();
         _characterSelector = characterSelector;
-        _actionProgressHandler = actionProgressHandler;
+        _homeActionProgressHandler = homeActionProgressHandler;
     }
 
-    public void ShowView(IUIView view)
+    public void Init(IUIView view, IAnimatorService animatorService)
     {
-        _sceneSwitcher.SwitchTo<MainMenuScene>();
-
         if (view is not StartGameMenuView startGameMenuView)
         {
             throw new Exception($"Incorrect type {view.GetType()}; Need {typeof(StartGameMenuView)}");
         }
 
         _view = startGameMenuView;
+        _animatorService = animatorService;
         
-        _view.Show();
+        SubscribeOnAnimatorEvents(_animatorService);
+        SubscribeOnViewEvent(_view);;
+    }
+
+    public void Deinit()
+    {
+        UnsubscribeOnViewEvent(_view);
+        UnsubscribeOnAnimatorEvents(_animatorService);
+    }
+
+    public void ShowView()
+    {
+        _sceneSwitcher.SwitchTo<MainMenuScene>();
         
-        ViewShown?.Invoke(this);
-        
-        SubscribeOnViewEvent(_view);
+        _animatorService.StartShowAnimation(_view);
     }
 
     public void ShowHiddenView()
     {
-        _view.Show();
-        
-        ViewHidden?.Invoke(this);
-        
-        SubscribeOnViewEvent(_view);
+        _animatorService.StartShowAnimation(_view);
     }
 
     public void HideView()
     {
-        _view.Hide();
-        
-        ViewHidden?.Invoke(this);
-        
-        UnsubscribeOnViewEvent(_view);
+        _animatorService.StartHideAnimation(_view);
     }
-    
+
     public IInstantiatable GetInstantiatable()
     {
         return _view;
     }
+
+    #region ModelEvents
+
+    
+
+    #endregion
+
+    #region ViewEvents
 
     private void SubscribeOnViewEvent(StartGameMenuView menuView)
     {
@@ -95,37 +107,70 @@ public class StartGameMenuViewModel : IUIViewModel
         menuView.QuitPressed += OnQuitButtonPressed;
         menuView.CharacterCreationButtonPressed += OnCharacterCreationButtonPressed;
     }
-    
+
     private void UnsubscribeOnViewEvent(StartGameMenuView menuView)
     {
         menuView.StartPressed -= OnStartButtonPressed;
         menuView.QuitPressed -= OnQuitButtonPressed;
         menuView.CharacterCreationButtonPressed -= OnCharacterCreationButtonPressed;
     }
-
-    private void OnQuitButtonPressed()
-    {
-        Application.Quit();
-    }
-
+    
     private void OnCharacterCreationButtonPressed()
     {
-        var characterCreationViewModel = new CharacterCreationViewModel(_sceneSwitcher, _fullScreenUIService, _characterData.CharacterList, _characterSelector);
+        var characterCreationViewModel = new CharacterCreationViewModel(_sceneSwitcher, _fullScreenUIService,
+            _characterData.CharacterList, _characterSelector);
         _fullScreenUIService.Show<CharacterCreationView>(characterCreationViewModel);
     }
 
     private void OnStartButtonPressed()
     {
         var homeUIViewModel = new HomeUIViewModel(
-            _sceneSwitcher, 
-            _mainUIService, 
-            _fullScreenUIService, 
+            _sceneSwitcher,
+            _mainUIService,
+            _fullScreenUIService,
             _characterData,
             _characterSelector,
             _positionsConverter,
-            _actionProgressHandler);
-        
+            _homeActionProgressHandler);
+
         _mainUIService.Show<HomeUIView>(homeUIViewModel);
     }
+    
+    private void OnQuitButtonPressed()
+    {
+        Application.Quit();
+    }
+
+    #endregion
+
+    #region AnimatorEvents
+
+    private void SubscribeOnAnimatorEvents(IAnimatorService animatorService)
+    {
+        animatorService.ShowCompleted += OnAnimationShowCompleted;
+        animatorService.HideCompleted += OnAnimationHideCompleted;
+    }
+
+    private void UnsubscribeOnAnimatorEvents(IAnimatorService animatorService)
+    {
+        animatorService.ShowCompleted -= OnAnimationShowCompleted;
+        animatorService.HideCompleted -= OnAnimationHideCompleted;
+    }
+
+    private void OnAnimationShowCompleted()
+    {
+        _view.OnShown();
+
+        ViewShown?.Invoke(this);
+    }
+
+    private void OnAnimationHideCompleted()
+    {
+        _view.OnHidden();
+        
+        ViewHidden?.Invoke(this);
+    }
+
+    #endregion
 }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Script.Initializer.StartApplicationDependenciesInitializers;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.InteractableObject.ActionProgressSystem;
+using Script.Libraries.UISystem.Managers.UiServiceProvider;
 using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.BaseBehaviour;
-using Script.UI.Dialogs.MainUI.MainHome;
-using Script.UI.Dialogs.PopupDialogs.Components;
+using Script.UI.Dialogs.PopupDialogs.ActionsPopup.Components;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.PopupDialogs.ActionsPopup
@@ -17,50 +15,46 @@ public class ActionsUIView : UiViewBehaviour, IPopup
     [SerializeField]
     private Button _closeButton;
 
-    [FormerlySerializedAs("_actionFields")] [FormerlySerializedAs("_actionFieldsSetter")] [SerializeField] private ActionFields _actionFieldPrefab;
-    [SerializeField] private Transform _actionTransform;
+    [SerializeField]
+    private ActionFieldItemView _actionFieldItemViewPrefab;
+
+    [SerializeField]
+    private Transform _actionTransform;
+
+    public event Action ClosePressed;
     
-    public event Action OnClosePressed;
-    public override event Action ViewShown;
-    public override event Action ViewHidden;
-
-
-
     public void Init(
-        List<ActionFieldContent> fields,
+        List<ActionFieldData> fields,
         MainUIService mainUIService,
-        ActionProgressHandler actionProgressHandler,
-        Vector3 position) 
+        HomeActionProgressHandler homeActionProgressHandler,
+        Vector3 position)
     {
         foreach (var actionField in fields)
         {
-            var actionFields = Instantiate(_actionFieldPrefab, _actionTransform);
+            var actionFields = Instantiate(_actionFieldItemViewPrefab, _actionTransform);
             actionFields.Init(actionField.ActionIcon,
                 actionField.ActionTitle,
                 actionField.ActionRewards,
                 actionField.ActionTime,
                 mainUIService,
-                actionProgressHandler,
+                homeActionProgressHandler,
                 position);
         }
     }
-    
-    public override void Show()
-    { 
+
+    public override void OnShown()
+    {
         _closeButton.onClick.AddListener(CloseButton);
-
     }
-    
 
-
-    public override void Hide()
+    public override void OnHidden()
     {
         _closeButton.onClick.RemoveListener(CloseButton);
     }
 
     private void CloseButton()
     {
-        OnClosePressed?.Invoke();
+        ClosePressed?.Invoke();
     }
 }
 }

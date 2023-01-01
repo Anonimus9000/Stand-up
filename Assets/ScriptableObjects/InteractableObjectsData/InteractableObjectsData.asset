@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3940274355964f5fa5c221a6fb81899d, type: 3}
   m_Name: InteractableObjectsData
   m_EditorClassIdentifier: 
-  <InteractableObjects>k__BackingField:
-  - {fileID: 11400000, guid: cb84dc41c3ac0554da42cfcbbf0e1115, type: 2}
-  - {fileID: 11400000, guid: 37c60fad3e5704f47b132bd2631938ee, type: 2}
+  _computerLocationActionData: {fileID: 11400000, guid: cb84dc41c3ac0554da42cfcbbf0e1115, type: 2}
+  _toiletLocationActionData: {fileID: 11400000, guid: 37c60fad3e5704f47b132bd2631938ee, type: 2}

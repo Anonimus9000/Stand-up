@@ -1,14 +1,11 @@
-﻿using System;
-using Script.Libraries.UISystem.Managers.Instantiater;
+﻿using Script.Libraries.UISystem.Managers.Instantiater;
+using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base;
 
 namespace Script.Libraries.UISystem.UIWindow
 {
-public interface IUIView : IInstantiatable
+public interface IUIView : IInstantiatable, IAnimatable
 {
-    event Action ViewShown;
-    event Action ViewHidden;
-    
-    void Show();
-    void Hide();
+    void OnShown();
+    void OnHidden();
 }
 }

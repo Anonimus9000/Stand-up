@@ -1,5 +1,6 @@
 ﻿using System;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.Libraries.UISystem.Managers.UiServiceProvider;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.BaseBehaviour;
@@ -40,26 +41,20 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     private FullScreensUIService _fullScreensUIService;
     private ISceneSwitcher _sceneSwitcher;
 
-    public override event Action ViewShown;
-    public override event Action ViewHidden;
     public event Action<int> MoveBubbleCompleted;
     public event Action OpenStartGameMenuButtonPressed;
     public event Action OpenCharacterInfoButtonPressed;
     public event Action ProgressCompleted; 
 
 
-    public override void Show()
+    public override void OnShown()
     {
         SubscribeOnEvents();
-        
-        ViewShown?.Invoke();
     }
 
-    public override void Hide()
+    public override void OnHidden()
     {
         UnsubscribeOnEvents();
-        
-        ViewHidden?.Invoke();
     }
 
     public void ShowProgressBar(float duration, Vector2 screenPosition)

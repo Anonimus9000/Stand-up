@@ -1,7 +1,9 @@
 ﻿using System;
 using Script.Initializer.StartApplicationDependenciesInitializers;
+using Script.InteractableObject.ActionProgressSystem;
 using Script.Libraries.UISystem.Managers.Instantiater;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Container.Scenes.Home;
@@ -10,7 +12,6 @@ using Script.UI.Converter;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterInfo;
 using Script.UI.Dialogs.MainUI.StartGameMenu;
-using Script.UI.Dialogs.PopupDialogs.Components;
 using UnityEngine;
 
 namespace Script.UI.Dialogs.MainUI.MainHome
@@ -25,7 +26,8 @@ public class HomeUIViewModel : IUIViewModel
     private readonly CharacterCreationData _characterData;
     private readonly CharacterSelector _characterSelector;
     private readonly PositionsConverter _positionsConverter;
-    private readonly ActionProgressHandler _actionProgressHandler;
+    private readonly HomeActionProgressHandler _homeActionProgressHandler;
+    private IAnimatorService _animatorService;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
@@ -35,7 +37,7 @@ public class HomeUIViewModel : IUIViewModel
         CharacterCreationData characterCreationData, 
         CharacterSelector characterSelector, 
         PositionsConverter positionsConverter,
-        ActionProgressHandler actionProgressHandler)
+        HomeActionProgressHandler homeActionProgressHandler)
     {
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
@@ -44,42 +46,45 @@ public class HomeUIViewModel : IUIViewModel
         _positionsConverter = positionsConverter;
         _model = new HomeUIModel(_positionsConverter);
         _characterSelector = characterSelector;
-        _actionProgressHandler = actionProgressHandler;
+        _homeActionProgressHandler = homeActionProgressHandler;
     }
 
-    public void ShowView(IUIView view)
+    public void Init(IUIView view, IAnimatorService animatorService)
     {
-        _sceneSwitcher.SwitchTo<HomeScene>();
-
         if (view is not HomeUIView homeUIView)
         {
             throw new Exception($"Incorrect type {view.GetType()}; Need {typeof(HomeUIView)}");
         }
 
         _view = homeUIView;
-        _view.Show();
-        ViewShown?.Invoke(this);
+        _animatorService = animatorService;
+        _sceneSwitcher.SwitchTo<HomeScene>();
+        
+        SubscribeOnModelEvents(_model);
+        SubscribeOnViewEvents(_view);
+        SubscribeOnAnimatorEvents(_animatorService);
+    }
 
-        SubscribeOnModelEvents();
-        SubscribeOnViewEvents();
+    public void Deinit()
+    {
+        UnsubscribeOnAnimatorEvents(_animatorService);
+        UnsubscribeOnModelEvents(_model);
+        UnsubscribeOnViewEvents(_view);
+    }
+
+    public void ShowView()
+    {
+        _animatorService.StartShowAnimation(_view);
     }
 
     public void ShowHiddenView()
     {
-        _view.Show();
-        ViewShown?.Invoke(this);
-        
-        SubscribeOnModelEvents();
-        SubscribeOnViewEvents();
+        _animatorService.StartShowAnimation(_view);
     }
 
     public void HideView()
     {
-        _view.Hide();
-        ViewHidden?.Invoke(this);
-        
-        UnsubscribeOnModelEvents();
-        UnsubscribeOnViewEvents();
+        _animatorService.StartHideAnimation(_view);
     }
 
     public IInstantiatable GetInstantiatable()
@@ -99,51 +104,47 @@ public class HomeUIViewModel : IUIViewModel
         _view.ShowProgressBar(duration, progressBarPosition);
     }
 
-    private void SubscribeOnModelEvents()
+    #region ModelEvents
+
+    private void SubscribeOnModelEvents(HomeUIModel model)
     {
-        _model.UpgradePointsChanged += OnUpgradePointsChanged;
+        model.UpgradePointsChanged += OnUpgradePointsChanged;
     }
 
-    private void UnsubscribeOnModelEvents()
+    private void UnsubscribeOnModelEvents(HomeUIModel model)
     {
-        _model.UpgradePointsChanged -= OnUpgradePointsChanged;
+        model.UpgradePointsChanged -= OnUpgradePointsChanged;
     }
 
-    private void SubscribeOnViewEvents()
+    private void OnUpgradePointsChanged(int upgradePoints)
     {
-        _view.MoveBubbleCompleted += OnMoveBubbleCompleted;
-        _view.OpenCharacterInfoButtonPressed += OnOpenCharacterInfoButtonPressed;
-        _view.OpenStartGameMenuButtonPressed += OnOpenStartGameMenuButtonPressed;
-        _view.ViewShown += OnViewShown;
-        _view.ViewHidden += OnViewHidden;
-        _view.ProgressCompleted += OnProgressBarCompleted;
     }
 
-    private void UnsubscribeOnViewEvents()
+    #endregion
+
+    #region ViewEvents
+
+    private void SubscribeOnViewEvents(HomeUIView view)
     {
-        _view.MoveBubbleCompleted -= OnMoveBubbleCompleted;
-        _view.OpenCharacterInfoButtonPressed -= OnOpenCharacterInfoButtonPressed;
-        _view.OpenStartGameMenuButtonPressed -= OnOpenStartGameMenuButtonPressed;
-        _view.ViewShown -= OnViewShown;
-        _view.ViewHidden -= OnViewHidden;
-        _view.ProgressCompleted -= OnProgressBarCompleted;
+        view.MoveBubbleCompleted += OnMoveBubbleCompleted;
+        view.OpenCharacterInfoButtonPressed += OnOpenCharacterInfoButtonPressed;
+        view.OpenStartGameMenuButtonPressed += OnOpenStartGameMenuButtonPressed;
+        view.ProgressCompleted += OnProgressBarCompleted;
     }
 
+    private void UnsubscribeOnViewEvents(HomeUIView view)
+    {
+        view.MoveBubbleCompleted -= OnMoveBubbleCompleted;
+        view.OpenCharacterInfoButtonPressed -= OnOpenCharacterInfoButtonPressed;
+        view.OpenStartGameMenuButtonPressed -= OnOpenStartGameMenuButtonPressed;
+        view.ProgressCompleted -= OnProgressBarCompleted;
+    }
+    
     private void OnProgressBarCompleted()
     {
         _view.CloseProgressBar();
     }
-
-    private void OnViewShown()
-    {
-        ViewShown?.Invoke(this);
-    }
-
-    private void OnViewHidden()
-    {
-        ViewHidden?.Invoke(this);
-    }
-
+    
     private void OnOpenStartGameMenuButtonPressed()
     {
         _mainUiService.Show<StartGameMenuView>(
@@ -154,9 +155,9 @@ public class HomeUIViewModel : IUIViewModel
                 _characterData,
                 _characterSelector,
                 _positionsConverter,
-                _actionProgressHandler));
+                _homeActionProgressHandler));
     }
-
+    
     private void OnOpenCharacterInfoButtonPressed()
     {
         _fullScreensUIService.Show<CharacterInfoView>(new CharacterInfoViewModel(_fullScreensUIService));
@@ -167,8 +168,35 @@ public class HomeUIViewModel : IUIViewModel
         _model.UpdateUpgradePoints(upgradePointsCount);
     }
 
-    private void OnUpgradePointsChanged(int upgradePoints)
+    #endregion
+
+    #region AnimatorEvents
+
+    private void SubscribeOnAnimatorEvents(IAnimatorService animatorService)
     {
+        animatorService.ShowCompleted += OnShowAnimationCompleted;
+        animatorService.HideCompleted += OnHideAnimationCompleted;
     }
+
+    private void UnsubscribeOnAnimatorEvents(IAnimatorService animatorService)
+    {
+        animatorService.ShowCompleted -= OnShowAnimationCompleted;
+        animatorService.HideCompleted -= OnHideAnimationCompleted;
+    }
+
+    private void OnShowAnimationCompleted()
+    {
+        _view.OnShown();
+        ViewShown?.Invoke(this);
+    }
+
+    private void OnHideAnimationCompleted()
+    {
+        _view.OnHidden();
+        ViewHidden?.Invoke(this);
+    }
+
+    #endregion
+
 }
 }

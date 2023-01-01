@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CharacterCreationData
   m_EditorClassIdentifier: 
   <CharacterList>k__BackingField:
-  - {fileID: 919132149155446097, guid: f83179bc8987f8e4bb8badeeab6d60d6, type: 3}
-  - {fileID: 919132149155446097, guid: d1972e0159e6abd4fb575b99499e7aa0, type: 3}
-  - {fileID: 919132149155446097, guid: f83179bc8987f8e4bb8badeeab6d60d6, type: 3}
+  - {fileID: 919132149155446097, guid: 9a0c0d8b3b62add4d8608b4c194a7bf0, type: 3}
+  - {fileID: 40879817998005110, guid: 7ee0b4d1f22261248a9b111d8d22cc2b, type: 3}
+  - {fileID: 919132149155446097, guid: 9852b6c679e62e54ea425804acb1ad3a, type: 3}

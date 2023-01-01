@@ -21,19 +21,16 @@ public class CharacterCreationView: UiViewBehaviour, IFullScreen
     [SerializeField] 
     private Button _leftArrow;
 
-    public override event Action ViewShown;
-    public override event Action ViewHidden;
-
     public event Action OnRightPressed;
     public event Action OnLeftPressed;
     
-    public override void Show()
+    public override void OnShown()
     {
         _leftArrow.onClick.AddListener(LeftArrowButton);
         _rightArrow.onClick.AddListener(RightArrowButton);
     }
 
-    public override void Hide()
+    public override void OnHidden()
     {
         _leftArrow.onClick.RemoveListener(LeftArrowButton);
         _rightArrow.onClick.RemoveListener(RightArrowButton);

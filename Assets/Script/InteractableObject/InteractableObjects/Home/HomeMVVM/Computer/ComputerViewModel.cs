@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Script.ConfigData.LocationActionsConfig;
 using Script.DataServices.Base;
 using Script.Initializer.StartApplicationDependenciesInitializers;
+using Script.InteractableObject.ActionProgressSystem;
 using Script.Libraries.MVVM;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.Libraries.UISystem.Managers.UiServiceProvider;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.UI.Dialogs.MainUI.MainHome;
 using Script.UI.Dialogs.PopupDialogs.ActionsPopup;
-using Script.UI.Dialogs.PopupDialogs.Components;
-using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
 using Script.Utils.ThreadUtils;
 using UnityEngine;
 using Random = System.Random;
@@ -20,14 +21,14 @@ public class ComputerViewModel : IViewModel
     private readonly ComputerModel _model;
     private readonly ComputerView _view;
     private readonly IUIServiceProvider _serviceProvider;
-    private readonly InteractableObjectsData _interactableObjectsData;
-    private readonly ActionProgressHandler _actionProgressHandler;
+    private readonly InteractableObjectsConfig _interactableObjectsConfig;
+    private readonly HomeActionProgressHandler _homeActionProgressHandler;
 
     public ComputerViewModel(IView view,
         IDataService playerCharacteristicsService,
         IUIServiceProvider serviceProvider, 
-        InteractableObjectsData interactableObjectsData,
-        ActionProgressHandler actionProgressHandler)
+        InteractableObjectsConfig interactableObjectsConfig,
+        HomeActionProgressHandler homeActionProgressHandler)
     {
         if (view is not ComputerView computerView)
         {
@@ -39,8 +40,8 @@ public class ComputerViewModel : IViewModel
         _view = computerView;
         
         _serviceProvider = serviceProvider;
-        _interactableObjectsData = interactableObjectsData;
-        _actionProgressHandler = actionProgressHandler;
+        _interactableObjectsConfig = interactableObjectsConfig;
+        _homeActionProgressHandler = homeActionProgressHandler;
 
         SubscribeOnViewEvents();
         SubscribeOnModelEvents();
@@ -48,12 +49,7 @@ public class ComputerViewModel : IViewModel
         _model.InputActive = true;
     }
 
-    #region ViewEvents
-
-    private void SubscribeOnViewEvents()
-    {
-        _view.ObjectClicked += OnViewObjectClicked;
-    }
+    #region ModelEvents
 
     private void SubscribeOnModelEvents()
     {
@@ -65,11 +61,20 @@ public class ComputerViewModel : IViewModel
         _view.ChangeClickInputActive(isActive);
     }
 
+    #endregion
+
+    #region ViewEvents
+
+    private void SubscribeOnViewEvents()
+    {
+        _view.ObjectClicked += OnViewObjectClicked;
+    }
+
     private void OnViewObjectClicked()
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ActionsUIViewModel(_serviceProvider, _interactableObjectsData.InteractableObjects[0], _actionProgressHandler, _view.ProgressBarTransform.position); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
+        var viewModel = new ActionsUIViewModel(_serviceProvider, _interactableObjectsConfig.ComputerLocationActionData, _homeActionProgressHandler, _view.ProgressBarTransform.position); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
         var popupsUIService = _serviceProvider.GetService<PopupsUIService>();
         popupsUIService.Show<ActionsUIView>(viewModel);
         

@@ -5,62 +5,78 @@ using UnityEngine;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterCreation
 {
-public class CharacterCreationModel:IModel
+public class CharacterCreationModel : IModel
 {
     public event Action<GameObject> OnCharacterChanged;
-    public event Action OnRightButtonDisabled; 
-    public event Action OnLeftButtonDisabled; 
-    public event Action OnLeftButtonEnabled; 
-    public event Action OnRightButtonEnabled; 
-    
+    public event Action OnRightButtonDisabled;
+    public event Action OnLeftButtonDisabled;
+    public event Action OnLeftButtonEnabled;
+    public event Action OnRightButtonEnabled;
+
     private readonly List<GameObject> _characterList;
-    private int _currentSpriteIndex;
-    
+    private int _currentSpriteIndex = 0;
+
     public CharacterCreationModel(List<GameObject> characterList)
     {
         _characterList = characterList;
     }
 
-    public void SetStartConditions()
+    public void ShowFirstCharacter()
     {
-        OnCharacterChanged?.Invoke(_characterList[0]);
+        OnCharacterChanged?.Invoke(_characterList[_currentSpriteIndex]);
         OnLeftButtonDisabled?.Invoke();
     }
 
-    public void SetNextSprite()
+    public void ShowNextCharacter()
     {
-        for (int i = 0; i < _characterList.Count; i++)
+        if (_characterList.Count == 0)
         {
-            if (i == _currentSpriteIndex)
-            {
-                OnLeftButtonEnabled?.Invoke();
-                OnCharacterChanged?.Invoke(_characterList[i+1]);
-                _currentSpriteIndex = i + 1;
-                if (_currentSpriteIndex == 3)
-                {
-                    OnRightButtonDisabled?.Invoke();
-                }
-                return;
-            }
+            OnLeftButtonDisabled?.Invoke();
+            OnRightButtonDisabled?.Invoke();
+            
+            return;
         }
+
+        if (_currentSpriteIndex == 0)
+        {
+            OnLeftButtonEnabled?.Invoke();
+        }
+
+        _currentSpriteIndex++;
+
+        if (_currentSpriteIndex == _characterList.Count - 1)
+        {
+            OnRightButtonDisabled?.Invoke();
+        }
+        
+        var nextCharacter = _characterList[_currentSpriteIndex];
+        OnCharacterChanged?.Invoke(nextCharacter);
     }
 
-    public void SetPreviousSprite()
+    public void ShowPreviousCharacter()
     {
-        for (int i = 0; i < _characterList.Count; i++)
+        if (_characterList.Count == 0)
         {
-            if (i == _currentSpriteIndex)
-            {
-                OnRightButtonEnabled?.Invoke();
-                OnCharacterChanged?.Invoke(_characterList[i-1]);
-                _currentSpriteIndex = i - 1;
-                if (_currentSpriteIndex == 0)
-                {
-                    OnLeftButtonDisabled?.Invoke();
-                }
-                return;
-            }
+            OnLeftButtonDisabled?.Invoke();
+            OnRightButtonDisabled?.Invoke();
+            
+            return;
         }
+
+        if (_currentSpriteIndex == _characterList.Count - 1)
+        {
+            OnRightButtonEnabled?.Invoke();
+        }
+
+        _currentSpriteIndex--;
+
+        if (_currentSpriteIndex == 0)
+        {
+            OnLeftButtonDisabled?.Invoke();
+        }
+        
+        var nextCharacter = _characterList[_currentSpriteIndex];
+        OnCharacterChanged?.Invoke(nextCharacter);
     }
 }
 }

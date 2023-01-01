@@ -1,11 +1,11 @@
 ﻿using System;
+using Script.ConfigData.LocationActionsConfig;
 using Script.DataServices.Base;
-using Script.Initializer.StartApplicationDependenciesInitializers;
+using Script.InteractableObject.ActionProgressSystem;
 using Script.Libraries.MVVM;
-using Script.Libraries.UISystem.Managers.UIDialogsManagers;
+using Script.Libraries.UISystem.Managers.UiServiceProvider;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.UI.Dialogs.PopupDialogs.ActionsPopup;
-using Script.UI.Dialogs.PopupDialogs.InteractableObjectsData;
-using Script.UI.Dialogs.PopupDialogs.ToiletActionsPopup;
 using UnityEngine;
 
 namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Toilet
@@ -15,14 +15,14 @@ public class ToiletViewModel: IViewModel
     private readonly ToiletModel _model;
     private readonly ToiletView _view;
     private readonly IUIServiceProvider _uiServiceProvider;
-    private readonly InteractableObjectsData _interactableObjectsData;
-    private readonly ActionProgressHandler _actionProgressHandler;
+    private readonly InteractableObjectsConfig _interactableObjectsConfig;
+    private readonly HomeActionProgressHandler _homeActionProgressHandler;
 
     public ToiletViewModel(IView view, 
         IDataService playerCharacteristicsService, 
         IUIServiceProvider uiServiceProvider,
-        InteractableObjectsData interactableObjectsData,
-        ActionProgressHandler actionProgressHandler)
+        InteractableObjectsConfig interactableObjectsConfig,
+        HomeActionProgressHandler homeActionProgressHandler)
     {
         if (view is not ToiletView toiletView)
         {
@@ -35,8 +35,8 @@ public class ToiletViewModel: IViewModel
         
         _uiServiceProvider = uiServiceProvider;
         
-        _interactableObjectsData = interactableObjectsData;
-        _actionProgressHandler = actionProgressHandler;
+        _interactableObjectsConfig = interactableObjectsConfig;
+        _homeActionProgressHandler = homeActionProgressHandler;
 
         SubscribeOnViewEvents();
         SubscribeOnModelEvents();
@@ -44,12 +44,7 @@ public class ToiletViewModel: IViewModel
         _model.InputActive = true;
     }
 
-    #region ViewEvents
-
-    private void SubscribeOnViewEvents()
-    {
-        _view.ObjectClicked += OnViewObjectClicked;
-    }
+    #region ModelEvents
 
     private void SubscribeOnModelEvents()
     {
@@ -61,12 +56,22 @@ public class ToiletViewModel: IViewModel
         _view.ChangeClickInputActive(isActive);
     }
 
+    #endregion
+
+    #region ViewEvents
+
+    private void SubscribeOnViewEvents()
+    {
+        _view.ObjectClicked += OnViewObjectClicked;
+    }
+
     private void OnViewObjectClicked()
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
         var popupsUIService = _uiServiceProvider.GetService<PopupsUIService>();
-        var viewModel = new ActionsUIViewModel(_uiServiceProvider, _interactableObjectsData.InteractableObjects[1], _actionProgressHandler, _view.ProgressBarPosition.position);
+        var viewModel = new ActionsUIViewModel(_uiServiceProvider, _interactableObjectsConfig.ToiletLocationActionData,
+            _homeActionProgressHandler, _view.ProgressBarPosition.position);
         
         popupsUIService.CloseAll();
         popupsUIService.Show<ActionsUIView>(viewModel);

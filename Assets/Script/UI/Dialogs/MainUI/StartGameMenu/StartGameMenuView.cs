@@ -2,7 +2,6 @@
 using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.BaseBehaviour;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.MainUI.StartGameMenu
@@ -24,17 +23,14 @@ public class StartGameMenuView : UiViewBehaviour, IMainUI
     public event Action StartPressed;
     public event Action CharacterCreationButtonPressed;
 
-    public override event Action ViewShown;
-    public override event Action ViewHidden;
-
-    public override void Show()
+    public override void OnShown()
     {
         _startButton.onClick.AddListener(StartButton);
         _closeButton.onClick.AddListener(CloseButton);
         _createCharacterButton.onClick.AddListener(CreateCharacterButtonPressed);
     }
 
-    public override void Hide()
+    public override void OnHidden()
     {
         _startButton.onClick.RemoveListener(StartButton);
         _closeButton.onClick.RemoveListener(CloseButton);
