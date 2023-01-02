@@ -21,9 +21,11 @@ MonoBehaviour:
       _rewardTitle: 5
     - _rewardValue: -5
       _rewardTitle: 4
+    _upgradePoints: 25
   - _actionTitle: Beat the meat
     _actionIcon: {fileID: 21300000, guid: d0cb6ef6469232c4790ef0b6254d8328, type: 3}
     _actionTime: 30
     _actionRewards:
     - _rewardValue: -10
       _rewardTitle: 5
+    _upgradePoints: 10

@@ -4,6 +4,7 @@ using Script.Initializer.MonoDependencyContainers;
 using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.Initializer.StartApplicationDependenciesInitializers.UiInitializers;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.Logger.Loggers;
 using Script.Libraries.ServiceProvider;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;

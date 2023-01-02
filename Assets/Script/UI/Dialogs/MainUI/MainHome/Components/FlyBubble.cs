@@ -42,7 +42,6 @@ public class FlyBubble : MonoBehaviour
         _bubbleBodyInfo.text = bodyInfo.ToString();
 
         _showTween?.Kill();
-        _moveTween?.Kill();
 
         _bubbleImage.transform.localPosition = startPosition;
         _endPosition = endPosition;
@@ -62,6 +61,8 @@ public class FlyBubble : MonoBehaviour
 
     private void OnShowCompleted()
     {
+        _moveTween?.Kill();
+
         _moveTween = _bubbleImage.transform.DOMove(_endPosition, _moveDuration).SetEase(_moveEase);
         _moveTween.onComplete += OnMoveCompleted;
     }

@@ -35,12 +35,13 @@ public class ProgressBar : MonoBehaviour
     [SerializeField]
     private float _showMoveStartOffset;
 
-    private Tween _progressFillAmountTween;
-
     public event Action ProgressAnimationCompleted;
 
     private Vector3 _initialScale;
     private Vector3 _initialPosition;
+    private Tween _progressFillAmountTween;
+    private Tween _hideScaleTween;
+    private bool _hideProgressBarOnCompleted;
 
     private void Awake()
     {
@@ -48,9 +49,11 @@ public class ProgressBar : MonoBehaviour
         _initialPosition = transform.position;
     }
 
-    public void ShowProgress(float duration)
+    public void ShowProgress(float duration, bool hideProgressBarOnCompleted = true)
     {
         var progressTransform = _progress.transform;
+
+        _hideProgressBarOnCompleted = hideProgressBarOnCompleted;
         
         StartMoveAnimation(progressTransform);
         
@@ -64,7 +67,7 @@ public class ProgressBar : MonoBehaviour
 
     public void HideProgressBar()
     {
-        Destroy(gameObject);
+        StartHideAnimation(_progress.transform);
     }
 
     public void Pause()
@@ -81,22 +84,38 @@ public class ProgressBar : MonoBehaviour
     {
         progressTransform.localScale = Vector3.zero;
 
-        progressTransform.DOScale(_initialScale, _showDuration).SetEase(_showEase);
+        progressTransform.DOScale(_initialScale, _showMoveAnimationDuration).SetEase(_showEase);
     }
 
     private void StartMoveAnimation(Transform progressTransform)
     {
         var initialPositionY = _initialPosition.y;
-        progressTransform.position = new Vector3(_initialPosition.x, _initialPosition.y - _showMoveStartOffset,
+        progressTransform.localPosition = new Vector3(_initialPosition.x, _initialPosition.y - _showMoveStartOffset,
             _initialPosition.z);
 
-        progressTransform.DOMove(new Vector3(_initialPosition.x, initialPositionY, _initialPosition.z),
+        progressTransform.DOLocalMove(new Vector3(_initialPosition.x, initialPositionY, _initialPosition.z),
             _showDuration).SetEase(_showMoveEase);
+    }
+
+    private void StartHideAnimation(Transform progressTransform)
+    {
+        _hideScaleTween = progressTransform.DOScale(Vector3.zero, _hideDuration).SetEase(_hideEase);
+        _hideScaleTween.onComplete += OnHideAnimationCompleted;
+    }
+
+    private void OnHideAnimationCompleted()
+    { 
+        Destroy(gameObject);
     }
 
     private void OnProgressAnimationCompleted()
     {
         ProgressAnimationCompleted?.Invoke();
+
+        if (_hideProgressBarOnCompleted)
+        {
+            HideProgressBar();
+        }
     }
 }
 }

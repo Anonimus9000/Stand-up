@@ -2,6 +2,7 @@
 using Script.ConfigData.LocationActionsConfig;
 using Script.DataServices.Base;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
 using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;

@@ -5,12 +5,13 @@ using Script.Libraries.UISystem.UIWindow;
 using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Dialogs.BaseBehaviour;
 using Script.UI.Dialogs.MainUI.MainHome.Components;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Script.UI.Dialogs.MainUI.MainHome
 {
-//TODO: refactoring names by Katya
+//TODO: refactoring. Move all login in model
 public class HomeUIView : UiViewBehaviour, IMainUI
 {
     [SerializeField]
@@ -37,15 +38,22 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     [SerializeField]
     private Transform _progressBarParent;
 
+    [SerializeField]
+    private TextMeshProUGUI _upgradePoints;
+
+    public ProgressBar ProgressBarPrefab => _progressBarPrefab;
+    public Transform ProgressBarParen => _progressBarParent;
+    public FlyBubble FlyBubblePrefab => _flyBubblePrefab;
+    public Transform UpgradePointsIcon => _upgradePointsIcon;
+    public Transform BubbleParent => _bubblesParent;
+    public TextMeshProUGUI UpgradePoints => _upgradePoints;
+
     private IUIServiceProvider _serviceProvider;
     private FullScreensUIService _fullScreensUIService;
     private ISceneSwitcher _sceneSwitcher;
 
-    public event Action<int> MoveBubbleCompleted;
     public event Action OpenStartGameMenuButtonPressed;
     public event Action OpenCharacterInfoButtonPressed;
-    public event Action ProgressCompleted; 
-
 
     public override void OnShown()
     {
@@ -55,29 +63,6 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     public override void OnHidden()
     {
         UnsubscribeOnEvents();
-    }
-
-    public void ShowProgressBar(float duration, Vector2 screenPosition)
-    {
-        var progressBar = Instantiate(_progressBarPrefab, _progressBarParent);
-        progressBar.transform.position = screenPosition;
-        
-        progressBar.ShowProgress(duration);
-    }
-
-    public void CloseProgressBar()
-    {
-        _progressBarPrefab.HideProgressBar();
-    }
-
-    public void ShowMoveBubble(Vector3 startPosition, int bodyInfo)
-    {
-        var flyBubble = Instantiate(_flyBubblePrefab, _bubblesParent);
-        var upgradePointsLocalPosition = _upgradePointsIcon.transform.position;
-        
-        flyBubble.ShowAndMoveBubble(startPosition, upgradePointsLocalPosition, bodyInfo);
-        
-        flyBubble.MoveCompleted += OnMoveBubblePrefabCompleted;
     }
 
     private void SubscribeOnEvents()
@@ -100,15 +85,6 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     private void MenuButtonPressed()
     {
         OpenStartGameMenuButtonPressed?.Invoke();
-    }
-
-    private void OnMoveBubblePrefabCompleted(FlyBubble bubble)
-    {
-        var bubbleBodyInfo = bubble.BodyInfo;
-        MoveBubbleCompleted?.Invoke(bubbleBodyInfo);
-        
-        bubble.Destroy();
-        bubble.MoveCompleted -= OnMoveBubblePrefabCompleted;
     }
 }
 }

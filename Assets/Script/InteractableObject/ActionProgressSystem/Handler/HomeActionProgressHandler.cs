@@ -2,7 +2,7 @@
 using Script.UI.Dialogs.MainUI.MainHome;
 using UnityEngine;
 
-namespace Script.InteractableObject.ActionProgressSystem
+namespace Script.InteractableObject.ActionProgressSystem.Handler
 {
 public class HomeActionProgressHandler : IInitializable, IActionProgressHandler
 {
@@ -12,7 +12,7 @@ public class HomeActionProgressHandler : IInitializable, IActionProgressHandler
     {
         _homeUIViewModel = homeUIViewModel;
 
-        _homeUIViewModel.ShowProgressBar(duration, position);
+        //var showProgressBar = _homeUIViewModel.ShowProgressBar(duration, position);
     }
 }
 }

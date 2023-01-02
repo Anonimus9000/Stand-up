@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.UI.Dialogs.MainUI.MainHome;
 using TMPro;
 using UnityEngine;
@@ -25,28 +27,34 @@ public class ActionFieldItemView : MonoBehaviour
     public Button _startActionButton;
 
     private HomeUIViewModel _homeUIViewModel;
-    private MainUIService _mainUiService;
+    private IUIService _mainUiService;
     private HomeActionProgressHandler _homeActionProgressHandler;
     private float _actionTime;
-    private Vector3 _position;
+    private Vector3 _progressBarPosition;
+    private IUIService _popupService;
+    private int _upgradePoints;
 
     public void Init(
         Sprite actionIcon,
         string actionTitle,
         List<ActionRewardData> actionDescription,
         float actionTime,
-        MainUIService mainUIService,
+        IUIService mainUIService,
+        IUIService popupService,
         HomeActionProgressHandler homeActionProgressHandler,
-        Vector3 position)
+        Vector3 progressBarPosition,
+        int upgradePoints)
     {
         _actionDescription.text = string.Empty;
         _actionTitle.text = actionTitle;
         _actionIcon.sprite = actionIcon;
         _startActionButton.onClick.AddListener(OnStartButtonPressed);
         _mainUiService = mainUIService;
+        _popupService = popupService;
         _homeActionProgressHandler = homeActionProgressHandler;
         _actionTime = actionTime;
-        _position = position;
+        _progressBarPosition = progressBarPosition;
+        _upgradePoints = upgradePoints;
 
         foreach (var actionRewards in actionDescription)
         {
@@ -57,7 +65,10 @@ public class ActionFieldItemView : MonoBehaviour
     private void OnStartButtonPressed()
     {
         var homeUIViewModel = _mainUiService.CurrentUI as HomeUIViewModel;
-        _homeActionProgressHandler.StartActionProgress(homeUIViewModel, _actionTime, _position);
+        homeUIViewModel!.ShowProgressBar(_actionTime, _progressBarPosition, _upgradePoints);
+        
+        _homeActionProgressHandler.StartActionProgress(homeUIViewModel, _actionTime, _progressBarPosition);
+        _popupService.CloseCurrentView();
     }
 }
 }

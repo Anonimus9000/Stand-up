@@ -2292,11 +2292,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2746163730806782289, guid: e5f57dddb28dbe34b891ba6779ebbf38, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.0840843
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2746163730806782289, guid: e5f57dddb28dbe34b891ba6779ebbf38, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.61337554
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2746163730806782289, guid: e5f57dddb28dbe34b891ba6779ebbf38, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2546,6 +2546,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: House
       objectReference: {fileID: 0}
+    - target: {fileID: 1193672837625928146, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2007224118671934312, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -2590,6 +2594,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4076216492120707158, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+      propertyPath: _mainCanvas
+      value: 
+      objectReference: {fileID: 1202708890}
     - target: {fileID: 4076216492120707158, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
       propertyPath: _interactableObjectsData
       value: 

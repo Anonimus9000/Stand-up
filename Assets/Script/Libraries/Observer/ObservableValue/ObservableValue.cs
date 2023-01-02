@@ -7,11 +7,11 @@ namespace Script.Libraries.Observer.ObservableValue
 public class ObservableValue<TValue> : IObservableValue<TValue>
 {
     private readonly List<Subscriber<TValue>> _subscribers;
-    private TValue _value;
+    public TValue Value { get; private set; }
     
     public ObservableValue(TValue value, int subscribersCapacity = 30)
     {
-        _value = value;
+        this.Value = value;
         
         _subscribers = new List<Subscriber<TValue>>(subscribersCapacity);
     }
@@ -42,7 +42,7 @@ public class ObservableValue<TValue> : IObservableValue<TValue>
 
     public void Notify(TValue value)
     {
-        _value = value;
+        this.Value = value;
         
         foreach (var subscriber in _subscribers)
         {

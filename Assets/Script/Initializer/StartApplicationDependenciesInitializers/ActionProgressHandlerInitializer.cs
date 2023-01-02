@@ -1,5 +1,6 @@
 ﻿using Script.Initializer.Base;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 
 namespace Script.Initializer.StartApplicationDependenciesInitializers
 {

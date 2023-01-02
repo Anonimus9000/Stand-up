@@ -1,5 +1,6 @@
 ﻿using System;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;

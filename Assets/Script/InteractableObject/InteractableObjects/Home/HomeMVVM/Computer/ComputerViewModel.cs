@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Script.ConfigData.LocationActionsConfig;
 using Script.DataServices.Base;
-using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.MVVM;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
 using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
-using Script.UI.Dialogs.MainUI.MainHome;
 using Script.UI.Dialogs.PopupDialogs.ActionsPopup;
-using Script.Utils.ThreadUtils;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer
 {
@@ -77,28 +72,6 @@ public class ComputerViewModel : IViewModel
         var viewModel = new ActionsUIViewModel(_serviceProvider, _interactableObjectsConfig.ComputerLocationActionData, _homeActionProgressHandler, _view.ProgressBarTransform.position); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
         var popupsUIService = _serviceProvider.GetService<PopupsUIService>();
         popupsUIService.Show<ActionsUIView>(viewModel);
-        
-        var mainUIService = _serviceProvider.GetService<MainUIService>();
-        
-        var homeUIViewModel = mainUIService.CurrentUI as HomeUIViewModel;
-        
-        var applicationQuitTokenSource = new ApplicationQuitTokenSource();
-        
-        TestBubble(homeUIViewModel, applicationQuitTokenSource.Token);
-        homeUIViewModel.ShowProgressBar(5, _view.ProgressBarTransform.position);
-    }
-
-    private async void TestBubble(HomeUIViewModel viewModel, CancellationToken token)
-    {
-        while (true)
-        {
-            var random = new Random();
-            var next = random.Next(1, 5);
-            viewModel.UpdateUpgradePoints(next, Vector3.zero);
-
-            token.ThrowIfCancellationRequested();
-            await Task.Delay(1000, token);
-        }
     }
 
     #endregion

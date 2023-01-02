@@ -1,6 +1,5 @@
 ﻿using System;
-using Script.Initializer.StartApplicationDependenciesInitializers;
-using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
@@ -11,6 +10,7 @@ using Script.SceneSwitcherSystem.Switcher;
 using Script.UI.Converter;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterCreation.Components;
 using Script.UI.Dialogs.FullscreenDialogs.CharacterInfo;
+using Script.UI.Dialogs.MainUI.MainHome.Components;
 using Script.UI.Dialogs.MainUI.StartGameMenu;
 using UnityEngine;
 
@@ -28,6 +28,7 @@ public class HomeUIViewModel : IUIViewModel
     private readonly PositionsConverter _positionsConverter;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
     private IAnimatorService _animatorService;
+    private ProgressBar _currentProgressBar;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
@@ -61,6 +62,8 @@ public class HomeUIViewModel : IUIViewModel
         _sceneSwitcher.SwitchTo<HomeScene>();
         
         SubscribeOnModelEvents(_model);
+        _model.InitUpgradePoints(0);
+        
         SubscribeOnViewEvents(_view);
         SubscribeOnAnimatorEvents(_animatorService);
     }
@@ -94,30 +97,39 @@ public class HomeUIViewModel : IUIViewModel
 
     public void UpdateUpgradePoints(int upgradePointsDifference, Vector3 startMovePosition)
     {
-        _view.ShowMoveBubble(startMovePosition, upgradePointsDifference);
+        
     }
 
-    public void ShowProgressBar(float duration, Vector3 worldPosition)
+    public ProgressBar ShowProgressBar(float duration, Vector3 worldPosition, int upgradePoints)
     {
-        var viewTransform = _view.transform as RectTransform;
-        var progressBarPosition = _model.GetScreenPointPositionByWorld(worldPosition, viewTransform);
-        _view.ShowProgressBar(duration, progressBarPosition);
+        _currentProgressBar = _model.ShowProgress(
+            upgradePoints,
+            duration,
+            worldPosition, 
+            _view.ProgressBarPrefab, 
+            _view.ProgressBarParen,
+            _view.FlyBubblePrefab,
+            _view.BubbleParent,
+            _view.UpgradePointsIcon);
+
+        return _currentProgressBar;
     }
 
     #region ModelEvents
 
     private void SubscribeOnModelEvents(HomeUIModel model)
     {
-        model.UpgradePointsChanged += OnUpgradePointsChanged;
+        model.UpgradePoints.Subscribe(OnUpgradePointsChanged);
     }
 
     private void UnsubscribeOnModelEvents(HomeUIModel model)
     {
-        model.UpgradePointsChanged -= OnUpgradePointsChanged;
+        model.UpgradePoints.Unsubscribe(OnUpgradePointsChanged);
     }
 
     private void OnUpgradePointsChanged(int upgradePoints)
     {
+        _view.UpgradePoints.text = upgradePoints.ToString();
     }
 
     #endregion
@@ -126,23 +138,14 @@ public class HomeUIViewModel : IUIViewModel
 
     private void SubscribeOnViewEvents(HomeUIView view)
     {
-        view.MoveBubbleCompleted += OnMoveBubbleCompleted;
         view.OpenCharacterInfoButtonPressed += OnOpenCharacterInfoButtonPressed;
         view.OpenStartGameMenuButtonPressed += OnOpenStartGameMenuButtonPressed;
-        view.ProgressCompleted += OnProgressBarCompleted;
     }
 
     private void UnsubscribeOnViewEvents(HomeUIView view)
     {
-        view.MoveBubbleCompleted -= OnMoveBubbleCompleted;
         view.OpenCharacterInfoButtonPressed -= OnOpenCharacterInfoButtonPressed;
         view.OpenStartGameMenuButtonPressed -= OnOpenStartGameMenuButtonPressed;
-        view.ProgressCompleted -= OnProgressBarCompleted;
-    }
-    
-    private void OnProgressBarCompleted()
-    {
-        _view.CloseProgressBar();
     }
     
     private void OnOpenStartGameMenuButtonPressed()
@@ -161,11 +164,6 @@ public class HomeUIViewModel : IUIViewModel
     private void OnOpenCharacterInfoButtonPressed()
     {
         _fullScreensUIService.Show<CharacterInfoView>(new CharacterInfoViewModel(_fullScreensUIService));
-    }
-
-    private void OnMoveBubbleCompleted(int upgradePointsCount)
-    {
-        _model.UpdateUpgradePoints(upgradePointsCount);
     }
 
     #endregion

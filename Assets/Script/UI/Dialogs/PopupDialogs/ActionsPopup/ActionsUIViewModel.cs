@@ -2,6 +2,7 @@
 using Script.ConfigData.LocationActionsConfig;
 using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
@@ -23,26 +24,26 @@ public class ActionsUIViewModel : IUIViewModel
     private ActionsUIView _view;
     private readonly ActionsModel _model;
     private readonly IUIService _popupService;
-    private readonly MainUIService _mainUiService;
+    private readonly IUIService _mainUiService;
     private readonly LocationActionData _locationActionData;
     private ActionFieldItemView _actionFieldItemView;
     private HomeUIViewModel _homeUIViewModel;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
-    private readonly Vector3 _position;
+    private readonly Vector3 _progressBarPosition;
     private IAnimatorService _animatorService;
 
     public ActionsUIViewModel(
         IUIServiceProvider serviceProvider,
         LocationActionData locationActionData,
         HomeActionProgressHandler homeActionProgressHandler,
-        Vector3 position)
+        Vector3 progressBarPosition)
     {
         _popupService = serviceProvider.GetService<PopupsUIService>();
         _mainUiService = serviceProvider.GetService<MainUIService>();
         _locationActionData = locationActionData;
         _model = new ActionsModel();
         _homeActionProgressHandler = homeActionProgressHandler;
-        _position = position;
+        _progressBarPosition = progressBarPosition;
     }
 
     public void Init(IUIView view, IAnimatorService animatorService)
@@ -67,7 +68,7 @@ public class ActionsUIViewModel : IUIViewModel
 
     public void ShowView()
     {
-        _view.Init(_locationActionData.ActionFields, _mainUiService, _homeActionProgressHandler, _position);
+        _view.Init(_locationActionData.ActionFields, _mainUiService, _popupService, _homeActionProgressHandler, _progressBarPosition);
         
         _animatorService.StartShowAnimation(_view);
     }

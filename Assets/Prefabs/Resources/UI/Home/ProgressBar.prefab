@@ -60,13 +60,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _progress: {fileID: 6058353728980375031}
-  _showDuration: 0.3
+  _showDuration: 0.4
   _showEase: 27
   _hideDuration: 0.3
-  _showMoveAnimationDuration: 0.3
+  _showMoveAnimationDuration: 0.4
   _showMoveEase: 27
   _hideEase: 28
-  _showMoveStartOffset: 20
+  _showMoveStartOffset: 50
 --- !u!1 &7584683088014033373
 GameObject:
   m_ObjectHideFlags: 0

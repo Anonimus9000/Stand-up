@@ -6,6 +6,7 @@ using Script.Initializer.Base;
 using Script.InputChecker.Base;
 using Script.InputChecker.MouseKeyboard;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.InteractableObject.Base;
 using Script.InteractableObject.InteractableObjects.Container.Containers;
 using Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Bed;

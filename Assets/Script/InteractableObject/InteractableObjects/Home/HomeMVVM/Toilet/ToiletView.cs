@@ -3,17 +3,16 @@ using Script.InteractableObject.Base;
 using Script.Libraries.MVVM;
 using Script.UI.UIFollower.Base;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Toilet
 {
 public class ToiletView : InteractableBase, IView
 {
-    [SerializeField] private Collider _clickTrackCollider;
+    [SerializeField]
+    private Collider _clickTrackCollider;
 
-    [SerializeField] private Transform _progressBarPosition;
-
-    [SerializeField] private Image _progressBarImage;
+    [SerializeField]
+    private Transform _progressBarPosition;
 
     public override Collider ClickTrackCollider => _clickTrackCollider;
     public Transform ProgressBarPosition => _progressBarPosition;

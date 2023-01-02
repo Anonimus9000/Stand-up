@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Script.InteractableObject.ActionProgressSystem;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.BaseBehaviour;
 using Script.UI.Dialogs.PopupDialogs.ActionsPopup.Components;
@@ -25,9 +27,10 @@ public class ActionsUIView : UiViewBehaviour, IPopup
     
     public void Init(
         List<ActionFieldData> fields,
-        MainUIService mainUIService,
+        IUIService mainUIService,
+        IUIService popupService,
         HomeActionProgressHandler homeActionProgressHandler,
-        Vector3 position)
+        Vector3 progressBarPosition)
     {
         foreach (var actionField in fields)
         {
@@ -37,8 +40,10 @@ public class ActionsUIView : UiViewBehaviour, IPopup
                 actionField.ActionRewards,
                 actionField.ActionTime,
                 mainUIService,
+                popupService,
                 homeActionProgressHandler,
-                position);
+                progressBarPosition,
+                actionField.UpgradePoints);
         }
     }
 
