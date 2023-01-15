@@ -49,8 +49,11 @@ public class PopupsUIService : IUIService
 
     public void CloseCurrentView()
     {
-        CurrentUI.ViewHidden += OnViewClosed;
-        CurrentUI?.HideView();
+        if (CurrentUI != null)
+        {
+            CurrentUI.ViewHidden += OnViewClosed;
+            CurrentUI.HideView();
+        }
     }
 
     public void CloseAll()

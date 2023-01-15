@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Script.InteractableObject.InteractableObjects.Common.Player.PlayerMVVM
 {
-public class PlayerView : InteractableBase, IView
+public sealed class PlayerView : InteractableBase, IView
 {
     [SerializeField]
     private Collider _clickTrackCollider;

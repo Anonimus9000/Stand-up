@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Script.InteractableObject.InteractableObjects.Home.HomeMVVM.Computer
 {
-public class ComputerView : InteractableBase, IView
+public sealed class ComputerView : InteractableBase, IView
 {
     [SerializeField]
     private Collider _clickTrackCollider;

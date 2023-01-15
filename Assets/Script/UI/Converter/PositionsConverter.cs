@@ -22,9 +22,7 @@ public class PositionsConverter
             return screenPos;
         }
 
-        return new Vector3(10, 10, 0);
         return screenPoint;
     }
-
 }
 }
