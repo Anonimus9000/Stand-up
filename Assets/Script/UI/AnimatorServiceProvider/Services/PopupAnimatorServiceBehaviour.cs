@@ -87,8 +87,8 @@ public class PopupAnimatorServiceBehaviour : IPopupAnimatorService
         rectTransform.localScale = Vector3.zero;
 
         _showScaleTween?.Kill();
-        _showScaleTween.SetEase(_showScaleEase);
         _showScaleTween = rectTransform.DOScale(initialScale, duration);
+        _showScaleTween.SetEase(_showScaleEase);
         _showScaleTween.onComplete += OnShowAnimationCompleted;
     }
 
@@ -97,8 +97,8 @@ public class PopupAnimatorServiceBehaviour : IPopupAnimatorService
         rectTransform.localScale = initialScale;
 
         _hideScaleTween?.Kill(true);
-        _hideScaleTween.SetEase(_hideScaleEase);
         _hideScaleTween = rectTransform.DOScale(Vector3.zero, duration);
+        _hideScaleTween.SetEase(_hideScaleEase);
         _hideScaleTween.onComplete += OnHideAnimationCompleted;
     }
 
@@ -107,8 +107,8 @@ public class PopupAnimatorServiceBehaviour : IPopupAnimatorService
         canvasGroup.alpha = 0;
         
         _showFadeTween?.Kill();
-        _showFadeTween.SetEase(_showFadeEase);
         _showFadeTween = canvasGroup.DOFade(1, duration);
+        _showFadeTween.SetEase(_showFadeEase);
     }
 
     private void StartHideFadeAnimation(CanvasGroup canvasGroup, float duration)
@@ -116,8 +116,8 @@ public class PopupAnimatorServiceBehaviour : IPopupAnimatorService
         canvasGroup.alpha = 1;
         
         _hideFadeTween?.Kill(true);
-        _hideFadeTween.SetEase(_hideFadeEase);
         _hideFadeTween = canvasGroup.DOFade(0, duration);
+        _hideFadeTween.SetEase(_hideFadeEase);
     }
 
     private void OnShowAnimationCompleted()

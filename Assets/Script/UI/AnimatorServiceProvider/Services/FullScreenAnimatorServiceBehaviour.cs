@@ -86,6 +86,7 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
 
         _showScaleTween?.Kill();
         _showScaleTween = rectTransform.DOScale(initialScale, duration);
+        _showScaleTween.SetEase(_showScaleEase);
         _showScaleTween.onComplete += OnShowAnimationCompleted;
     }
 
@@ -95,6 +96,7 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
 
         _hideScaleTween?.Kill(true);
         _hideScaleTween = rectTransform.DOScale(Vector3.zero, duration);
+        _hideScaleTween.SetEase(_hideScaleEase);
         _hideScaleTween.onComplete += OnHideAnimationCompleted;
     }
 
@@ -103,6 +105,7 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
         _showFadeTween?.Kill();
         canvasGroup.alpha = 0;
         _showFadeTween = canvasGroup.DOFade(1, duration);
+        _showFadeTween.SetEase(_showFadeEase);
     }
 
     private void StartHideFadeAnimation(CanvasGroup canvasGroup, float duration)
@@ -110,6 +113,7 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
         _hideFadeTween?.Kill(true);
         canvasGroup.alpha = 1;
         _hideFadeTween = canvasGroup.DOFade(0, duration);
+        _hideFadeTween.SetEase(_hideFadeEase);
     }
 
     private void OnShowAnimationCompleted()
