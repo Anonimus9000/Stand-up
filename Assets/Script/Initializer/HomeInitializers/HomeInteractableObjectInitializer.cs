@@ -5,7 +5,9 @@ using Script.DataServices.Base;
 using Script.Initializer.Base;
 using Script.InputChecker.Base;
 using Script.InputChecker.MouseKeyboard;
-using Script.InteractableObject.ActionProgressSystem;
+#if UNITY_ANDROID
+using Script.InputChecker.TouchScreen;
+#endif
 using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.InteractableObject.Base;
 using Script.InteractableObject.InteractableObjects.Container.Containers;
@@ -17,8 +19,6 @@ using Script.Libraries.Observer.DataObserver;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
 using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using UnityEngine;
-#if UNITY_ANDROID
-#endif
 
 namespace Script.Initializer.HomeInitializers
 {
@@ -90,7 +90,7 @@ public class HomeInteractableObjectInitializer : MonoBehaviour, IDependenciesIni
  #if UNITY_EDITOR
          return new MouseLeftClickChecker(_mainCamera, _inputControls.MouseKeyboard.LeftButtonMousePress,
              clickAreaCollider);
-#elif UNITY_ANDROID
+#else
         return new TouchClickChecker(_mainCamera, _inputControls.TochScreen.SingleTouch, clickAreaCollider);
 #endif
     }

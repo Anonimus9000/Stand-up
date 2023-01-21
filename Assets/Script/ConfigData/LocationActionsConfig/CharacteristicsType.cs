@@ -1,4 +1,4 @@
-﻿namespace Script.UI.Dialogs.PopupDialogs.ActionsPopup.Components
+﻿namespace Script.ConfigData.LocationActionsConfig
 {
 public enum CharacteristicsType
 {

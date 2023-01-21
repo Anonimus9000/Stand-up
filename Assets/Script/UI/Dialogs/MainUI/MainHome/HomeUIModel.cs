@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Script.Initializer.StartApplicationDependenciesInitializers;
+using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.MVVM;
 using Script.Libraries.Observer.ObservableValue;
 using Script.UI.Converter;
@@ -55,7 +57,8 @@ public class HomeUIModel : IModel
         Transform progressBarParent,
         FlyBubble flyBubblePrefab,
         Transform bubblesParent,
-        Transform upgradePointsIcon)
+        Transform upgradePointsIcon,
+        HomeActionProgressHandler progressHandler)
     {
         _flyBubblePrefab = flyBubblePrefab;
         _bubblesParent = bubblesParent;
@@ -67,6 +70,8 @@ public class HomeUIModel : IModel
         progressBar.transform.localPosition = progressBarPosition;
         
         progressBar.ShowProgress(duration);
+        
+        progressHandler.StartActionProgress(duration);
 
         var applicationQuitTokenSource = new ApplicationQuitTokenSource();
         StartShowBubbles(duration,

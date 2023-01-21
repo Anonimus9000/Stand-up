@@ -110,7 +110,8 @@ public class HomeUIViewModel : IUIViewModel
             _view.ProgressBarParen,
             _view.FlyBubblePrefab,
             _view.BubbleParent,
-            _view.UpgradePointsIcon);
+            _view.UpgradePointsIcon,
+            _homeActionProgressHandler);
 
         return _currentProgressBar;
     }

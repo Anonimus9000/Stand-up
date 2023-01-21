@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Script.ConfigData.LocationActionsConfig;
 using Script.InteractableObject.ActionProgressSystem;
 using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;

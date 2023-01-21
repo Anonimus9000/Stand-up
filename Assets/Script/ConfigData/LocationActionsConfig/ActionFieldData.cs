@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Script.UI.Dialogs.PopupDialogs.ActionsPopup.Components
+namespace Script.ConfigData.LocationActionsConfig
 {
 [Serializable]
 public class ActionFieldData
