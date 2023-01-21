@@ -100,9 +100,9 @@ public class HomeUIViewModel : IUIViewModel
         return _view;
     }
 
-    public void UpdateUpgradePoints(int upgradePointsDifference, Vector3 startMovePosition)
+    public void UpdateStress(float stressPoint)
     {
-        
+        _view.UpdateStress(stressPoint);
     }
 
     public ProgressBar ShowProgressBar(float duration, Vector3 worldPosition, int upgradePoints)
@@ -120,6 +120,7 @@ public class HomeUIViewModel : IUIViewModel
 
         return _currentProgressBar;
     }
+    
 
     #region ModelEvents
 

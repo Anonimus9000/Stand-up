@@ -45,6 +45,16 @@ public class HomeUIModel : IModel
 
     public ObservableValue<int> UpgradePoints { get; } = new(0, 5);
 
+
+    public void UpdateStress(int stressPoint)
+    {
+        if (stressPoint < 0)
+        {
+            throw new Exception("Points can't be less zero");
+        }
+        
+    }
+
     public void InitUpgradePoints(int upgradePoints)
     {
         if (upgradePoints < 0)

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Script.ConfigData.LocationActionsConfig;
 using Script.InteractableObject.ActionProgressSystem;
 using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
@@ -34,6 +33,7 @@ public class ActionFieldItemView : MonoBehaviour
     private Vector3 _progressBarPosition;
     private IUIService _popupService;
     private int _upgradePoints;
+    private List<ActionRewardData> _actionRewards;
 
     public void Init(
         Sprite actionIcon,
@@ -61,13 +61,25 @@ public class ActionFieldItemView : MonoBehaviour
         {
             _actionDescription.text += actionRewards.RewardValue + " " + actionRewards.RewardTitle + "\n";
         }
+
+        _actionRewards = new List<ActionRewardData>(actionDescription);
+
     }
+    
 
     private void OnStartButtonPressed()
     {
         var homeUIViewModel = _mainUiService.CurrentUI as HomeUIViewModel;
         homeUIViewModel!.ShowProgressBar(_actionTime, _progressBarPosition, _upgradePoints);
-        
+        foreach (var actionReward in _actionRewards)
+        {
+            if (actionReward.RewardTitle == CharacteristicsType.Stress)
+            {
+                homeUIViewModel.UpdateStress(actionReward.RewardValue);
+            }
+        }
+
+        _homeActionProgressHandler.StartActionProgress(homeUIViewModel, _actionTime, _progressBarPosition);
         _popupService.CloseCurrentView();
     }
 }

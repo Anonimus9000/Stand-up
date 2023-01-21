@@ -63,6 +63,7 @@ MonoBehaviour:
   _progressBarPrefab: {fileID: 3483808060701414195, guid: a5e28d4d60a26d34c82aaa142bb2a357, type: 3}
   _progressBarParent: {fileID: 2035282455123904129}
   _upgradePoints: {fileID: 5154390011488555709}
+  _stressSlider: {fileID: 6735241493276739926}
 --- !u!225 &129248038156246979
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -569,6 +570,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stress
       objectReference: {fileID: 0}
+    - target: {fileID: 170310756535668355, guid: 631859e57b5c2bc4199a7c9f603e0fbf, type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 631859e57b5c2bc4199a7c9f603e0fbf, type: 3}
 --- !u!224 &6735241493276739925 stripped
@@ -576,6 +581,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 170310756535668352, guid: 631859e57b5c2bc4199a7c9f603e0fbf, type: 3}
   m_PrefabInstance: {fileID: 6856012241587128277}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6735241493276739926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 170310756535668355, guid: 631859e57b5c2bc4199a7c9f603e0fbf, type: 3}
+  m_PrefabInstance: {fileID: 6856012241587128277}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7097539050896783251
 PrefabInstance:
   m_ObjectHideFlags: 0

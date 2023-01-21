@@ -41,12 +41,17 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     [SerializeField]
     private TextMeshProUGUI _upgradePoints;
 
+    [SerializeField]
+    private Slider _stressSlider;
+
     public ProgressBar ProgressBarPrefab => _progressBarPrefab;
     public Transform ProgressBarParen => _progressBarParent;
     public FlyBubble FlyBubblePrefab => _flyBubblePrefab;
     public Transform UpgradePointsIcon => _upgradePointsIcon;
     public Transform BubbleParent => _bubblesParent;
     public TextMeshProUGUI UpgradePoints => _upgradePoints;
+
+    public Slider StressSlider => _stressSlider;
 
     private IUIServiceProvider _serviceProvider;
     private FullScreensUIService _fullScreensUIService;
@@ -75,6 +80,20 @@ public class HomeUIView : UiViewBehaviour, IMainUI
     {
         _openMenuButton.onClick.RemoveListener(MenuButtonPressed);
         _openCharacterInfoButton.onClick.RemoveListener(OnOpenCharacterInfoButtonPressed);
+    }
+
+    public void UpdateStress(float stressPoints)
+    {
+        var stressValue = _stressSlider.value + stressPoints/100;
+        if (stressValue <= 0)
+        {
+            _stressSlider.value = 0;
+        }
+        else
+        {
+            _stressSlider.value = stressValue;
+        }
+        
     }
 
     private void OnOpenCharacterInfoButtonPressed()
