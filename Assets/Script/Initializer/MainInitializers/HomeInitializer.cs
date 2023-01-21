@@ -1,4 +1,5 @@
-﻿using Script.ConfigData.LocationActionsConfig;
+﻿using Script.ConfigData.InGameEventsConfig;
+using Script.ConfigData.LocationActionsConfig;
 using Script.DataServices.Base;
 using Script.Initializer.Base;
 using Script.Initializer.HomeInitializers;
@@ -16,8 +17,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
 {
     [SerializeReference]
     private HomeInteractableObjectInitializer _homeInteractableObjectInitializer;
-    
-    [FormerlySerializedAs("_monoDependencyContainers")]
+
     [SerializeField]
     private DependencyProviderBehaviour _dependencyContainers;
 
@@ -25,11 +25,15 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     private Canvas _mainCanvas;
 
     //TODO: move to initializer
-    [FormerlySerializedAs("_interactableObjectsData")]
-    [SerializeField] private InteractableObjectsConfig _interactableObjectsConfig; 
+    [SerializeField]
+    private InteractableObjectsConfig _interactableObjectsConfig;
+
+    [FormerlySerializedAs("_onProgressEventsConfig")]
+    [SerializeField]
+    private InActionProgressEventsConfig _inActionProgressEventsConfig;
 
     private IServiceProvider _serviceProvider;
-    private readonly ActionProgressHandlerInitializer _actionProgressHandlerInitializer = new();
+    private readonly ActionProgressHandlerInitializer _actionProgressHandlerInitializer;
 
     public void Initialize()
     {
@@ -40,7 +44,7 @@ public class HomeInitializer : MonoBehaviour, IInitializer
     {
         var uiManager = _dependencyContainers.GetDependency<IUIServiceProvider>();
         InitializeServiceProvider();
-        var actionProgressHandler = InitializeActionProgressHandler();
+        var actionProgressHandler = _dependencyContainers.GetDependency<HomeActionProgressHandler>();
         InitializeHomeInteractableObjects(uiManager, actionProgressHandler);
     }
 
@@ -49,18 +53,13 @@ public class HomeInitializer : MonoBehaviour, IInitializer
         _serviceProvider = _dependencyContainers.GetDependency<IServiceProvider>();
     }
 
-    private void InitializeHomeInteractableObjects(IUIServiceProvider iuiSystem, HomeActionProgressHandler actionProgressHandler)
+    private void InitializeHomeInteractableObjects(IUIServiceProvider iuiSystem,
+        HomeActionProgressHandler actionProgressHandler)
     {
         var dataService = _serviceProvider.GetService<IDataService>();
-        _homeInteractableObjectInitializer.InitializeDependencies(dataService, iuiSystem, _mainCanvas, _interactableObjectsConfig, actionProgressHandler);
+        _homeInteractableObjectInitializer.InitializeDependencies(dataService, iuiSystem, _mainCanvas,
+            _interactableObjectsConfig, actionProgressHandler);
         var interactableViewModelsContainer = _homeInteractableObjectInitializer.Initialize();
-    }
-
-    private HomeActionProgressHandler InitializeActionProgressHandler()
-    {
-        var homeActionProgressHandler = _actionProgressHandlerInitializer.Initialize() as HomeActionProgressHandler;
-
-        return homeActionProgressHandler;
     }
 }
 }

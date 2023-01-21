@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Script.ConfigData.InGameEventsConfig
 {
-[CreateAssetMenu(fileName = "InteractableObjectsData", menuName = "ScriptableObjects/InteractableObjectsData",
-    order = 1)]
-public class InActionProgressConfig : ScriptableObject, ILocationActionConfig
+[CreateAssetMenu(fileName = "InGameActionProgressConfig", menuName = "ScriptableObjects/InGameActionProgressConfig",
+    order = 2)]
+public class InActionProgressEventsConfig : ScriptableObject, ILocationActionConfig
 {
     [Range(0, 100)]
     [SerializeField]
@@ -37,6 +37,12 @@ public class InActionProgressConfig : ScriptableObject, ILocationActionConfig
         {
             (_minProgressPercentToShowEvent, _maxProgressPercentToShowEvent) =
                 (_maxProgressPercentToShowEvent, _minProgressPercentToShowEvent);
+        }
+
+        if (_minProgressPercentToShowEvent == _maxProgressPercentToShowEvent)
+        {
+            _minProgressPercentToShowEvent--;
+            _maxProgressPercentToShowEvent++;
         }
     }
     #endif

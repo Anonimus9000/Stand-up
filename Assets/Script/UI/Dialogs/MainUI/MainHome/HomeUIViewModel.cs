@@ -29,12 +29,15 @@ public class HomeUIViewModel : IUIViewModel
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
     private IAnimatorService _animatorService;
     private ProgressBar _currentProgressBar;
+    private readonly IUIService _popupsUIService;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
-    public HomeUIViewModel(ISceneSwitcher sceneSwitcher, 
+    public HomeUIViewModel(
+        ISceneSwitcher sceneSwitcher, 
         IUIService mainUIService, 
         IUIService fullScreenService, 
+        IUIService popupsUIService,
         CharacterCreationData characterCreationData, 
         CharacterSelector characterSelector, 
         PositionsConverter positionsConverter,
@@ -44,10 +47,12 @@ public class HomeUIViewModel : IUIViewModel
         _sceneSwitcher = sceneSwitcher;
         _mainUiService = mainUIService;
         _fullScreensUIService = fullScreenService;
+        _popupsUIService = popupsUIService;
         _positionsConverter = positionsConverter;
-        _model = new HomeUIModel(_positionsConverter);
         _characterSelector = characterSelector;
         _homeActionProgressHandler = homeActionProgressHandler;
+        
+        _model = new HomeUIModel(positionsConverter, popupsUIService, homeActionProgressHandler);
     }
 
     public void Init(IUIView view, IAnimatorService animatorService)
@@ -155,6 +160,7 @@ public class HomeUIViewModel : IUIViewModel
             new StartGameMenuViewModel(
                 _mainUiService, 
                 _fullScreensUIService,
+                _popupsUIService,
                 _sceneSwitcher, 
                 _characterData,
                 _characterSelector,

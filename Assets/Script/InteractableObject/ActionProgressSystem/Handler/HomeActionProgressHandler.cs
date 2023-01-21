@@ -9,61 +9,107 @@ namespace Script.InteractableObject.ActionProgressSystem.Handler
 {
 public class HomeActionProgressHandler : IInitializable, IActionProgressHandler
 {
-    public event Action TryShowEventSuccessful;
-    
-    private readonly InActionProgressConfig _config;
-    private bool _eventViewShown;
+    public event Action CheckEventSuccessful;
+    public event Action ProgressCompleted;
+    public event Action ProgressPaused;
+    public event Action ProgressСontinued;
 
-    public HomeActionProgressHandler(InActionProgressConfig config)
+    private readonly InActionProgressEventsConfig _eventsConfig;
+    private bool _checkInGameEventsInPause;
+
+    private bool CheckInGameEventsInPause
     {
-        _config = config;
+        get => _checkInGameEventsInPause;
+        set
+        {
+            _checkInGameEventsInPause = value;
+
+            if (_checkInGameEventsInPause)
+            {
+                ProgressPaused?.Invoke();
+            }
+            else
+            {
+                ProgressСontinued?.Invoke();
+            }
+        }
+    }
+
+    private bool _isForceStopped;
+
+    public HomeActionProgressHandler(InActionProgressEventsConfig eventsConfig)
+    {
+        _eventsConfig = eventsConfig;
     }
 
     public void StartActionProgress(float duration)
     {
-        var tickPerMilliseconds = (int)_config.HowOftenTryShowEventPerSecond * 1000;
+        _isForceStopped = false;
+        
+        var tickPerMilliseconds = (int)_eventsConfig.HowOftenTryShowEventPerSecond * 1000;
         var applicationQuitTokenSource = new ApplicationQuitTokenSource();
         
         ProgressTimer(duration, tickPerMilliseconds, applicationQuitTokenSource.Token);
     }
 
-    private async void ProgressTimer(float durationPerSeconds, int tickToTryShowEventPerMilliseconds, CancellationToken token)
+    public void ContinueCheckEvents()
     {
-        var timeLess = 0f;
-
-        while (timeLess < durationPerSeconds)
-        {
-            await Task.Delay(tickToTryShowEventPerMilliseconds, token);
-
-            timeLess += tickToTryShowEventPerMilliseconds / 1000f;
-            
-            if (TryShowEvent())
-            {
-                while (_eventViewShown)
-                {
-                    await Task.Yield();
-                }
-            }
-        }
+        CheckInGameEventsInPause = false;
     }
 
-    private bool TryShowEvent()
+    public void ForceStopProgress()
+    {
+        _isForceStopped = true;
+    }
+
+    private async void ProgressTimer(float durationPerSeconds, int tickToTryShowEventPerMilliseconds, CancellationToken token)
+    {
+        var timeLessMilliseconds = 0;
+        var lastCheckTimeMilliseconds = 0;
+        var durationInMilliseconds = durationPerSeconds * 1000;
+
+        while (timeLessMilliseconds < durationInMilliseconds)
+        {
+            token.ThrowIfCancellationRequested();
+            
+            if(_isForceStopped) return;
+            
+            await Task.Delay(10, token);
+
+            timeLessMilliseconds += 10;
+
+            if (tickToTryShowEventPerMilliseconds <= timeLessMilliseconds - lastCheckTimeMilliseconds)
+            {
+                TryShowEvent();
+                lastCheckTimeMilliseconds = timeLessMilliseconds;
+            }
+
+            while (CheckInGameEventsInPause)
+            {
+                if(_isForceStopped) return;
+                
+                await Task.Yield();
+            }
+        }
+        
+        if (_isForceStopped) return;
+        
+        ProgressCompleted?.Invoke();
+    }
+
+    private void TryShowEvent()
     {
         var random = new Random();
-        var changeToShow = _config.ChangeToShowEvent;
+        var changeToShow = _eventsConfig.ChangeToShowEvent;
 
         var next = random.Next(0, 99);
 
         if (changeToShow > next)
         {
-            TryShowEventSuccessful?.Invoke();
+            CheckEventSuccessful?.Invoke();
             
-            _eventViewShown = true;
-            
-            return true;
+            CheckInGameEventsInPause = true;
         }
-
-        return false;
     }
 }
 }

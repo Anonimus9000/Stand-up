@@ -7,16 +7,16 @@ namespace Script.Initializer.StartApplicationDependenciesInitializers
 public class ActionProgressHandlerInitializer : IDependenciesInitializer
 {
     private HomeActionProgressHandler _homeActionProgressHandler;
-    private InActionProgressConfig _config;
+    private readonly InActionProgressEventsConfig _eventsConfig;
 
-    public void SetDependencies(InActionProgressConfig config)
+    public ActionProgressHandlerInitializer(InActionProgressEventsConfig eventsConfig)
     {
-        _config = config;
+        _eventsConfig = eventsConfig;
     }
     
     public IInitializable Initialize()
     {
-        _homeActionProgressHandler = new HomeActionProgressHandler(_config);
+        _homeActionProgressHandler = new HomeActionProgressHandler(_eventsConfig);
 
         return _homeActionProgressHandler;
     }

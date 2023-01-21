@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Script.Initializer.StartApplicationDependenciesInitializers;
 using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.MVVM;
 using Script.Libraries.Observer.ObservableValue;
+using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.UI.Converter;
 using Script.UI.Dialogs.MainUI.MainHome.Components;
+using Script.UI.Dialogs.PopupDialogs.InGameEvent;
 using Script.Utils.ThreadUtils;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -17,12 +18,17 @@ namespace Script.UI.Dialogs.MainUI.MainHome
 public class HomeUIModel : IModel
 {
     private readonly PositionsConverter _positionConverter;
-    private Transform _upgradePointsIcon;
-    private Transform _bubblesParent;
-    private FlyBubble _flyBubblePrefab;
+    private readonly IUIService _popupsUIService;
+    private readonly HomeActionProgressHandler _homeActionProgressHandler;
+    private ProgressBar _progressBar;
 
-    public HomeUIModel(PositionsConverter positionsConverter)
+    public HomeUIModel(
+        PositionsConverter positionsConverter, 
+        IUIService popupsUIService,
+        HomeActionProgressHandler homeActionProgressHandler)
     {
+        _popupsUIService = popupsUIService;
+        _homeActionProgressHandler = homeActionProgressHandler;
         _positionConverter = positionsConverter;
     }
 
@@ -60,16 +66,22 @@ public class HomeUIModel : IModel
         Transform upgradePointsIcon,
         HomeActionProgressHandler progressHandler)
     {
-        _flyBubblePrefab = flyBubblePrefab;
-        _bubblesParent = bubblesParent;
-        _upgradePointsIcon = upgradePointsIcon;
-        
         var progressBarPosition = GetScreenPointPositionByWorld(worldPosition);
+
+        if (_progressBar == null)
+        {
+            _progressBar = Object.Instantiate(prefab, progressBarParent);
+        }
+        else
+        {
+            _progressBar.gameObject.SetActive(true);
+        }
+
+        SubscribeOnProgressEvents(progressHandler, _progressBar);
         
-        var progressBar = Object.Instantiate(prefab, progressBarParent);
-        progressBar.transform.localPosition = progressBarPosition;
+        _progressBar.transform.localPosition = progressBarPosition;
         
-        progressBar.ShowProgress(duration);
+        _progressBar.ShowProgress(duration);
         
         progressHandler.StartActionProgress(duration);
 
@@ -79,11 +91,63 @@ public class HomeUIModel : IModel
             flyBubblePrefab,
             bubblesParent,
             upgradePointsIcon,
-            progressBar.transform,
+            _progressBar.transform,
             applicationQuitTokenSource.Token);
 
-        return progressBar;
+        return _progressBar;
     }
+
+    private void SubscribeOnProgressEvents(HomeActionProgressHandler homeActionProgressHandler, ProgressBar progressBar)
+    {
+        homeActionProgressHandler.CheckEventSuccessful += OnCheckEventSuccessful;
+        homeActionProgressHandler.ProgressPaused += OnProgressPaused;
+        homeActionProgressHandler.ProgressСontinued += OnProgressContinued;
+        homeActionProgressHandler.ProgressCompleted += OnProgressCompleted;
+        progressBar.ProgressAnimationCompleted += OnProgressBarAnimationCompleted;
+
+    }
+
+    private void OnProgressBarAnimationCompleted()
+    {
+        _progressBar.gameObject.SetActive(false);
+    }
+
+    private void OnProgressContinued()
+    {
+        _progressBar.Continue();
+    }
+
+    private void OnProgressPaused()
+    {
+        _progressBar.Pause();
+    }
+
+    private void OnProgressCompleted()
+    {
+        UnsubscribeOnProgressEvents(_homeActionProgressHandler);
+    }
+
+    private void UnsubscribeOnProgressEvents(HomeActionProgressHandler homeActionProgressHandler)
+    {
+        homeActionProgressHandler.CheckEventSuccessful -= OnCheckEventSuccessful;
+        homeActionProgressHandler.ProgressPaused -= OnCheckEventSuccessful;
+        homeActionProgressHandler.ProgressСontinued -= OnCheckEventSuccessful;
+        homeActionProgressHandler.ProgressCompleted -= OnProgressCompleted;
+    }
+
+    private void OnCheckEventSuccessful()
+    {
+        var inGameViewModel = new InGameEventViewModel(_popupsUIService);
+        _popupsUIService.Show<InGameEventView>(inGameViewModel);
+
+        inGameViewModel.EventCompleted += OnInGameEventCompleted;
+    }
+
+    private void OnInGameEventCompleted()
+    {
+        _homeActionProgressHandler.ContinueCheckEvents();
+    }
+
 
     private async void StartShowBubbles(
         float duration,

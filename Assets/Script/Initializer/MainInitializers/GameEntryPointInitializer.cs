@@ -1,4 +1,5 @@
 using IngameDebugConsole;
+using Script.ConfigData.InGameEventsConfig;
 using Script.Initializer.Base;
 using Script.Initializer.MonoDependencyContainers;
 using Script.Initializer.StartApplicationDependenciesInitializers;
@@ -38,8 +39,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     [SerializeField] 
     private CharacterCreationData _characterCreationData;
 
-    [SerializeField] private HomeActionProgressHandler _homeActionProgressHandler;
-
+    [SerializeField]
+    private InActionProgressEventsConfig _inActionProgressEventsConfig;
+    
     //TODO: replace
     [SerializeField]
     private GameObject _homeGameObject;
@@ -51,6 +53,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     private Canvas _uiCanvas;
 
     #endregion
+
 
     private SceneContainer _sceneContainer;
     private ILogger _logger;
@@ -73,8 +76,11 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
 
         var initializeDataServiceProvider = InitializeDataServiceProvider();
         _dependencyProviderBehaviour.AddDependency(initializeDataServiceProvider);
-        
-        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher, _characterCreationData, _characterSelector, _homeActionProgressHandler);
+
+        var homeActionProgressHandler = InitializeActionProgressHandler(_inActionProgressEventsConfig);
+        _dependencyProviderBehaviour.AddDependency(homeActionProgressHandler);
+
+        OpenApplicationEnterDotWindow(uiManager, sceneSwitcher, _characterCreationData, _characterSelector, homeActionProgressHandler);
     }
 
     private IUIServiceProvider InitializeUISystem(ISceneSwitcher sceneSwitcher)
@@ -100,6 +106,15 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
 
         return (IServiceProvider)dataServiceProviderInitializer.Initialize();
     }
+    
+    private HomeActionProgressHandler InitializeActionProgressHandler(InActionProgressEventsConfig inActionProgressEventsConfig)
+    {
+        var actionProgressHandlerInitializer = new ActionProgressHandlerInitializer(inActionProgressEventsConfig);
+        
+        var homeActionProgressHandler = actionProgressHandlerInitializer.Initialize() as HomeActionProgressHandler;
+
+        return homeActionProgressHandler;
+    }
 
     private static ILogger InitializeLogger()
     {
@@ -117,6 +132,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
     {
         var fullScreensUIService = uiServiceProvider.GetService<FullScreensUIService>();
         var mainUIService = uiServiceProvider.GetService<MainUIService>();
+        var popupsUIService = uiServiceProvider.GetService<PopupsUIService>();
 
         var positionsConverter = new PositionsConverter(_uiCanvas, Camera.main);
         
@@ -124,6 +140,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
             new StartGameMenuViewModel(
                 mainUIService, 
                 fullScreensUIService,
+                popupsUIService,
                 sceneSwitcher, 
                 characterCreationData,
                 characterSelector,

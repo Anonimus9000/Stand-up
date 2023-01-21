@@ -13,14 +13,7 @@ namespace Script.Initializer.MonoDependencyContainers
 public class DependencyProviderBehaviour : ScriptableObject, IDependencyProvider
 {
     private readonly List<object> _dependencies = new();
-
-    public void InitializeDependencies(IServiceProvider dataService, IUIServiceProvider iuiSystem, ILogger logger)
-    {
-        _dependencies.Add(dataService);
-        _dependencies.Add(iuiSystem);
-        _dependencies.Add(logger);
-    }
-
+    
     public void AddDependency(object dependency)
     {
         if (_dependencies.Contains(dependency))
