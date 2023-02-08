@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Script.ConfigData.LocationActionsConfig;
 using Script.InteractableObject.ActionProgressSystem;
 using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.UiServiceProvider;
@@ -79,7 +80,7 @@ public class ActionFieldItemView : MonoBehaviour
             }
         }
 
-        _homeActionProgressHandler.StartActionProgress(homeUIViewModel, _actionTime, _progressBarPosition);
+        _homeActionProgressHandler.StartActionProgress(_actionTime);
         _popupService.CloseCurrentView();
     }
 }
