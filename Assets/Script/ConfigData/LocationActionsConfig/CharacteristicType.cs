@@ -1,6 +1,6 @@
 ﻿namespace Script.ConfigData.LocationActionsConfig
 {
-public enum CharacteristicsType
+public enum CharacteristicType
 {
     Erudition,
     Insight,

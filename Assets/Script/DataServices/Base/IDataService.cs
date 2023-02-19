@@ -4,6 +4,6 @@ namespace Script.DataServices.Base
 {
 public interface IDataService : IService
 {
-    IDataModel DataModel { get; }
+    IDataContainer DataContainer { get; }
 }
 }

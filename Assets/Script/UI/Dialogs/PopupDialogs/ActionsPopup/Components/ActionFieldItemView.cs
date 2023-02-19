@@ -74,7 +74,7 @@ public class ActionFieldItemView : MonoBehaviour
         homeUIViewModel!.ShowProgressBar(_actionTime, _progressBarPosition, _upgradePoints);
         foreach (var actionReward in _actionRewards)
         {
-            if (actionReward.RewardTitle == CharacteristicsType.Stress)
+            if (actionReward.RewardTitle == CharacteristicType.Stress)
             {
                 homeUIViewModel.UpdateStress(actionReward.RewardValue);
             }

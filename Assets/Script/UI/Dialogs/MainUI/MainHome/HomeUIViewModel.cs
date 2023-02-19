@@ -1,4 +1,5 @@
 ﻿using System;
+using Script.DataServices.Base;
 using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
@@ -30,6 +31,7 @@ public class HomeUIViewModel : IUIViewModel
     private IAnimatorService _animatorService;
     private ProgressBar _currentProgressBar;
     private readonly IUIService _popupsUIService;
+    private readonly IDataService _playerData;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
@@ -41,8 +43,11 @@ public class HomeUIViewModel : IUIViewModel
         CharacterCreationData characterCreationData, 
         CharacterSelector characterSelector, 
         PositionsConverter positionsConverter,
-        HomeActionProgressHandler homeActionProgressHandler)
+        HomeActionProgressHandler homeActionProgressHandler,
+        IDataService playerData)
     {
+        _playerData = playerData;
+
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
         _mainUiService = mainUIService;
@@ -166,12 +171,13 @@ public class HomeUIViewModel : IUIViewModel
                 _characterData,
                 _characterSelector,
                 _positionsConverter,
-                _homeActionProgressHandler));
+                _homeActionProgressHandler,
+                _playerData));
     }
     
     private void OnOpenCharacterInfoButtonPressed()
     {
-        _fullScreensUIService.Show<CharacterInfoView>(new CharacterInfoViewModel(_fullScreensUIService));
+        _fullScreensUIService.Show<CharacterInfoView>(new CharacterInfoViewModel(_fullScreensUIService, _playerData));
     }
 
     #endregion

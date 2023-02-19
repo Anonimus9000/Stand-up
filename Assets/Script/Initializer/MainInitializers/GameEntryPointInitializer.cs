@@ -1,5 +1,7 @@
 using IngameDebugConsole;
 using Script.ConfigData.InGameEventsConfig;
+using Script.ConfigData.PlayerDataConfig;
+using Script.DataServices.Services.PlayerDataService;
 using Script.Initializer.Base;
 using Script.Initializer.MonoDependencyContainers;
 using Script.Initializer.StartApplicationDependenciesInitializers;
@@ -41,6 +43,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
 
     [SerializeField]
     private InActionProgressEventsConfig _inActionProgressEventsConfig;
+
+    [SerializeField]
+    private PlayerData _playerData;
     
     //TODO: replace
     [SerializeField]
@@ -57,6 +62,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
 
     private SceneContainer _sceneContainer;
     private ILogger _logger;
+    private IServiceProvider _dataServiceProvider;
 
     private void OnEnable()
     {
@@ -73,10 +79,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var uiManager = InitializeUISystem(sceneSwitcher);
         _dependencyProviderBehaviour.AddDependency(uiManager);
 
-
-        var initializeDataServiceProvider = InitializeDataServiceProvider();
-        _dependencyProviderBehaviour.AddDependency(initializeDataServiceProvider);
-
+        _dataServiceProvider = InitializeDataServiceProvider();
+        _dependencyProviderBehaviour.AddDependency(_dataServiceProvider);    
+        
         var homeActionProgressHandler = InitializeActionProgressHandler(_inActionProgressEventsConfig);
         _dependencyProviderBehaviour.AddDependency(homeActionProgressHandler);
 
@@ -91,7 +96,7 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return (IUIServiceProvider)uiManagerDependenciesInitializer.Initialize();
     }
 
-    private static ISceneSwitcher InitializeSceneSwitcher(ISceneContainer sceneContainer,
+    private ISceneSwitcher InitializeSceneSwitcher(ISceneContainer sceneContainer,
         IInitializer homeInitializer, GameObject homeGameObject, ILogger logger)
     {
         var sceneSwitcher = new SceneSwitcherDependenciesInitializer(
@@ -100,9 +105,9 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         return (ISceneSwitcher)sceneSwitcher.Initialize();
     }
 
-    private static IServiceProvider InitializeDataServiceProvider()
+    private IServiceProvider InitializeDataServiceProvider()
     {
-        var dataServiceProviderInitializer = new DataServiceProviderInitializer();
+        var dataServiceProviderInitializer = new DataServiceProviderInitializer(_playerData);
 
         return (IServiceProvider)dataServiceProviderInitializer.Initialize();
     }
@@ -135,7 +140,8 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
         var popupsUIService = uiServiceProvider.GetService<PopupsUIService>();
 
         var positionsConverter = new PositionsConverter(_uiCanvas, Camera.main);
-        
+        var playerDataService = _dataServiceProvider.GetService<PlayerDataService>();
+
         var applicationEnterViewModel = 
             new StartGameMenuViewModel(
                 mainUIService, 
@@ -145,7 +151,8 @@ public class GameEntryPointInitializer : MonoBehaviour, IMainInitializer
                 characterCreationData,
                 characterSelector,
                 positionsConverter,
-                homeActionProgressHandler);
+                homeActionProgressHandler,
+                playerDataService);
         mainUIService.Show<StartGameMenuView>(applicationEnterViewModel);
     }
 }

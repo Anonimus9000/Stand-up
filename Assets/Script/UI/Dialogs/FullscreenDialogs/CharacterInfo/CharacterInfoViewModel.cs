@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using Script.DataServices.Base;
+using Script.DataServices.Services.PlayerDataService;
 using Script.Libraries.UISystem.Managers.Instantiater;
 using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.Libraries.UISystem.UiMVVM;
 using Script.Libraries.UISystem.UIWindow;
+using Script.UI.Dialogs.FullscreenDialogs.CharacterInfo.Characteristics;
+using UnityEngine;
 
 namespace Script.UI.Dialogs.FullscreenDialogs.CharacterInfo
 {
@@ -16,26 +21,36 @@ public class CharacterInfoViewModel : IUIViewModel
     private readonly CharacterInfoModel _model;
     private readonly IUIService _fullScreenService;
     private IAnimatorService _animatorService;
+    private List<CharacteristicElementViewModel> _characteristics;
+    private readonly IDataService _playerDataService;
+    private CharacteristicsListViewModel _characteristicsListViewModel;
 
-    public CharacterInfoViewModel(IUIService fullScreensUIService)
+    public CharacterInfoViewModel(IUIService fullScreensUIService, IDataService playerDataService)
     {
+        _playerDataService = playerDataService;
         _fullScreenService = fullScreensUIService;
-        _model = new CharacterInfoModel();
+        _model = new CharacterInfoModel(playerDataService as PlayerDataService);
     }
 
     public void Init(IUIView view, IAnimatorService animatorService)
     {
         _view = view as CharacterInfoView;
         _animatorService = animatorService;
-        
+        _characteristicsListViewModel = new CharacteristicsListViewModel(_view!.CharacteristicsListView, _playerDataService);
+
+        SubscribeOnModelEvents();
         SubscribeOnViewEvents(_view);
         SubscribeOnAnimatorEvents(_animatorService);
+        
+        InitCharacterView();
     }
 
     public void Deinit()
     {
+        UnsubscribeOnModelEvents();
         UnsubscribeOnViewEvents(_view);
         UnsubscribeOnAnimatorEvents(_animatorService);
+        _characteristicsListViewModel.Deinit();
     }
 
     public void ShowView()
@@ -57,6 +72,38 @@ public class CharacterInfoViewModel : IUIViewModel
     {
         return _view;
     }
+
+    #region ModelEvents
+
+    private void InitCharacterView()
+    {
+        _view.Avatar.texture = _model.PlayerAvatar;
+        _view.Name.text = _model.PlayerName;
+    }
+    
+    private void SubscribeOnModelEvents()
+    {
+        _model.AvatarChanged += OnAvatarChanged;
+        _model.PlayerNameChanged += OnNameChanged;
+    }
+
+    private void UnsubscribeOnModelEvents()
+    {
+        _model.AvatarChanged -= OnAvatarChanged;
+        _model.PlayerNameChanged -= OnNameChanged;
+    }
+
+    private void OnNameChanged(string plaName)
+    {
+        _view.Name.text = plaName;
+    }
+
+    private void OnAvatarChanged(Texture avatarTexture)
+    {
+        _view.Avatar.texture = avatarTexture;
+    }
+
+    #endregion
 
     #region ViewEvents
 

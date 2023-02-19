@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d5b39f633b42a19d0dc204fda8faa4, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: 
+  _name: PIDOR
+  _avatar: {fileID: 2800000, guid: 358c17b4dd4c0461f8bcaf75f245f54e, type: 3}
+  _characteristicsData:
+  - _icon: {fileID: 2800000, guid: d6b2ea048947e4289af031c148a21b77, type: 3}
+    _currentCharacteristicLevel: 1
+    _currentPoints: 228
+    _characteristicType: 0
+    _levelsData:
+    - _level: 1
+      _pointsToNextLevel: 1000
+  - _icon: {fileID: 2800000, guid: d1e7f434677574f77a8af7225c3a5e23, type: 3}
+    _currentCharacteristicLevel: 2
+    _currentPoints: 1488
+    _characteristicType: 1
+    _levelsData:
+    - _level: 1
+      _pointsToNextLevel: 2000
+    - _level: 2
+      _pointsToNextLevel: 3000
+    - _level: 3
+      _pointsToNextLevel: 3500
+  - _icon: {fileID: 2800000, guid: 3bc47353e5a3641b0afc1e095f939ffc, type: 3}
+    _currentCharacteristicLevel: 1
+    _currentPoints: 2
+    _characteristicType: 2
+    _levelsData:
+    - _level: 1
+      _pointsToNextLevel: 100
+    - _level: 2
+      _pointsToNextLevel: 150
+  - _icon: {fileID: 2800000, guid: 6a76ad8b56e324c92b33141cafc52ddb, type: 3}
+    _currentCharacteristicLevel: 3
+    _currentPoints: 200
+    _characteristicType: 3
+    _levelsData:
+    - _level: 1
+      _pointsToNextLevel: 100
+    - _level: 2
+      _pointsToNextLevel: 150
+    - _level: 3
+      _pointsToNextLevel: 200
+    - _level: 4
+      _pointsToNextLevel: 300
+    - _level: 5
+      _pointsToNextLevel: 500
+  - _icon: {fileID: 2800000, guid: 10219edb01c6540109e7ea5367c6ba4e, type: 3}
+    _currentCharacteristicLevel: 1
+    _currentPoints: 10
+    _characteristicType: 4
+    _levelsData:
+    - _level: 1
+      _pointsToNextLevel: 100
+    - _level: 2
+      _pointsToNextLevel: 150
+    - _level: 3
+      _pointsToNextLevel: 200
+    - _level: 4
+      _pointsToNextLevel: 300
+    - _level: 5
+      _pointsToNextLevel: 500
+  - _icon: {fileID: 2800000, guid: dd75d598db5ab4ad38b1ba57af85ad11, type: 3}
+    _currentCharacteristicLevel: 5
+    _currentPoints: 150
+    _characteristicType: 5
+    _levelsData:
+    - _level: 1
+      _pointsToNextLevel: 100
+    - _level: 2
+      _pointsToNextLevel: 150
+    - _level: 3
+      _pointsToNextLevel: 200
+    - _level: 4
+      _pointsToNextLevel: 300
+    - _level: 5
+      _pointsToNextLevel: 500

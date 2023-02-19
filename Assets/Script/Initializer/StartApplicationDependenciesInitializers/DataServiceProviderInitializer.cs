@@ -1,4 +1,5 @@
-﻿using Script.DataServices;
+﻿using Script.ConfigData.PlayerDataConfig;
+using Script.DataServices;
 using Script.DataServices.DataLoader;
 using Script.DataServices.Services.PlayerDataService;
 using Script.Initializer.Base;
@@ -8,6 +9,13 @@ namespace Script.Initializer.StartApplicationDependenciesInitializers
 {
 public class DataServiceProviderInitializer : IDependenciesInitializer
 {
+    private readonly PlayerData _playerData;
+
+    public DataServiceProviderInitializer(PlayerData playerData)
+    {
+        _playerData = playerData;
+    }
+    
     public IInitializable Initialize()
     {
         var services = GetServices();
@@ -15,20 +23,20 @@ public class DataServiceProviderInitializer : IDependenciesInitializer
 
         return dataServiceProvider;
     }
-
+    
     private IService[] GetServices()
     {
         IDataLoader playerDataLoader = InitializePlayerDataLoader();
         
         return new IService[]
         {
-            new PlayerCharacteristicsDataService(playerDataLoader)
+            new PlayerDataService(playerDataLoader)
         };
     }
 
-    private static PlayerDataLoader InitializePlayerDataLoader()
+    private PlayerDataLoader InitializePlayerDataLoader()
     {
-        var playerDataLoader = new PlayerDataLoader();
+        var playerDataLoader = new PlayerDataLoader(_playerData);
         playerDataLoader.LoadData();
 
         return playerDataLoader;

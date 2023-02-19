@@ -4,14 +4,16 @@ using Script.Libraries.Observer.ObservableValue.Base;
 
 namespace Script.Libraries.Observer.ObservableValue
 {
-public class ObservableValue<TValue> : IObservableValue<TValue>
+public class NotifyObservableValue<TValue> : INotifyObservableValue<TValue>
 {
-    private readonly List<Subscriber<TValue>> _subscribers;
-    public TValue Value { get; private set; }
+    public TValue Value => _value;
     
-    public ObservableValue(TValue value, int subscribersCapacity = 30)
+    private readonly List<Subscriber<TValue>> _subscribers;
+    private TValue _value;
+
+    public NotifyObservableValue(TValue value, int subscribersCapacity = 5)
     {
-        this.Value = value;
+        _value = value;
         
         _subscribers = new List<Subscriber<TValue>>(subscribersCapacity);
     }
@@ -42,7 +44,7 @@ public class ObservableValue<TValue> : IObservableValue<TValue>
 
     public void Notify(TValue value)
     {
-        this.Value = value;
+        _value = value;
         
         foreach (var subscriber in _subscribers)
         {

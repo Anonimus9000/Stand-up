@@ -43,7 +43,7 @@ public class HomeUIModel : IModel
 
     public event Action<float> MoveBubbleCompleted;
 
-    public ObservableValue<int> UpgradePoints { get; } = new(0, 5);
+    public NotifyObservableValue<int> UpgradePoints { get; } = new(0, 5);
 
 
     public void UpdateStress(int stressPoint)

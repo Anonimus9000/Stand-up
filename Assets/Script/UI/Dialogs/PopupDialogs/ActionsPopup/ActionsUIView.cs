@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Script.ConfigData.LocationActionsConfig;
-using Script.InteractableObject.ActionProgressSystem;
 using Script.InteractableObject.ActionProgressSystem.Handler;
-using Script.Libraries.UISystem.Managers.UiServiceProvider;
 using Script.Libraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.Libraries.UISystem.UIWindow;
 using Script.UI.Dialogs.BaseBehaviour;

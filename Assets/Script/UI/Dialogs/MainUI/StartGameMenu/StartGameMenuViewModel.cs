@@ -1,4 +1,5 @@
 ﻿using System;
+using Script.DataServices.Base;
 using Script.InteractableObject.ActionProgressSystem;
 using Script.InteractableObject.ActionProgressSystem.Handler;
 using Script.Libraries.UISystem.Managers.Instantiater;
@@ -33,6 +34,7 @@ public class StartGameMenuViewModel : IUIViewModel
     private StartGameMenuEnterModel _model;
     private StartGameMenuView _view;
     private IAnimatorService _animatorService;
+    private readonly IDataService _playerDataService;
 
     public StartGameMenuViewModel(
         IUIService mainUIService,
@@ -42,8 +44,10 @@ public class StartGameMenuViewModel : IUIViewModel
         CharacterCreationData characterCreationData,
         CharacterSelector characterSelector,
         PositionsConverter positionsConverter,
-        HomeActionProgressHandler homeActionProgressHandler)
+        HomeActionProgressHandler homeActionProgressHandler,
+        IDataService playerDataService)
     {
+        _playerDataService = playerDataService;
         _positionsConverter = positionsConverter;
         _characterData = characterCreationData;
         _sceneSwitcher = sceneSwitcher;
@@ -135,7 +139,8 @@ public class StartGameMenuViewModel : IUIViewModel
             _characterData,
             _characterSelector,
             _positionsConverter,
-            _homeActionProgressHandler);
+            _homeActionProgressHandler,
+            _playerDataService);
 
         _mainUIService.Show<HomeUIView>(homeUIViewModel);
     }
