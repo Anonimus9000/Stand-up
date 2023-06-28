@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-namespace IngameDebugConsole
+namespace Plugins.IngameDebugConsole.Scripts
 {
 	// Avoid multiple EventSystems in the scene by activating the embedded EventSystem only if one doesn't already exist in the scene
 	[DefaultExecutionOrder( 1000 )]

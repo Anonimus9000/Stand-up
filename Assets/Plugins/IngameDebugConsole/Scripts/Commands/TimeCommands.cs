@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IngameDebugConsole.Commands
+namespace Plugins.IngameDebugConsole.Scripts.Commands
 {
 	public class TimeCommands
 	{

@@ -1,0 +1,22 @@
+{
+    "name": "CommonUIs",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7ef989808b47b314abf123f3a36eb2f6",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:e589ab210f69b994f8b31bbd0322b108",
+        "GUID:3f5e9f16f20929b4aa19e15b9ebb9223",
+        "GUID:d315c15099fc7b6479b593e303f02dcd",
+        "GUID:1a5c2f7b7923fba4694165794ffc0103",
+        "GUID:3ed0b3029a11b7642b2d99eef9fea985"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

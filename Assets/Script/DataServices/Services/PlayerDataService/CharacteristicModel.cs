@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Script.Libraries.Observer.ObservableValue;
 using UnityEngine;
 
 namespace Script.DataServices.Services.PlayerDataService

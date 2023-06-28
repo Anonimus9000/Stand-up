@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de504f8f0a74117810e2b5183f16569, type: 3}
+  m_Name: FakeResourceLoader
+  m_EditorClassIdentifier: 
+  _bundles:
+  - <BundleName>k__BackingField: UI
+    <Prefabs>k__BackingField:
+    - {fileID: 167834865923180553, guid: bbe545d1b2eadca46bff0a65fc041194, type: 3}
+    - {fileID: 3641720704272702372, guid: 928025b2501d535478dce32b88b9e20d, type: 3}
+    - {fileID: 653476605404393810, guid: d94de27c9ed9ed640af22a6ec559bec8, type: 3}
+    - {fileID: 3905708840049170150, guid: 83dad3dd9f6a07346889fbeb37024882, type: 3}
+    - {fileID: 7863589834171180219, guid: 6793ce4c77e25a545a5bd0205a3f6b26, type: 3}
+    - {fileID: 3004789608236718607, guid: e772e14561c96f14d81b8cac56407ffc, type: 3}
+    - {fileID: 3641720704272702372, guid: 928025b2501d535478dce32b88b9e20d, type: 3}
+  - <BundleName>k__BackingField: Scenes
+    <Prefabs>k__BackingField:
+    - {fileID: 1193672837625928146, guid: ed7d039b0cf6d734da9208a1a1cc4c36, type: 3}
+  - <BundleName>k__BackingField: CommonPrefabs
+    <Prefabs>k__BackingField:
+    - {fileID: 4681756128193446566, guid: 61a4fc6168a986c40ab8b5a379026139, type: 3}
+  - <BundleName>k__BackingField: InteractableObjects
+    <Prefabs>k__BackingField:
+    - {fileID: 249724629129511119, guid: daa0d59953cf2fe489f3256b3222dde6, type: 3}
+    - {fileID: 2706248717385112929, guid: 627f6f7b7f7f13b4cbd876c68f001a23, type: 3}

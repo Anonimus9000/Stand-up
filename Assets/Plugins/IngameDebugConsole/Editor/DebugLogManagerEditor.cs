@@ -1,10 +1,11 @@
-﻿using UnityEditor;
+﻿using Plugins.IngameDebugConsole.Scripts;
+using UnityEditor;
 using UnityEngine;
 
-namespace IngameDebugConsole
+namespace Plugins.IngameDebugConsole.Editor
 {
 	[CustomEditor( typeof( DebugLogManager ) )]
-	public class DebugLogManagerEditor : Editor
+	public class DebugLogManagerEditor : UnityEditor.Editor
 	{
 		private SerializedProperty singleton;
 		private SerializedProperty minimumHeight;

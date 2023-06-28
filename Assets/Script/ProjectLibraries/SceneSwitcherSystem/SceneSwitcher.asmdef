@@ -1,0 +1,17 @@
+{
+    "name": "SceneSwitcher",
+    "rootNamespace": "",
+    "references": [
+        "GUID:388c39ec419fe254e82a608f81a1ec12",
+        "GUID:e589ab210f69b994f8b31bbd0322b108"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

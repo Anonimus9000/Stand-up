@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-namespace LayerLab
+namespace GUI_PRO_Kit___Simple_Casual.Scripts
 {
     public class PanelControlSimpleCasual : MonoBehaviour
     {

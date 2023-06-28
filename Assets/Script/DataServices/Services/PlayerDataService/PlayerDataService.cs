@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Script.ConfigData.LocationActionsConfig;
-using Script.ConfigData.PlayerDataConfig;
 using Script.DataServices.Base;
 using Script.DataServices.DataLoader;
+using Script.ProjectLibraries.ConfigParser.FakeConfigData.LocationActionsData;
+using Script.ProjectLibraries.ConfigParser.FakeConfigData.PlayerDataData;
 using UnityEngine;
 
 namespace Script.DataServices.Services.PlayerDataService
@@ -88,9 +88,9 @@ public class PlayerDataService : IDataService
 
     private void InitData()
     {
-        _containerModel.PlayerName = _playerDataLoader.PlayerData.Name;
-        _containerModel.Avatar = _playerDataLoader.PlayerData.Avatar;
-        var characteristicsData = _playerDataLoader.PlayerData.CharacteristicsData;
+        _containerModel.PlayerName = _playerDataLoader.PlayerDataFakeConfig.Name;
+        _containerModel.Avatar = _playerDataLoader.PlayerDataFakeConfig.Avatar;
+        var characteristicsData = _playerDataLoader.PlayerDataFakeConfig.CharacteristicsData;
 
         foreach (var characteristicData in characteristicsData)
         {

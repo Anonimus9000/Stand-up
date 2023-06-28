@@ -1,6 +1,6 @@
 ﻿using System;
 using Script.Initializer;
-using Script.Libraries.UISystem.Managers.Instantiater;
+using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

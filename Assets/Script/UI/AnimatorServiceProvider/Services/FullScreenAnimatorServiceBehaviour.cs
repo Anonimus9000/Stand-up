@@ -1,7 +1,7 @@
 ﻿using System;
 using DG.Tweening;
-using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base;
-using Script.Libraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
+using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base;
+using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using UnityEngine;
 
 namespace Script.UI.AnimatorServiceProvider.Services

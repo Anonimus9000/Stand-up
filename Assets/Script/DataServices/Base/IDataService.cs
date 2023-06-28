@@ -1,4 +1,4 @@
-﻿using Script.Libraries.ServiceProvider;
+﻿using Script.ProjectLibraries.ServiceLocators;
 
 namespace Script.DataServices.Base
 {

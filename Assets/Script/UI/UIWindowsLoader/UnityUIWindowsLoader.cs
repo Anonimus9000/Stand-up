@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using Script.Libraries.UISystem.Managers.UIWindowsLoader;
-using Script.Libraries.UISystem.UIWindow;
-using Script.UI.Dialogs.BaseBehaviour;
+using Script.ProjectLibraries.ResourceLoader;
+using Script.ProjectLibraries.UISystem.Managers.UIWindowsLoader;
+using Script.ProjectLibraries.UISystem.UIWindow;
 using UnityEngine;
 
-namespace Script.UI.UiWindowsLoader
+namespace Script.UI.UIWindowsLoader
 {
-public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
+public class UnityUIWindowsLoader : IWindowsLoader
 {
+    private readonly IResourceLoader _resourceLoader;
+    private List<IUIView> _windows;
+
+    public UnityUIWindowsLoader(IResourceLoader resourceLoader)
+    {
+        _resourceLoader = resourceLoader;
+    }
+
     public List<IUIView> UIWindows
     {
         get
@@ -22,17 +30,32 @@ public class UnityUIWindowsLoader : MonoBehaviour, IWindowsLoader
         }
     }
 
-    private List<IUIView> _windows;
 
-    public void LoadDialogs(string pathToLoad)
+    public void LoadDialogs(string bundleName)
     {
-        var loadedWindows = Resources.LoadAll<UiViewBehaviour>(pathToLoad);
+        _resourceLoader.LoadResource(bundleName, OnDialogsLoaded);
+    }
 
+    private void OnDialogsLoaded(GameObject[] dialogs)
+    {
+        var loadedWindows = new List<IUIView>(dialogs.Length);
+        foreach (var gameObject in dialogs)
+        {
+            if (gameObject.TryGetComponent<IUIView>(out var component))
+            {
+                loadedWindows.Add(component);
+            }
+            else
+            {
+                Debug.LogError($"{gameObject.name} not have {typeof(IUIView)} component");
+            }
+        }
+        
         _windows = new List<IUIView>(loadedWindows);
 
         if (_windows.Count == 0)
         {
-            throw new Exception($"Need add prefabs in {pathToLoad}");
+            throw new Exception($"Need add prefabs in bundle");
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿using Script.ConfigData.PlayerDataConfig;
+﻿using Script.ProjectLibraries.ConfigParser.Base;
 
 namespace Script.DataServices.DataLoader
 {
 public class PlayerDataLoader : IDataLoader
 {
-    public  PlayerData PlayerData { get; }
+    public  IPlayerDataConfig PlayerDataFakeConfig { get; }
 
-    public PlayerDataLoader(PlayerData playerData)
+    public PlayerDataLoader(IPlayerDataConfig playerDataFakeConfig)
     {
-        PlayerData = playerData;
+        PlayerDataFakeConfig = playerDataFakeConfig;
     }
     
     public void LoadData()
