@@ -36,20 +36,21 @@ public class HomeUIViewModel : IUIViewModel
     private ProgressBar _currentProgressBar;
     private readonly IUIService _popupsUIService;
     private readonly IDataService _playerData;
-    private IResourceLoader _resourceLoader;
-    private IUIServiceLocator _uiServiceLocator;
+    private readonly IResourceLoader _resourceLoader;
+    private readonly IUIServiceLocator _uiServiceLocator;
     public event Action<IUIViewModel> ViewHidden;
     public event Action<IUIViewModel> ViewShown;
 
-    public HomeUIViewModel(
-        ISceneSwitcher sceneSwitcher, 
+    public HomeUIViewModel(ISceneSwitcher sceneSwitcher,
         IUIServiceLocator uiServiceLocator,
-        ICharacterModelsConfig characterCreationModelsConfig, 
-        CharacterSelector characterSelector, 
+        ICharacterModelsConfig characterCreationModelsConfig,
+        CharacterSelector characterSelector,
         PositionsConverter positionsConverter,
         HomeActionProgressHandler homeActionProgressHandler,
         IDataService playerData,
-        IResourceLoader resourceLoader)
+        IResourceLoader resourceLoader,
+        Camera mainCamera, 
+        Canvas canvas)
     {
         _playerData = playerData;
 
@@ -64,7 +65,7 @@ public class HomeUIViewModel : IUIViewModel
         _uiServiceLocator = uiServiceLocator;
         _resourceLoader = resourceLoader;
         
-        _model = new HomeUIModel(positionsConverter, _popupsUIService, homeActionProgressHandler);
+        _model = new HomeUIModel(positionsConverter, _popupsUIService, homeActionProgressHandler, canvas, mainCamera);
     }
 
     public void Init(IUIView view, IAnimatorService animatorService)

@@ -118,7 +118,9 @@ public class HomeScene : ViewModel, IScene
             _positionsConverter,
             _homeActionProgressHandler,
             _playerData,
-            _resourceLoader);
+            _resourceLoader,
+            _mainCamera, 
+            _mainCanvas);
 
         mainUIService.Show<HomeUIView>(homeUIViewModel);
         

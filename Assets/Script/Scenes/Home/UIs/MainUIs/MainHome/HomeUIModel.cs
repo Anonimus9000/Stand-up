@@ -16,20 +16,32 @@ using Random = System.Random;
 
 namespace Script.Scenes.Home.UIs.MainUIs.MainHome
 {
+//TODO: progress bar work only with one progress bar. Make it work with many progress bar
 public class HomeUIModel : IModel
 {
+    public event Action<float> MoveBubbleCompleted;
+
+    public NotifyObservableValue<int> UpgradePoints { get; } = new(0, 5);
+    
     private readonly PositionsConverter _positionConverter;
     private readonly IUIService _popupsUIService;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
+    private readonly Canvas _canvas;
+    private readonly Camera _mainCamera;
     private ProgressBar _progressBar;
+    private bool _progressIsPause;
 
     public HomeUIModel(
         PositionsConverter positionsConverter, 
         IUIService popupsUIService,
-        HomeActionProgressHandler homeActionProgressHandler)
+        HomeActionProgressHandler homeActionProgressHandler,
+        Canvas canvas,
+        Camera mainCamera)
     {
         _popupsUIService = popupsUIService;
         _homeActionProgressHandler = homeActionProgressHandler;
+        _canvas = canvas;
+        _mainCamera = mainCamera;
         _positionConverter = positionsConverter;
     }
 
@@ -41,10 +53,6 @@ public class HomeUIModel : IModel
     }
     
     #region ActionProgress
-
-    public event Action<float> MoveBubbleCompleted;
-
-    public NotifyObservableValue<int> UpgradePoints { get; } = new(0, 5);
 
 
     public void UpdateStress(int stressPoint)
@@ -102,7 +110,7 @@ public class HomeUIModel : IModel
             flyBubblePrefab,
             bubblesParent,
             upgradePointsIcon,
-            _progressBar.transform,
+            progressBarPosition,
             applicationQuitTokenSource.Token);
 
         return _progressBar;
@@ -126,11 +134,13 @@ public class HomeUIModel : IModel
     private void OnProgressContinued()
     {
         _progressBar.Continue();
+        _progressIsPause = false;
     }
 
     private void OnProgressPaused()
     {
         _progressBar.Pause();
+        _progressIsPause = true;
     }
 
     private void OnProgressCompleted()
@@ -166,17 +176,12 @@ public class HomeUIModel : IModel
         FlyBubble flyBubblePrefab,
         Transform bubblesParent,
         Transform upgradePointsIcon,
-        Transform startMoveBubble,
+        Vector3 startMoveBubblePosition,
         CancellationToken token)
     {
-        var pointsToGet = allPoints;
         var lessTime = duration;
         var checkPeriod = 1;
         var pointsPerPeriod = (int) (allPoints / duration);
-        var random = new Random();
-        
-        Debug.Log($"Start show bubbles; duration = {duration}");
-        Debug.Log($"Points = {pointsToGet}");
 
         while (true)
         {
@@ -189,11 +194,24 @@ public class HomeUIModel : IModel
             {
                 return;
             }
+
+            if (_progressIsPause)
+            {
+                await Task.Yield();
+                continue;
+            }
             
-            ShowBubble(startMoveBubble.position, pointsPerPeriod, flyBubblePrefab, bubblesParent, upgradePointsIcon);
-            
+            //WorldToCanvasPoint(_canvas, _mainCamera, startMoveBubble.position, out var startMoveRectPosition);
+            // RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            //     _canvas, 
+            //     startMoveBubble.position,
+            //     _mainCamera, 
+            //     out var startMovePositionRect);
+
             await Task.Delay(checkPeriod * 1000, token);
             lessTime -= checkPeriod;
+            
+            ShowBubble(startMoveBubblePosition, pointsPerPeriod, flyBubblePrefab, bubblesParent, upgradePointsIcon);
         }
     }
 
@@ -220,6 +238,16 @@ public class HomeUIModel : IModel
         bubble.Destroy();
         bubble.MoveCompleted -= OnMoveBubbleCompleted;
     }
+    
+    private void WorldToCanvasPoint(Canvas canvas, Camera camera, Vector3 worldPosition, out Vector2 canvasPosition)
+    {
+        var screenPoint = camera.WorldToScreenPoint(worldPosition);
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPoint, null, out Vector2 canvasPoint);
+
+        canvasPosition =  canvasPoint;
+    }
+    
     #endregion
 }
 }

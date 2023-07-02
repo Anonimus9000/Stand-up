@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Script.Scenes.Home.UIs.MainUIs.MainHome.Components
 {
+//TODO: make MVVM
 public class FlyBubble : MonoBehaviour
 {
     [SerializeField]
@@ -51,7 +52,6 @@ public class FlyBubble : MonoBehaviour
         _showTween.onComplete += OnShowCompleted;
     }
 
-    //TODO: add animation destroy
     public void Destroy()
     {
         _bubbleImage.transform.DOScale(Vector3.zero, 0.3f).onComplete += () => Destroy(gameObject);
