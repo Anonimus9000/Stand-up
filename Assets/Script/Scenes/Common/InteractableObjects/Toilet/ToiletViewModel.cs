@@ -51,7 +51,7 @@ public class ToiletViewModel : ViewModel
 
     private void OnResourceLoaded(GameObject prefab)
     {
-        _model = new ToiletModel();
+        _model = AddDisposable(new ToiletModel());
 
         _view = AddDisposable(Object.Instantiate(prefab, _parent).GetComponent<ToiletView>());
         _clickChecker = GetInteractableClickChecker(_view.ClickTrackCollider, _mainCamera, _inputControls);
@@ -105,9 +105,9 @@ public class ToiletViewModel : ViewModel
         Debug.Log($"{_view.gameObject.name} was clicked");
 
         var popupsUIService = _iuiServiceLocator.GetService<PopupsUIService>();
-        var viewModel = new ActionsUIViewModel(_iuiServiceLocator,
+        var viewModel = AddDisposable(new ActionsUIViewModel(_iuiServiceLocator,
             _interactableObjectsFakeConfig.ToiletLocationActionData,
-            _homeActionProgressHandler, _view.ProgressBarPosition.position);
+            _homeActionProgressHandler, _view.ProgressBarPosition.position));
 
         popupsUIService.CloseAll();
         popupsUIService.Show<ActionsUIView>(viewModel);

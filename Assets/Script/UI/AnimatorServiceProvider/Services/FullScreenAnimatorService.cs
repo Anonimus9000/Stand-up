@@ -1,12 +1,13 @@
 ﻿using System;
 using DG.Tweening;
+using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using UnityEngine;
 
 namespace Script.UI.AnimatorServiceProvider.Services
 {
-public class MainUiAnimatorServiceBehaviour : IMainUiAnimatorService
+public class FullScreenAnimatorService : DisposableBase, IFullScreenAnimatorService
 {
     public event Action ShowCompleted;
     public event Action HideCompleted;
@@ -27,7 +28,7 @@ public class MainUiAnimatorServiceBehaviour : IMainUiAnimatorService
     private Tween _showScaleTween;
     private readonly Vector3 _initialScaleView = new(1, 1, 1);
 
-    public MainUiAnimatorServiceBehaviour(
+    public FullScreenAnimatorService(
         Ease showFadeEase,
         Ease hideFadeEase,
         Ease showScaleEase,

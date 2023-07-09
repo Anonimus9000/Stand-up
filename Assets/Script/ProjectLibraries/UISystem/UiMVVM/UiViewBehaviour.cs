@@ -2,7 +2,7 @@
 using Script.ProjectLibraries.UISystem.UIWindow;
 using UnityEngine;
 
-namespace Script.UI.CommonUIs.BaseBehaviour
+namespace Script.ProjectLibraries.UISystem.UiMVVM
 {
 [RequireComponent(typeof(CanvasGroup))]
 public abstract class UiViewBehaviour : BehaviourDisposableBase, IUIView

@@ -9,6 +9,7 @@ using Script.ProjectLibraries.ConfigParser.FakeConfigData.LocationActionsData;
 using Script.ProjectLibraries.ConfigParser.FakeConfigData.PlayerDataData;
 using Script.ProjectLibraries.ConfigParser.Parsers.Fake;
 using Script.ProjectLibraries.Logger.Loggers;
+using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.ResourceLoader;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.ServiceLocators;
@@ -26,7 +27,7 @@ using IUIServiceLocator = Script.ProjectLibraries.UISystem.Managers.UiServicePro
 
 namespace Script.Roots
 {
-public class GameEntryPoint : MonoBehaviour, IRoot
+public class GameEntryPoint : BehaviourDisposableBase, IRoot
 {
     #region MonoBehavioursDependencies
 
@@ -162,6 +163,7 @@ public class GameEntryPoint : MonoBehaviour, IRoot
             dataServiceLocator, 
             mainCamera);
         
+        compositeDisposable.AddDisposable(sceneContainer);
         return sceneContainer.SceneSwitcher;
     }
 
@@ -196,6 +198,8 @@ public class GameEntryPoint : MonoBehaviour, IRoot
             positionsConverter,
             playerDataService,
             resourceLoader);
+        
+        compositeDisposable.AddDisposable(applicationEnterViewModel);
         
         var mainUIService = iuiServiceLocator.GetService<MainUIService>();
         mainUIService.Show<StartGameMenuView>(applicationEnterViewModel);

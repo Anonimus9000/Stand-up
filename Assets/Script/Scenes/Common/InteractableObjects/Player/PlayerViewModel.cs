@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace Script.Scenes.Common.InteractableObjects.Player
 {
-public class PlayerViewModel : IViewModel
+public class PlayerViewModel : ViewModel
 {
     private PlayerView _playerView;
     private PlayerModel _playerModel;
     private DataObserver _observer;
     
-    public PlayerViewModel(IView playerView, IObserver observer)
+    public PlayerViewModel(PlayerView playerView, IObserver observer)
     {
-        _playerView = playerView as PlayerView;
-        _playerModel = new PlayerModel();
+        _playerView = AddDisposable(playerView);
+        _playerModel = AddDisposable(new PlayerModel());
         _observer = observer as DataObserver;
     }
 

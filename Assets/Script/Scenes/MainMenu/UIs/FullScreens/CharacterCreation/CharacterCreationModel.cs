@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Script.Scenes.MainMenu.UIs.FullScreens.CharacterCreation
 {
-public class CharacterCreationModel : IModel
+public class CharacterCreationModel : Model
 {
     public event Action<GameObject> OnCharacterChanged;
     public event Action OnRightButtonDisabled;

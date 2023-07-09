@@ -1,9 +1,9 @@
 ﻿using System;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
+using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
 using Script.Scenes.Home.UIs.MainUIs.MainHome.Components;
-using Script.UI.CommonUIs.BaseBehaviour;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

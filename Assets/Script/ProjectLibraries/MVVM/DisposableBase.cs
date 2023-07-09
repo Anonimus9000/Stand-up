@@ -6,7 +6,7 @@ namespace Script.ProjectLibraries.MVVM
 {
 public class DisposableBase : IDisposable
 {
-    protected bool disposed;
+    public bool Disposed { get; private set; }
     protected readonly CompositeDisposable compositeDisposable = new();
     protected CancellationToken _cancellationToken;
     private readonly CancellationTokenSource _cancellationTokenSource;
@@ -33,14 +33,14 @@ public class DisposableBase : IDisposable
     
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposed)
+        if (!Disposed)
         {
             foreach (var disposable in _disposables)
             {
                 disposable.Dispose();
             }
 
-            disposed = true;
+            Disposed = true;
             
             _cancellationTokenSource?.Cancel();
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo.Characteristics
 {
-public class CharacteristicElementModel : IModel
+public class CharacteristicElementModel : Model
 {
     public event Action<int> PercentProgressChanged;
     public event Action<int> LevelChanged;

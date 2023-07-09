@@ -2,7 +2,7 @@
 
 namespace Script.Scenes.Common.InteractableObjects.Bed
 {
-public class BedModel : IModel
+public class BedModel : Model
 {
     
 }

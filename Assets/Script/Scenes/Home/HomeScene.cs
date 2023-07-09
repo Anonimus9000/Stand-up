@@ -110,7 +110,7 @@ public class HomeScene : ViewModel, IScene
     private void ShowHome()
     {
         var mainUIService = _uiServiceLocator.GetService<MainUIService>();
-        var homeUIViewModel = new HomeUIViewModel(
+        var homeUIViewModel = AddDisposable(new HomeUIViewModel(
             _sceneSwitcher,
             _uiServiceLocator,
             _characterConfig,
@@ -120,7 +120,7 @@ public class HomeScene : ViewModel, IScene
             _playerData,
             _resourceLoader,
             _mainCamera, 
-            _mainCanvas);
+            _mainCanvas));
 
         mainUIService.Show<HomeUIView>(homeUIViewModel);
         

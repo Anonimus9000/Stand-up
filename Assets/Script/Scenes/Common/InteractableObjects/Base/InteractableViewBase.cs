@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Script.Scenes.Common.InteractableObjects.Base
 {
-public abstract class InteractableBase : BehaviourDisposableBase
+public abstract class InteractableViewBase : ViewBehaviour
 {
     [SerializeField]
     private Transform _progressBarTransform;

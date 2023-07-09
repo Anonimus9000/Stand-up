@@ -2,15 +2,15 @@
 
 namespace Script.Scenes.Common.InteractableObjects.Bed
 {
-public class BedViewModel : IViewModel
+public class BedViewModel : ViewModel
 {
-    public IModel Model { get; }
-    public IView View { get; }
+    private BedModel _model;
+    private BedView _view; 
 
-    public BedViewModel(IView view)
+    public BedViewModel(BedView view)
     {
-        View = view;
-        Model = new BedModel();
+        _view = AddDisposable(view);
+        _model = AddDisposable(new BedModel());
     }
 }
 }

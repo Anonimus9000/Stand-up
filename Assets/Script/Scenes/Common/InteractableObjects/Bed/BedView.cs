@@ -2,14 +2,8 @@
 
 namespace Script.Scenes.Common.InteractableObjects.Bed
 {
-public class BedView : IView
+public class BedView : ViewBehaviour
 {
-    private BedModel _model;
-    public void InitializeModel(IModel model)
-    {
-        _model = model as BedModel;
-    }
-
     public void OnClick()
     {
         

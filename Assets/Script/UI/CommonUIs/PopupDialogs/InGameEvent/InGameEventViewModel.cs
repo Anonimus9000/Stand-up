@@ -7,10 +7,10 @@ using Script.ProjectLibraries.UISystem.UIWindow;
 
 namespace Script.UI.CommonUIs.PopupDialogs.InGameEvent
 {
-public class InGameEventViewModel : IUIViewModel
+public class InGameEventViewModel : UIViewModel
 {
-    public event Action<IUIViewModel> ViewShown;
-    public event Action<IUIViewModel> ViewHidden;
+    public override event Action<IUIViewModel> ViewShown;
+    public override event Action<IUIViewModel> ViewHidden;
 
     public event Action EventCompleted;
     
@@ -23,39 +23,39 @@ public class InGameEventViewModel : IUIViewModel
         _popupsUIService = popupsUIService;
     }
 
-    public void Init(IUIView view, IAnimatorService animatorService)
+    public override void Init(IUIView view, IAnimatorService animatorService)
     {
-        _view = (InGameEventView)view;
+        _view = AddDisposable((InGameEventView)view);
         _animatorService = animatorService;
         
         SubscribeOnViewEvents(_view);
         SubscribeOnAnimatorEvents(_animatorService);
     }
 
-    public void Deinit()
+    public override void Deinit()
     {
         UnsubscribeOnViewEvents(_view);
         UnsubscribeOnAnimatorEvents(_animatorService);
     }
 
-    public void ShowView()
+    public override void ShowView()
     {
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void ShowHiddenView()
+    public override void ShowHiddenView()
     {
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void HideView()
+    public override void HideView()
     {
         _animatorService.StartHideAnimation(_view);
         
         EventCompleted?.Invoke();
     }
 
-    public IInstantiatable GetInstantiatable()
+    public override IInstantiatable GetInstantiatable()
     {
         return _view;
     }

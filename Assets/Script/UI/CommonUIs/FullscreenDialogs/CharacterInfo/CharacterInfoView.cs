@@ -1,6 +1,6 @@
 ﻿using System;
+using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
-using Script.UI.CommonUIs.BaseBehaviour;
 using Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo.Characteristics;
 using TMPro;
 using UnityEngine;

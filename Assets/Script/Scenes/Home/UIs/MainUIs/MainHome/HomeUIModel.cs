@@ -17,7 +17,7 @@ using Random = System.Random;
 namespace Script.Scenes.Home.UIs.MainUIs.MainHome
 {
 //TODO: progress bar work only with one progress bar. Make it work with many progress bar
-public class HomeUIModel : IModel
+public class HomeUIModel : Model
 {
     public event Action<float> MoveBubbleCompleted;
 
@@ -158,7 +158,7 @@ public class HomeUIModel : IModel
 
     private void OnCheckEventSuccessful()
     {
-        var inGameViewModel = new InGameEventViewModel(_popupsUIService);
+        var inGameViewModel = AddDisposable(new InGameEventViewModel(_popupsUIService));
         _popupsUIService.Show<InGameEventView>(inGameViewModel);
 
         inGameViewModel.EventCompleted += OnInGameEventCompleted;

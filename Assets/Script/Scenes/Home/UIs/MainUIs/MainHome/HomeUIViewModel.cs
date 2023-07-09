@@ -10,7 +10,6 @@ using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
-using Script.Scenes.Common.ActionProgressSystem.Handler;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
 using Script.Scenes.Home.UIs.MainUIs.MainHome.Components;
 using Script.Scenes.MainMenu.UIs.FullScreens.CharacterCreation.Components;
@@ -21,7 +20,7 @@ using UnityEngine;
 
 namespace Script.Scenes.Home.UIs.MainUIs.MainHome
 {
-public class HomeUIViewModel : IUIViewModel
+public class HomeUIViewModel : UIViewModel
 {
     private HomeUIView _view;
     private readonly HomeUIModel _model;
@@ -38,8 +37,8 @@ public class HomeUIViewModel : IUIViewModel
     private readonly IDataService _playerData;
     private readonly IResourceLoader _resourceLoader;
     private readonly IUIServiceLocator _uiServiceLocator;
-    public event Action<IUIViewModel> ViewHidden;
-    public event Action<IUIViewModel> ViewShown;
+    public override event Action<IUIViewModel> ViewHidden;
+    public override event Action<IUIViewModel> ViewShown;
 
     public HomeUIViewModel(ISceneSwitcher sceneSwitcher,
         IUIServiceLocator uiServiceLocator,
@@ -65,17 +64,18 @@ public class HomeUIViewModel : IUIViewModel
         _uiServiceLocator = uiServiceLocator;
         _resourceLoader = resourceLoader;
         
-        _model = new HomeUIModel(positionsConverter, _popupsUIService, homeActionProgressHandler, canvas, mainCamera);
+        _model = AddDisposable(new HomeUIModel(positionsConverter, _popupsUIService, homeActionProgressHandler, canvas, mainCamera));
+        AddDisposable(_model);
     }
 
-    public void Init(IUIView view, IAnimatorService animatorService)
+    public override void Init(IUIView view, IAnimatorService animatorService)
     {
         if (view is not HomeUIView homeUIView)
         {
             throw new Exception($"Incorrect type {view.GetType()}; Need {typeof(HomeUIView)}");
         }
 
-        _view = homeUIView;
+        _view = AddDisposable(homeUIView);
         _animatorService = animatorService;
         
         SubscribeOnModelEvents(_model);
@@ -85,29 +85,29 @@ public class HomeUIViewModel : IUIViewModel
         SubscribeOnAnimatorEvents(_animatorService);
     }
 
-    public void Deinit()
+    public override void Deinit()
     {
         UnsubscribeOnAnimatorEvents(_animatorService);
         UnsubscribeOnModelEvents(_model);
         UnsubscribeOnViewEvents(_view);
     }
 
-    public void ShowView()
+    public override void ShowView()
     {
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void ShowHiddenView()
+    public override void ShowHiddenView()
     {
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void HideView()
+    public override void HideView()
     {
         _animatorService.StartHideAnimation(_view);
     }
 
-    public IInstantiatable GetInstantiatable()
+    public override IInstantiatable GetInstantiatable()
     {
         return _view;
     }
@@ -170,18 +170,18 @@ public class HomeUIViewModel : IUIViewModel
     private void OnOpenStartGameMenuButtonPressed()
     {
         _mainUiService.Show<StartGameMenuView>(
-            new StartGameMenuViewModel(
+            AddDisposable(new StartGameMenuViewModel(
                 _uiServiceLocator,
                 _sceneSwitcher, 
                 _characterModelsConfig,
                 _positionsConverter,
                 _playerData,
-                _resourceLoader));
+                _resourceLoader)));
     }
     
     private void OnOpenCharacterInfoButtonPressed()
     {
-        _fullScreensUIService.Show<CharacterInfoView>(new CharacterInfoViewModel(_fullScreensUIService, _playerData));
+        _fullScreensUIService.Show<CharacterInfoView>(AddDisposable(new CharacterInfoViewModel(_fullScreensUIService, _playerData)));
     }
 
     #endregion

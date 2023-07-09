@@ -1,12 +1,13 @@
 ﻿using System;
 using DG.Tweening;
+using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using UnityEngine;
 
 namespace Script.UI.AnimatorServiceProvider.Services
 {
-public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
+public class PopupAnimatorService : DisposableBase, IPopupAnimatorService
 {
     public event Action ShowCompleted;
     public event Action HideCompleted;
@@ -27,7 +28,7 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
     private Tween _showScaleTween;
     private readonly Vector3 _initialScaleView = new(1, 1, 1);
 
-    public FullScreenAnimatorServiceBehaviour(
+    public PopupAnimatorService(
         Ease showFadeEase,
         Ease hideFadeEase,
         Ease showScaleEase,
@@ -49,6 +50,7 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
     
     public void StartShowAnimation(IAnimatable animatable)
     {
+        // ReSharper disable once SuspiciousTypeConversion.Global
         if (animatable is MonoBehaviour monoBehaviour)
         {
             var canvasGroup = monoBehaviour.GetComponent<CanvasGroup>();
@@ -65,6 +67,7 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
 
     public void StartHideAnimation(IAnimatable animatable)
     {
+        // ReSharper disable once SuspiciousTypeConversion.Global
         if (animatable is MonoBehaviour monoBehaviour)
         {
             var canvasGroup = monoBehaviour.GetComponent<CanvasGroup>();
@@ -102,16 +105,18 @@ public class FullScreenAnimatorServiceBehaviour : IFullScreenAnimatorService
 
     private void StartShowFadeAnimation(CanvasGroup canvasGroup, float duration)
     {
-        _showFadeTween?.Kill();
         canvasGroup.alpha = 0;
+        
+        _showFadeTween?.Kill();
         _showFadeTween = canvasGroup.DOFade(1, duration);
         _showFadeTween.SetEase(_showFadeEase);
     }
 
     private void StartHideFadeAnimation(CanvasGroup canvasGroup, float duration)
     {
-        _hideFadeTween?.Kill(true);
         canvasGroup.alpha = 1;
+        
+        _hideFadeTween?.Kill(true);
         _hideFadeTween = canvasGroup.DOFade(0, duration);
         _hideFadeTween.SetEase(_hideFadeEase);
     }

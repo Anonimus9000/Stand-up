@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Script.Scenes.Home.InteractableObjects
 {
-public class HomeInteractableObjectsView : BehaviourDisposableBase, IView
+public class HomeInteractableObjectsView : ViewBehaviour
 {
     [field: SerializeReference]
     public Transform ComputerParent { get; private set; }

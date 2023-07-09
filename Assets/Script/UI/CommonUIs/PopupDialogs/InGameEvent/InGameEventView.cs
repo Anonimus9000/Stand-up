@@ -1,5 +1,5 @@
-﻿using Script.ProjectLibraries.UISystem.UIWindow;
-using Script.UI.CommonUIs.BaseBehaviour;
+﻿using Script.ProjectLibraries.UISystem.UiMVVM;
+using Script.ProjectLibraries.UISystem.UIWindow;
 using UnityEngine;
 using UnityEngine.UI;
 

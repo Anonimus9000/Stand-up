@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Script.DataServices.Base;
+﻿using Script.DataServices.Base;
 using Script.ProjectLibraries.ConfigParser.Base;
-using Script.ProjectLibraries.ConfigParser.Configs.FakeConfigs;
-using Script.ProjectLibraries.InputChecker.Base;
-using Script.ProjectLibraries.InputChecker.MouseKeyboard;
-using Script.ProjectLibraries.InputChecker.TouchScreen;
 using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.Observer.DataObserver;
 using Script.ProjectLibraries.ResourceLoader;
-using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
-using Script.Scenes.Common.ActionProgressSystem.Handler;
-using Script.Scenes.Common.InteractableObjects.Bed;
 using Script.Scenes.Common.InteractableObjects.Computer;
 using Script.Scenes.Common.InteractableObjects.Toilet;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Object = UnityEngine.Object;
 
 namespace Script.Scenes.Home.InteractableObjects
 {

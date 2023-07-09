@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Script.Scenes.Common.InteractableObjects.Player
 {
-public sealed class PlayerView : InteractableBase, IView
+public sealed class PlayerView : InteractableViewBase
 {
     [SerializeField]
     private Collider _clickTrackCollider;
@@ -15,23 +15,14 @@ public sealed class PlayerView : InteractableBase, IView
 
     public override Collider ClickTrackCollider => _clickTrackCollider;
 
-    private PlayerModel _model;
-
     private IObjectClickChecker _mouseClickChecker;
-
-    public void InitializeModel(IModel model)
-    {
-        _model = model as PlayerModel;
-    }
 
     protected override void ActivateInput()
     {
-        throw new NotImplementedException();
     }
 
     protected override void DeactivateInput()
     {
-        throw new NotImplementedException();
     }
 
     protected override void OnClick()

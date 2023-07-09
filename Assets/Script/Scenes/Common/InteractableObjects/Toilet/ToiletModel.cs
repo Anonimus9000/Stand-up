@@ -3,9 +3,10 @@ using Script.ProjectLibraries.MVVM;
 
 namespace Script.Scenes.Common.InteractableObjects.Toilet
 {
-public class ToiletModel:IModel
+public class ToiletModel : Model
 {
     public event Action<bool> InputActiveChanged;
+
     public bool InputActive
     {
         get => _inputActive;

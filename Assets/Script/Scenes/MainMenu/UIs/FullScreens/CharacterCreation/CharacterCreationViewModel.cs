@@ -38,7 +38,7 @@ public class CharacterCreationViewModel : UIViewModel
         _resourceLoader = resourceLoader;
         _sceneSwitcher = sceneSwitcher;
         _characterCreationData = characterCreationData;
-        _model = new CharacterCreationModel(characterCreationData);
+        _model = AddDisposable(new CharacterCreationModel(characterCreationData));
         _fullScreenUIService = fullScreenUIService;
     }
 

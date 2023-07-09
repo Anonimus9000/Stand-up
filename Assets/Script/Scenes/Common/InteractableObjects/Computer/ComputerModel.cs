@@ -3,7 +3,7 @@ using Script.ProjectLibraries.MVVM;
 
 namespace Script.Scenes.Common.InteractableObjects.Computer
 {
-public class ComputerModel : IModel
+public class ComputerModel : Model
 {
     public event Action<bool> InputActiveChanged;
     public bool InputActive

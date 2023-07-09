@@ -2,7 +2,7 @@
 
 namespace Script.Scenes.MainMenu.UIs.MainUIs.StartGameMenu
 {
-public class StartGameMenuEnterModel : IModel
+public class StartGameMenuEnterModel : Model
 {
     
 }

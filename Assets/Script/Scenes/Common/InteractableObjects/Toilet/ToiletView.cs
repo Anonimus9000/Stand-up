@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Script.Scenes.Common.InteractableObjects.Toilet
 {
-public sealed class ToiletView : InteractableBase, IView
+public sealed class ToiletView : InteractableViewBase
 {
     [SerializeField]
     private Collider _clickTrackCollider;

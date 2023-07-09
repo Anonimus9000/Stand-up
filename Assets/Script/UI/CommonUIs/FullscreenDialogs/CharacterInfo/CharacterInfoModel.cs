@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo
 {
-public class CharacterInfoModel : IModel
+public class CharacterInfoModel : Model
 {
     private readonly PlayerDataService _playerData;
     public Texture PlayerAvatar { get; private set; }

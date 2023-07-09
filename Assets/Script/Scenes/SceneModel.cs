@@ -56,7 +56,7 @@ public class SceneModel : Model, ISceneModel
         _characterConfig = characterConfig;
         _positionsConverter = positionsConverter;
         _playerData = playerData;
-        SceneSwitcher = new SceneSwitcherViewModel(logger, this);
+        SceneSwitcher = AddDisposable(new SceneSwitcherViewModel(logger, this));
 
         InitializeScenes(resourceLoader, scenesParent);
     }

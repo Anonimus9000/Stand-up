@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Script.DataServices.Base;
 using Script.DataServices.Services.PlayerDataService;
+using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
@@ -12,10 +13,10 @@ using UnityEngine;
 
 namespace Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo
 {
-public class CharacterInfoViewModel : IUIViewModel
+public class CharacterInfoViewModel : UIViewModel
 {
-    public event Action<IUIViewModel> ViewShown;
-    public event Action<IUIViewModel> ViewHidden;
+    public override event Action<IUIViewModel> ViewShown;
+    public override event Action<IUIViewModel> ViewHidden;
     
     private CharacterInfoView _view;
     private readonly CharacterInfoModel _model;
@@ -29,14 +30,14 @@ public class CharacterInfoViewModel : IUIViewModel
     {
         _playerDataService = playerDataService;
         _fullScreenService = fullScreensUIService;
-        _model = new CharacterInfoModel(playerDataService as PlayerDataService);
+        _model = AddDisposable(new CharacterInfoModel(playerDataService as PlayerDataService));
     }
 
-    public void Init(IUIView view, IAnimatorService animatorService)
+    public override void Init(IUIView view, IAnimatorService animatorService)
     {
-        _view = view as CharacterInfoView;
+        _view = AddDisposable(view as CharacterInfoView);
         _animatorService = animatorService;
-        _characteristicsListViewModel = new CharacteristicsListViewModel(_view!.CharacteristicsListView, _playerDataService);
+        _characteristicsListViewModel = AddDisposable(new CharacteristicsListViewModel(_view!.CharacteristicsListView, _playerDataService));
 
         SubscribeOnModelEvents();
         SubscribeOnViewEvents(_view);
@@ -45,7 +46,7 @@ public class CharacterInfoViewModel : IUIViewModel
         InitCharacterView();
     }
 
-    public void Deinit()
+    public override void Deinit()
     {
         UnsubscribeOnModelEvents();
         UnsubscribeOnViewEvents(_view);
@@ -53,22 +54,22 @@ public class CharacterInfoViewModel : IUIViewModel
         _characteristicsListViewModel.Deinit();
     }
 
-    public void ShowView()
+    public override void ShowView()
     {
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void ShowHiddenView()
+    public override void ShowHiddenView()
     {
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void HideView()
+    public override void HideView()
     {
         _animatorService.StartHideAnimation(_view);
     }
 
-    public IInstantiatable GetInstantiatable()
+    public override IInstantiatable GetInstantiatable()
     {
         return _view;
     }

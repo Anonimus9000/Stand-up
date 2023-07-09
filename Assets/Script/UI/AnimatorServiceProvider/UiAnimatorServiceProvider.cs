@@ -1,11 +1,12 @@
 ﻿using DG.Tweening;
+using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base;
 using Script.UI.AnimatorServiceProvider.Services;
 using UnityEngine;
 
-namespace Script.UI.Animator
+namespace Script.UI.AnimatorServiceProvider
 {
-public class UiAnimatorInitializer : MonoBehaviour
+public class UiAnimatorServiceProvider : BehaviourDisposableBase
 {
     [Header("Popup animator settings")]
     [SerializeField]
@@ -68,7 +69,7 @@ public class UiAnimatorInitializer : MonoBehaviour
 
     public IAnimatorServiceProvider InitializeAnimatorServiceProvider()
     {
-        var popupAnimatorServiceBehaviour = new PopupAnimatorServiceBehaviour(
+        var popupAnimatorServiceBehaviour = new PopupAnimatorService(
             _showPopupFadeEase,
             _hidePopupFadeEase,
             _showPopupScaleEase,
@@ -78,8 +79,9 @@ public class UiAnimatorInitializer : MonoBehaviour
             _showPopupScaleDuration,
             _hidePopupScaleDuration
         );
-        
-        var fullScreenAnimatorServiceBehaviour = new FullScreenAnimatorServiceBehaviour(
+        compositeDisposable.AddDisposable(popupAnimatorServiceBehaviour);
+
+        var fullScreenAnimatorServiceBehaviour = new FullScreenAnimatorService(
             _showFullScreenFadeEase,
             _hideFullScreenFadeEase,
             _showFullScreenScaleEase,
@@ -89,8 +91,9 @@ public class UiAnimatorInitializer : MonoBehaviour
             _showFullScreenScaleDuration,
             _hideFullScreenScaleDuration
             );
+        compositeDisposable.AddDisposable(fullScreenAnimatorServiceBehaviour);
         
-        var mainUiAnimatorServiceBehaviour = new MainUiAnimatorServiceBehaviour(
+        var mainUiAnimatorServiceBehaviour = new MainUiAnimatorService(
             _showMainUiFadeEase,
             _hideMainUiFadeEase,
             _showMainUiScaleEase,
@@ -100,6 +103,7 @@ public class UiAnimatorInitializer : MonoBehaviour
             _showMainUiScaleDuration,
             _hideMainUiScaleDuration
         );
+        compositeDisposable.AddDisposable(mainUiAnimatorServiceBehaviour);
 
         var animatorServiceProvider = new ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.AnimatorServiceProvider(
             popupAnimatorServiceBehaviour,
@@ -107,6 +111,11 @@ public class UiAnimatorInitializer : MonoBehaviour
             mainUiAnimatorServiceBehaviour);
 
         return animatorServiceProvider;
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 }
 }

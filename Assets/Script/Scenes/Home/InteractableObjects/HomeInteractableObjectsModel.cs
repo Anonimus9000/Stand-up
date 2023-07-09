@@ -2,7 +2,7 @@
 
 namespace Script.Scenes.Home.InteractableObjects
 {
-public class HomeInteractableObjectsModel : IModel
+public class HomeInteractableObjectsModel : Model
 {
     
 }

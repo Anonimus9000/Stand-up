@@ -2,7 +2,7 @@
 
 namespace Script.Scenes.Common.InteractableObjects.Player
 {
-public class PlayerModel : IModel
+public class PlayerModel : Model
 {
     
 }

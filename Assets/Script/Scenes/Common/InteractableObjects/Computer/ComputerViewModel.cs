@@ -57,7 +57,7 @@ public class ComputerViewModel : ViewModel
 
         _objectClickChecker = GetInteractableClickChecker(_view.ClickTrackCollider, _mainCamera, _inputControls);
 
-        _model = new ComputerModel();
+        _model = AddDisposable(new ComputerModel());
         
         _view.Initialize(_observer, _canvas, _objectClickChecker);
         
@@ -108,7 +108,11 @@ public class ComputerViewModel : ViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = new ActionsUIViewModel(_serviceLocator, _interactableObjectsFakeConfig.ComputerLocationActionData, _homeActionProgressHandler, _view.ProgressBarTransform.position); //передаю тупа 0 элемент списка, который за ПКАкшионс отвечает
+        var viewModel = AddDisposable(new ActionsUIViewModel(_serviceLocator,
+            _interactableObjectsFakeConfig.ComputerLocationActionData,
+            _homeActionProgressHandler,
+            _view.ProgressBarTransform.position));
+        
         var popupsUIService = _serviceLocator.GetService<PopupsUIService>();
         popupsUIService.Show<ActionsUIView>(viewModel);
     }

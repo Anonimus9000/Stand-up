@@ -6,10 +6,11 @@ using Script.ProjectLibraries.UISystem.UIWindow;
 
 namespace Script.ProjectLibraries.UISystem.UiMVVM
 {
-public interface IUIViewModel : IViewModel
+public interface IUIViewModel: IViewModel
 {
     event Action<IUIViewModel> ViewShown;
     event Action<IUIViewModel> ViewHidden;
+    
     public void Init(IUIView view, IAnimatorService animatorService);
     public void Deinit();
     public void ShowView();

@@ -3,9 +3,9 @@ using Script.Initializer.Base;
 using Script.ProjectLibraries.ResourceLoader;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.UISystem.Managers.Instantiater;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
 using Script.ProjectLibraries.UISystem.UIWindow;
-using Script.UI.Animator;
-using Script.UI.System;
+using Script.UI.AnimatorServiceProvider;
 using Script.UI.UIInstantiater;
 using Script.UI.UIWindowsLoader;
 using UnityEngine;
@@ -31,22 +31,22 @@ public class UIRoot : MonoBehaviour, IRoot
     private Canvas _mainCanvas;
 
     [SerializeField]
-    private UiAnimatorInitializer _animatorInitializer;
+    private UiAnimatorServiceProvider _animatorInitializer;
 
     public Canvas MainCanvas => _mainCanvas;
 
     private ISceneSwitcher _sceneSwitcher;
 
-    public UIServiceLocatorInitializable Initialize(ILogger logger, IResourceLoader resourceLoader)
+    public UIServiceLocator Initialize(ILogger logger, IResourceLoader resourceLoader)
     {
         var uiManager = InitializeUIManager(logger, _animatorInitializer, resourceLoader);
 
         return uiManager;
     }
 
-    private UIServiceLocatorInitializable InitializeUIManager(
+    private UIServiceLocator InitializeUIManager(
         ILogger logger,
-        UiAnimatorInitializer animatorInitializer,
+        UiAnimatorServiceProvider animatorInitializer,
         IResourceLoader resourceLoader)
     {
         var uiWindows = InitializeWindowsLoader(resourceLoader);
@@ -55,12 +55,11 @@ public class UIRoot : MonoBehaviour, IRoot
         IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
         IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
 
-        return new UIServiceLocatorInitializable(
+        return new UIServiceLocator(
             instantiaterMainUI,
             instantiaterFullScreens,
             instantiaterPopups,
             uiWindows,
-            logger,
             uiAnimatorService);
     }
 

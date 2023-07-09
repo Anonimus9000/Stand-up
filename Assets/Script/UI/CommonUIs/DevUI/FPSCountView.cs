@@ -1,10 +1,11 @@
 using System.Globalization;
+using Script.ProjectLibraries.MVVM;
 using TMPro;
 using UnityEngine;
 
 namespace Script.UI.CommonUIs.DevUI
 {
-public class FPSCountView : MonoBehaviour
+public class FPSCountView : ViewBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI _fpsCount;

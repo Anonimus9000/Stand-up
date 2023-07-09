@@ -2,7 +2,7 @@
 
 namespace Script.UI.CommonUIs.PopupDialogs.InGameEvent
 {
-public class InGameModel : IModel
+public class InGameModel : Model
 {
     
 }

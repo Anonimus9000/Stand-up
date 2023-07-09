@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo.Characteristics
 {
-public class CharacteristicElementViewModel : IViewModel
+public class CharacteristicElementViewModel : ViewModel
 {
     private readonly CharacteristicElementModel _model;
     private CharacteristicElementView _view;
@@ -16,7 +16,7 @@ public class CharacteristicElementViewModel : IViewModel
     {
         CreateElement(viewPrefab, parent);
 
-        _model = new CharacteristicElementModel(characteristicModel);
+        _model = AddDisposable(new CharacteristicElementModel(characteristicModel));
     }
 
     public void Init()
@@ -83,7 +83,7 @@ public class CharacteristicElementViewModel : IViewModel
 
     private void CreateElement(CharacteristicElementView viewPrefab, Transform parent)
     {
-        _view = Object.Instantiate(viewPrefab, parent);
+        _view = AddDisposable(Object.Instantiate(viewPrefab, parent));
     }
 }
 }

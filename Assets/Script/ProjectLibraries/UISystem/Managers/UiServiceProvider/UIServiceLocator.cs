@@ -8,7 +8,7 @@ using Script.ProjectLibraries.UISystem.UIWindow;
 
 namespace Script.ProjectLibraries.UISystem.Managers.UiServiceProvider
 {
-public abstract class UIServiceLocator : Base.ServiceProvider.IUIServiceLocator
+public class UIServiceLocator : Base.ServiceProvider.IUIServiceLocator
 {
     protected readonly List<IUIService> services = new();
 

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo.Characteristics
 {
-public class CharacteristicElementView : MonoBehaviour, IView
+public class CharacteristicElementView : ViewBehaviour
 {
     [SerializeField]
     private TMP_Text _characteristicName;

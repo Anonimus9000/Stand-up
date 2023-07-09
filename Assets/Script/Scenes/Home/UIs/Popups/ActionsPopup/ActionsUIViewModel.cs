@@ -4,21 +4,20 @@ using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
-using Script.Scenes.Common.ActionProgressSystem.Handler;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
 using Script.Scenes.Home.UIs.MainUIs.MainHome;
 using Script.Scenes.Home.UIs.Popups.ActionsPopup.Components;
 using UnityEngine;
-using IUIServiceLocator = Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider.IUIServiceLocator;
 
 namespace Script.Scenes.Home.UIs.Popups.ActionsPopup
 {
-public class ActionsUIViewModel : IUIViewModel
+public class ActionsUIViewModel : UIViewModel
 {
-    public event Action<IUIViewModel> ViewShown;
-    public event Action<IUIViewModel> ViewHidden;
+    public override event Action<IUIViewModel> ViewShown;
+    public override event Action<IUIViewModel> ViewHidden;
     
     private ActionsUIView _view;
     private readonly ActionsModel _model;
@@ -40,12 +39,12 @@ public class ActionsUIViewModel : IUIViewModel
         _popupService = serviceLocator.GetService<PopupsUIService>();
         _mainUiService = serviceLocator.GetService<MainUIService>();
         _locationActionData = locationActionData;
-        _model = new ActionsModel();
+        _model = AddDisposable(new ActionsModel());
         _homeActionProgressHandler = homeActionProgressHandler;
         _progressBarPosition = progressBarPosition;
     }
 
-    public void Init(IUIView view, IAnimatorService animatorService)
+    public override void Init(IUIView view, IAnimatorService animatorService)
     {
         if (view is not ActionsUIView actionsUIView)
         {
@@ -59,30 +58,30 @@ public class ActionsUIViewModel : IUIViewModel
         SubscribeOnAnimatorEvents(_animatorService);
     }
 
-    public void Deinit()
+    public override void Deinit()
     {
         UnsubscribeInViewEvents(_view);
         UnsubscribeOnAnimatorEvents(_animatorService);
     }
 
-    public void ShowView()
+    public override void ShowView()
     {
         _view.Init(_locationActionData.ActionFields, _mainUiService, _popupService, _homeActionProgressHandler, _progressBarPosition);
         
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void ShowHiddenView()
+    public override void ShowHiddenView()
     {
         _animatorService.StartShowAnimation(_view);
     }
 
-    public void HideView()
+    public override void HideView()
     {
         _animatorService.StartHideAnimation(_view);
     }
 
-    public IInstantiatable GetInstantiatable()
+    public override IInstantiatable GetInstantiatable()
     {
         return _view;
     }

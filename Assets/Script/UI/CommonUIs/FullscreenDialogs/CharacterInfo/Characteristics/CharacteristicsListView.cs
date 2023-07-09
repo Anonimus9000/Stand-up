@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo.Characteristics
 {
-public class CharacteristicsListView : MonoBehaviour, IView
+public class CharacteristicsListView : ViewBehaviour
 {
     [SerializeField]
     private Transform _characteristicsParent;
@@ -13,6 +13,5 @@ public class CharacteristicsListView : MonoBehaviour, IView
     
     public Transform CharacteristicsParent => _characteristicsParent;
     public CharacteristicElementView CharacteristicElementPrefab => _characteristicElementPrefab;
-    
 }
 }

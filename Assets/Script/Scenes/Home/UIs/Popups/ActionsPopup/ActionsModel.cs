@@ -2,7 +2,7 @@
 
 namespace Script.Scenes.Home.UIs.Popups.ActionsPopup
 {
-public class ActionsModel : IModel
+public class ActionsModel : Model
 {
     
 }

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Script.ProjectLibraries.ConfigParser.FakeConfigData.LocationActionsData;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
+using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
 using Script.Scenes.Common.ActionProgressSystem.Handler;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
 using Script.Scenes.Home.UIs.Popups.ActionsPopup.Components;
-using Script.UI.CommonUIs.BaseBehaviour;
 using UnityEngine;
 using UnityEngine.UI;
 
