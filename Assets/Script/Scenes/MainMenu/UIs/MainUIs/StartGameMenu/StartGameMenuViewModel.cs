@@ -19,13 +19,11 @@ namespace Script.Scenes.MainMenu.UIs.MainUIs.StartGameMenu
 {
 public class StartGameMenuViewModel : UIViewModel
 {
+    public override UIType UIType { get; }
     public override event Action<IUIViewModel> ViewShown;
     public override event Action<IUIViewModel> ViewHidden;
     
     private readonly ISceneSwitcher _sceneSwitcher;
-    private readonly IUIService _mainUIService;
-    private readonly IUIService _fullScreenUIService;
-    private readonly IUIService _popupsUIService;
     private readonly ICharacterModelsConfig _characterData;
     private readonly PositionsConverter _positionsConverter;
 
@@ -34,23 +32,24 @@ public class StartGameMenuViewModel : UIViewModel
     private IAnimatorService _animatorService;
     private readonly IDataService _playerDataService;
     private IResourceLoader _resourceLoader;
+    private readonly IUIServiceProvider _uiServiceProvider;
 
     public StartGameMenuViewModel(
-        IUIServiceLocator uiServiceLocator,
+        IUIServiceProvider iuiServiceProvider,
         ISceneSwitcher sceneSwitcher,
         ICharacterModelsConfig characterConfig,
         PositionsConverter positionsConverter,
         IDataService playerDataService,
         IResourceLoader resourceLoader)
     {
+        UIType = UIType.Main;
+        
         _resourceLoader = resourceLoader;
         _playerDataService = playerDataService;
         _positionsConverter = positionsConverter;
         _characterData = characterConfig;
         _sceneSwitcher = sceneSwitcher;
-        _mainUIService = uiServiceLocator.GetService<MainUIService>();
-        _popupsUIService = uiServiceLocator.GetService<PopupsUIService>();
-        _fullScreenUIService = uiServiceLocator.GetService<FullScreensUIService>();
+        _uiServiceProvider = iuiServiceProvider;
         _model = AddDisposable(new StartGameMenuEnterModel());
     }
 
@@ -122,10 +121,10 @@ public class StartGameMenuViewModel : UIViewModel
         var characterCreationViewModel = AddDisposable(new CharacterCreationViewModel(
             _resourceLoader, 
             _sceneSwitcher,
-            _fullScreenUIService,
+            _uiServiceProvider,
             _characterData.CharacterModels));
         
-        _fullScreenUIService.Show<CharacterCreationView>(characterCreationViewModel);
+        _uiServiceProvider.Show<CharacterCreationView>(characterCreationViewModel);
     }
 
     private void OnStartButtonPressed()

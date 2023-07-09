@@ -17,7 +17,7 @@ public class ComputerViewModel : ViewModel
 {
     private ComputerModel _model;
     private ComputerView _view;
-    private readonly IUIServiceLocator _serviceLocator;
+    private readonly IUIServiceProvider _iuiServiceProvider;
     private readonly IInteractableObjectsConfig _interactableObjectsFakeConfig;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
     private readonly ResourceImage _computerResourceImager = new("ComputerView", "InteractableObjects");
@@ -29,7 +29,7 @@ public class ComputerViewModel : ViewModel
     private readonly InputControls _inputControls;
 
     public ComputerViewModel(
-        IUIServiceLocator serviceLocator,
+        IUIServiceProvider iuiServiceProvider,
         IInteractableObjectsConfig interactableObjectsFakeConfig,
         HomeActionProgressHandler homeActionProgressHandler,
         IObserver observer, 
@@ -44,7 +44,7 @@ public class ComputerViewModel : ViewModel
         _inputControls = inputControls;
         _canvas = canvas;
         _parent = parent;
-        _serviceLocator = serviceLocator;
+        _iuiServiceProvider = iuiServiceProvider;
         _interactableObjectsFakeConfig = interactableObjectsFakeConfig;
         _homeActionProgressHandler = homeActionProgressHandler;
         
@@ -108,13 +108,13 @@ public class ComputerViewModel : ViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var viewModel = AddDisposable(new ActionsUIViewModel(_serviceLocator,
+        var viewModel = AddDisposable(new ActionsUIViewModel(
+            _iuiServiceProvider,
             _interactableObjectsFakeConfig.ComputerLocationActionData,
             _homeActionProgressHandler,
             _view.ProgressBarTransform.position));
         
-        var popupsUIService = _serviceLocator.GetService<PopupsUIService>();
-        popupsUIService.Show<ActionsUIView>(viewModel);
+        _iuiServiceProvider.Show<ActionsUIView>(viewModel);
     }
 
     #endregion

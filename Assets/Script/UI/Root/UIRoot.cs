@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Script.Initializer.Base;
 using Script.ProjectLibraries.ResourceLoader;
+using Script.ProjectLibraries.Root;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
@@ -37,14 +37,14 @@ public class UIRoot : MonoBehaviour, IRoot
 
     private ISceneSwitcher _sceneSwitcher;
 
-    public UIServiceLocator Initialize(ILogger logger, IResourceLoader resourceLoader)
+    public UIServiceProvider Initialize(ILogger logger, IResourceLoader resourceLoader)
     {
         var uiManager = InitializeUIManager(logger, _animatorInitializer, resourceLoader);
 
         return uiManager;
     }
 
-    private UIServiceLocator InitializeUIManager(
+    private UIServiceProvider InitializeUIManager(
         ILogger logger,
         UiAnimatorServiceProvider animatorInitializer,
         IResourceLoader resourceLoader)
@@ -55,12 +55,13 @@ public class UIRoot : MonoBehaviour, IRoot
         IInstantiater instantiaterFullScreens = new UnityInstantiater(_parentToCreateFullScreenUI);
         IInstantiater instantiaterPopups = new UnityInstantiater(_parentToCreatePopupsUI);
 
-        return new UIServiceLocator(
+        return new UIServiceProvider(
             instantiaterMainUI,
             instantiaterFullScreens,
             instantiaterPopups,
             uiWindows,
-            uiAnimatorService);
+            uiAnimatorService,
+            logger);
     }
 
     private List<IUIView> InitializeWindowsLoader(IResourceLoader resourceLoader)

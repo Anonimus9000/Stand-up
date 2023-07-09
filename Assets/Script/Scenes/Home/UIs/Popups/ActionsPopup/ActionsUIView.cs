@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Script.ProjectLibraries.ConfigParser.FakeConfigData.LocationActionsData;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
 using Script.Scenes.Common.ActionProgressSystem.Handler;
@@ -27,23 +28,22 @@ public class ActionsUIView : UiViewBehaviour, IPopup
     
     public void Init(
         List<ActionFieldData> fields,
-        IUIService mainUIService,
-        IUIService popupService,
+        IUIServiceProvider uiServiceProvider,
         HomeActionProgressHandler homeActionProgressHandler,
         Vector3 progressBarPosition)
     {
         foreach (var actionField in fields)
         {
             var actionFields = Instantiate(_actionFieldItemViewPrefab, _actionTransform);
-            actionFields.Init(actionField.ActionIcon,
+            actionFields.Init(
+                actionField.ActionIcon,
                 actionField.ActionTitle,
                 actionField.ActionRewards,
                 actionField.ActionTime,
-                mainUIService,
-                popupService,
                 homeActionProgressHandler,
                 progressBarPosition,
-                actionField.UpgradePoints);
+                actionField.UpgradePoints,
+                uiServiceProvider);
         }
     }
 

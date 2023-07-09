@@ -8,6 +8,7 @@ namespace Script.ProjectLibraries.UISystem.UiMVVM
 {
 public abstract class UIViewModel: DisposableBase, IUIViewModel
 {
+    public abstract UIType UIType { get; }
     public abstract event Action<IUIViewModel> ViewShown;
     public abstract event Action<IUIViewModel> ViewHidden;
     public abstract void Init(IUIView view, IAnimatorService animatorService);

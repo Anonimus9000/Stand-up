@@ -16,7 +16,7 @@ public class HomeInteractableObjectsViewModel : ViewModel
     private InputControls _inputControls;
     private DataObserver _observer;
     private readonly IDataService _dataService;
-    private readonly IUIServiceLocator _uiServiceLocator;
+    private readonly IUIServiceProvider _iuiServiceProvider;
     private readonly Canvas _canvas;
     private readonly IInteractableObjectsConfig _interactableObjectsFakeConfig;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
@@ -26,7 +26,7 @@ public class HomeInteractableObjectsViewModel : ViewModel
 
     public HomeInteractableObjectsViewModel(
         IDataService dataService, 
-        IUIServiceLocator uiServiceLocator,
+        IUIServiceProvider iuiServiceProvider,
         Canvas mainCanvas,
         IInteractableObjectsConfig interactableObjectsFakeConfig,
         HomeActionProgressHandler homeActionProgressHandler,
@@ -38,7 +38,7 @@ public class HomeInteractableObjectsViewModel : ViewModel
         _canvas = mainCanvas;
         _dataService = dataService;
         _view = AddDisposable(view);
-        _uiServiceLocator = uiServiceLocator;
+        _iuiServiceProvider = iuiServiceProvider;
         _interactableObjectsFakeConfig = interactableObjectsFakeConfig;
         _homeActionProgressHandler = homeActionProgressHandler;
         _resourceLoader = resourceLoader;
@@ -56,7 +56,7 @@ public class HomeInteractableObjectsViewModel : ViewModel
     private void InitializeComputer(Transform parent)
     {
         AddDisposable(new ComputerViewModel(
-            _uiServiceLocator,
+            _iuiServiceProvider,
             _interactableObjectsFakeConfig,
             _homeActionProgressHandler,
             _observer,
@@ -70,7 +70,7 @@ public class HomeInteractableObjectsViewModel : ViewModel
     private void InitializeToilet(Transform parent)
     {
         AddDisposable(new ToiletViewModel(
-            _uiServiceLocator,
+            _iuiServiceProvider,
             _interactableObjectsFakeConfig,
             _homeActionProgressHandler,
             _resourceLoader,

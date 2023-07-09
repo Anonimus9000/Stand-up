@@ -16,32 +16,33 @@ namespace Script.Scenes.Home.UIs.Popups.ActionsPopup
 {
 public class ActionsUIViewModel : UIViewModel
 {
+    public override UIType UIType { get; }
     public override event Action<IUIViewModel> ViewShown;
     public override event Action<IUIViewModel> ViewHidden;
     
     private ActionsUIView _view;
     private readonly ActionsModel _model;
-    private readonly IUIService _popupService;
-    private readonly IUIService _mainUiService;
     private readonly LocationActionData _locationActionData;
     private ActionFieldItemView _actionFieldItemView;
     private HomeUIViewModel _homeUIViewModel;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
     private readonly Vector3 _progressBarPosition;
     private IAnimatorService _animatorService;
+    private readonly IUIServiceProvider _uiServiceProvider;
 
     public ActionsUIViewModel(
-        IUIServiceLocator serviceLocator,
+        IUIServiceProvider iuiServiceProvider,
         LocationActionData locationActionData,
         HomeActionProgressHandler homeActionProgressHandler,
         Vector3 progressBarPosition)
     {
-        _popupService = serviceLocator.GetService<PopupsUIService>();
-        _mainUiService = serviceLocator.GetService<MainUIService>();
+        UIType = UIType.Popup;
+        
         _locationActionData = locationActionData;
         _model = AddDisposable(new ActionsModel());
         _homeActionProgressHandler = homeActionProgressHandler;
         _progressBarPosition = progressBarPosition;
+        _uiServiceProvider = iuiServiceProvider;
     }
 
     public override void Init(IUIView view, IAnimatorService animatorService)
@@ -66,7 +67,7 @@ public class ActionsUIViewModel : UIViewModel
 
     public override void ShowView()
     {
-        _view.Init(_locationActionData.ActionFields, _mainUiService, _popupService, _homeActionProgressHandler, _progressBarPosition);
+        _view.Init(_locationActionData.ActionFields, _uiServiceProvider, _homeActionProgressHandler, _progressBarPosition);
         
         _animatorService.StartShowAnimation(_view);
     }
@@ -100,7 +101,7 @@ public class ActionsUIViewModel : UIViewModel
     
     private void CloseButtonPressed()
     {
-        _popupService.CloseCurrentView();
+        _uiServiceProvider.CloseCurrentView(UIType.Popup);
     }
 
     #endregion

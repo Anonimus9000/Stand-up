@@ -6,6 +6,7 @@ using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
 using Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo.Characteristics;
@@ -15,21 +16,24 @@ namespace Script.UI.CommonUIs.FullscreenDialogs.CharacterInfo
 {
 public class CharacterInfoViewModel : UIViewModel
 {
+    public override UIType UIType { get; }
     public override event Action<IUIViewModel> ViewShown;
     public override event Action<IUIViewModel> ViewHidden;
     
     private CharacterInfoView _view;
     private readonly CharacterInfoModel _model;
-    private readonly IUIService _fullScreenService;
+    private readonly IUIServiceProvider _serviceProvider;
     private IAnimatorService _animatorService;
     private List<CharacteristicElementViewModel> _characteristics;
     private readonly IDataService _playerDataService;
     private CharacteristicsListViewModel _characteristicsListViewModel;
 
-    public CharacterInfoViewModel(IUIService fullScreensUIService, IDataService playerDataService)
+    public CharacterInfoViewModel(IUIServiceProvider uiServiceProvider, IDataService playerDataService)
     {
+        UIType = UIType.Fullscreen;
+        
         _playerDataService = playerDataService;
-        _fullScreenService = fullScreensUIService;
+        _serviceProvider = uiServiceProvider;
         _model = AddDisposable(new CharacterInfoModel(playerDataService as PlayerDataService));
     }
 
@@ -120,7 +124,7 @@ public class CharacterInfoViewModel : UIViewModel
 
     private void OnCloseButtonPressed()
     {
-        _fullScreenService.CloseCurrentView();
+        _serviceProvider.CloseCurrentView(UIType.Fullscreen);
     }
 
     #endregion

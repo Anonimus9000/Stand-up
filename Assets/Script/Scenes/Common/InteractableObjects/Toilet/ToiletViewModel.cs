@@ -7,6 +7,7 @@ using Script.ProjectLibraries.Observer.Base;
 using Script.ProjectLibraries.ResourceLoader;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
+using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
 using Script.Scenes.Home.UIs.Popups.ActionsPopup;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class ToiletViewModel : ViewModel
 {
     private ToiletModel _model;
     private ToiletView _view;
-    private readonly IUIServiceLocator _iuiServiceLocator;
+    private readonly IUIServiceProvider _iuiIuiServiceProvider;
     private readonly IInteractableObjectsConfig _interactableObjectsFakeConfig;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
     private readonly ResourceImage _toiletResourceImager = new("ToiletView", "InteractableObjects");
@@ -28,7 +29,7 @@ public class ToiletViewModel : ViewModel
     private readonly Camera _mainCamera;
     private IObjectClickChecker _clickChecker;
 
-    public ToiletViewModel(IUIServiceLocator iuiServiceLocator,
+    public ToiletViewModel(IUIServiceProvider iuiIuiServiceProvider,
         IInteractableObjectsConfig interactableObjectsFakeConfig,
         HomeActionProgressHandler homeActionProgressHandler,
         IResourceLoader resourceLoader,
@@ -42,7 +43,7 @@ public class ToiletViewModel : ViewModel
         _observer = observer;
         _mainCanvas = mainCanvas;
         _mainCamera = mainCamera;
-        _iuiServiceLocator = iuiServiceLocator;
+        _iuiIuiServiceProvider = iuiIuiServiceProvider;
         _parent = parent;
         _interactableObjectsFakeConfig = interactableObjectsFakeConfig;
         _homeActionProgressHandler = homeActionProgressHandler;
@@ -104,13 +105,12 @@ public class ToiletViewModel : ViewModel
     {
         Debug.Log($"{_view.gameObject.name} was clicked");
 
-        var popupsUIService = _iuiServiceLocator.GetService<PopupsUIService>();
-        var viewModel = AddDisposable(new ActionsUIViewModel(_iuiServiceLocator,
+        var viewModel = AddDisposable(new ActionsUIViewModel(_iuiIuiServiceProvider,
             _interactableObjectsFakeConfig.ToiletLocationActionData,
             _homeActionProgressHandler, _view.ProgressBarPosition.position));
 
-        popupsUIService.CloseAll();
-        popupsUIService.Show<ActionsUIView>(viewModel);
+        _iuiIuiServiceProvider.CloseAll(UIType.Popup);
+        _iuiIuiServiceProvider.Show<ActionsUIView>(viewModel);
     }
 
     #endregion

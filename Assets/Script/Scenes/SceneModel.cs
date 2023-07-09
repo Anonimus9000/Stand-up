@@ -23,7 +23,7 @@ public class SceneModel : Model, ISceneModel
     public ISceneSwitcher SceneSwitcher { get; private set; }
     
     private readonly IInActionProgressConfig _inActionProgressEventsFakeConfig;
-    private readonly IUIServiceLocator _uiServiceLocator;
+    private readonly IUIServiceProvider _iuiServiceProvider;
     private readonly CharacterSelector _characterSelector;
     private readonly ICharacterModelsConfig _characterConfig;
     private readonly PositionsConverter _positionsConverter;
@@ -38,7 +38,7 @@ public class SceneModel : Model, ISceneModel
         IResourceLoader resourceLoader,
         Transform scenesParent,
         IInActionProgressConfig inActionProgressEventsFakeConfig,
-        IUIServiceLocator uiServiceLocator,
+        IUIServiceProvider iuiServiceProvider,
         ICharacterModelsConfig characterConfig,
         PositionsConverter positionsConverter,
         IDataService playerData,
@@ -52,7 +52,7 @@ public class SceneModel : Model, ISceneModel
         _mainCanvas = mainCanvas;
         _interactableObjectsConfig = interactableObjectsConfig;
         _inActionProgressEventsFakeConfig = inActionProgressEventsFakeConfig;
-        _uiServiceLocator = uiServiceLocator;
+        _iuiServiceProvider = iuiServiceProvider;
         _characterConfig = characterConfig;
         _positionsConverter = positionsConverter;
         _playerData = playerData;
@@ -81,7 +81,7 @@ public class SceneModel : Model, ISceneModel
             scenesParent,
             _inActionProgressEventsFakeConfig,
             SceneSwitcher,
-            _uiServiceLocator,
+            _iuiServiceProvider,
             _characterSelector,
             _characterConfig,
             _positionsConverter,

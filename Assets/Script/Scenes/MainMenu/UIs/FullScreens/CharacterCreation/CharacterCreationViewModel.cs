@@ -4,7 +4,7 @@ using Script.ProjectLibraries.ResourceLoader;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
-using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
 using Script.Scenes.Home.UIs.Popups.ActionsPopup;
@@ -16,30 +16,33 @@ namespace Script.Scenes.MainMenu.UIs.FullScreens.CharacterCreation
 {
 public class CharacterCreationViewModel : UIViewModel
 {
+    public override UIType UIType { get; }
     public override event Action<IUIViewModel> ViewShown;
     public override event Action<IUIViewModel> ViewHidden;
-    
+
     private readonly CharacterCreationModel _model;
     private CharacterCreationView _view;
     private readonly List<GameObject> _characterCreationData;
     private readonly ISceneSwitcher _sceneSwitcher;
-    private readonly IUIService _fullScreenUIService;
     private IAnimatorService _animatorService;
     private readonly IResourceLoader _resourceLoader;
     private readonly ResourceImage _characterSelectorResourceImage = new("CharacterSelector", "CommonPrefabs");
     private CharacterSelector _characterSelector;
+    private readonly IUIServiceProvider _uiServiceProvider;
 
     public CharacterCreationViewModel(
         IResourceLoader resourceLoader,
-        ISceneSwitcher sceneSwitcher, 
-        IUIService fullScreenUIService,
+        ISceneSwitcher sceneSwitcher,
+        IUIServiceProvider uiServiceProvider,
         List<GameObject> characterCreationData)
     {
+        UIType = UIType.Fullscreen;
+
         _resourceLoader = resourceLoader;
         _sceneSwitcher = sceneSwitcher;
         _characterCreationData = characterCreationData;
         _model = AddDisposable(new CharacterCreationModel(characterCreationData));
-        _fullScreenUIService = fullScreenUIService;
+        _uiServiceProvider = uiServiceProvider;
     }
 
     public override void Init(IUIView view, IAnimatorService animatorService)
@@ -48,10 +51,10 @@ public class CharacterCreationViewModel : UIViewModel
         {
             throw new Exception($"Incorrect type {view.GetType()}; Need {typeof(ActionsUIView)}");
         }
-        
+
         _view = AddDisposable(actionsUIView);
         _animatorService = animatorService;
-        
+
         _sceneSwitcher.SwitchTo<MainMenuScene>();
 
         _resourceLoader.LoadResource(_characterSelectorResourceImage, OnResourceLoaded);
@@ -64,7 +67,7 @@ public class CharacterCreationViewModel : UIViewModel
 
         _view.SetRendererCharacterTexture(_characterSelector.RenderTexture);
         SetInitialCharacter();
-        
+
         SubscribeOnModelEvents(_model);
         SubscribeOnViewEvents(_view);
         SubscribeOnAnimatorEvents(_animatorService);
@@ -80,25 +83,25 @@ public class CharacterCreationViewModel : UIViewModel
 
     public override void ShowView()
     {
-       _animatorService.StartShowAnimation(_view);
+        _animatorService.StartShowAnimation(_view);
     }
 
     public override void ShowHiddenView()
     {
-        _animatorService.StartShowAnimation(_view);        
+        _animatorService.StartShowAnimation(_view);
     }
-    
+
 
     public override void HideView()
     {
         _animatorService.StartHideAnimation(_view);
     }
-    
+
     public override IInstantiatable GetInstantiatable()
     {
         return _view;
     }
-    
+
     private void SetInitialCharacter()
     {
         _model.ShowFirstCharacter();
@@ -131,7 +134,7 @@ public class CharacterCreationViewModel : UIViewModel
     }
 
     #endregion
-    
+
 
     #region ModelEvents
 
@@ -143,7 +146,7 @@ public class CharacterCreationViewModel : UIViewModel
         model.OnRightButtonEnabled += OnRightButtonEnabled;
         model.OnLeftButtonEnabled += OnLeftButtonEnabled;
     }
-    
+
     private void UnsubscribeOnModelEvent(CharacterCreationModel model)
     {
         model.OnCharacterChanged -= OnCharacterChanged;
@@ -152,7 +155,7 @@ public class CharacterCreationViewModel : UIViewModel
         model.OnRightButtonEnabled -= OnRightButtonEnabled;
         model.OnLeftButtonEnabled -= OnLeftButtonEnabled;
     }
-    
+
     private void OnRightButtonDisabled()
     {
         _view.DisableRightButton();
@@ -162,7 +165,7 @@ public class CharacterCreationViewModel : UIViewModel
     {
         _characterSelector.SetCharacter(look);
     }
-    
+
     private void OnLeftButtonEnabled()
     {
         _view.EnableLeftButton();
@@ -177,7 +180,6 @@ public class CharacterCreationViewModel : UIViewModel
     {
         _view.DisableLeftButton();
     }
-
 
     #endregion
 
@@ -199,7 +201,7 @@ public class CharacterCreationViewModel : UIViewModel
 
     private void OnCloseButtonPressed()
     {
-        _fullScreenUIService.CloseCurrentView();
+        _uiServiceProvider.CloseCurrentView(UIType.Fullscreen);
     }
 
     private void OnRightButtonPressed()

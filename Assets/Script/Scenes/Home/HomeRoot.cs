@@ -1,8 +1,8 @@
 ﻿using Script.DataServices.Base;
-using Script.Initializer.Base;
 using Script.ProjectLibraries.ConfigParser.Base;
 using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.ResourceLoader;
+using Script.ProjectLibraries.Root;
 using Script.ProjectLibraries.ServiceLocators;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
@@ -20,7 +20,7 @@ public class HomeRoot : BehaviourDisposableBase, IRoot
     private Camera _mainCamera;
 
     public void Initialize(
-        IUIServiceLocator uiServiceLocator,
+        IUIServiceProvider iuiServiceProvider,
         IDataServiceLocator dataServiceLocator,
         HomeActionProgressHandler homeActionProgressHandler,
         Canvas mainCanvas,
@@ -30,7 +30,7 @@ public class HomeRoot : BehaviourDisposableBase, IRoot
     {
         _mainCamera = mainCamera;
         InitializeHomeInteractableObjects(
-            uiServiceLocator,
+            iuiServiceProvider,
             homeActionProgressHandler,
             dataServiceLocator.GetService<IDataService>(),
             mainCanvas,
@@ -39,7 +39,7 @@ public class HomeRoot : BehaviourDisposableBase, IRoot
     }
     
     private void InitializeHomeInteractableObjects(
-        IUIServiceLocator iuiSystem,
+        IUIServiceProvider iuiSystem,
         HomeActionProgressHandler actionProgressHandler,
         IDataService dataService,
         Canvas mainCanvas,

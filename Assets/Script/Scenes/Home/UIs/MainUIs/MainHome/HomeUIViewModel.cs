@@ -5,8 +5,6 @@ using Script.ProjectLibraries.ResourceLoader;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
-using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
-using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
@@ -25,23 +23,21 @@ public class HomeUIViewModel : UIViewModel
     private HomeUIView _view;
     private readonly HomeUIModel _model;
     private readonly ISceneSwitcher _sceneSwitcher;
-    private readonly IUIService _fullScreensUIService;
-    private readonly IUIService _mainUiService;
     private readonly ICharacterModelsConfig _characterModelsConfig;
     private readonly CharacterSelector _characterSelector;
     private readonly PositionsConverter _positionsConverter;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
     private IAnimatorService _animatorService;
     private ProgressBar _currentProgressBar;
-    private readonly IUIService _popupsUIService;
     private readonly IDataService _playerData;
     private readonly IResourceLoader _resourceLoader;
-    private readonly IUIServiceLocator _uiServiceLocator;
+    private readonly IUIServiceProvider _uiServiceProvider;
     public override event Action<IUIViewModel> ViewHidden;
+    public override UIType UIType { get; }
     public override event Action<IUIViewModel> ViewShown;
 
     public HomeUIViewModel(ISceneSwitcher sceneSwitcher,
-        IUIServiceLocator uiServiceLocator,
+        IUIServiceProvider uiServiceProvider,
         ICharacterModelsConfig characterCreationModelsConfig,
         CharacterSelector characterSelector,
         PositionsConverter positionsConverter,
@@ -51,20 +47,19 @@ public class HomeUIViewModel : UIViewModel
         Camera mainCamera, 
         Canvas canvas)
     {
+        UIType = UIType.Main;
+        
         _playerData = playerData;
 
         _characterModelsConfig = characterCreationModelsConfig;
         _sceneSwitcher = sceneSwitcher;
-        _mainUiService = uiServiceLocator.GetService<MainUIService>();
-        _fullScreensUIService = uiServiceLocator.GetService<FullScreensUIService>();
-        _popupsUIService = uiServiceLocator.GetService<PopupsUIService>();
+        _uiServiceProvider = uiServiceProvider;
         _positionsConverter = positionsConverter;
         _characterSelector = characterSelector;
         _homeActionProgressHandler = homeActionProgressHandler;
-        _uiServiceLocator = uiServiceLocator;
         _resourceLoader = resourceLoader;
         
-        _model = AddDisposable(new HomeUIModel(positionsConverter, _popupsUIService, homeActionProgressHandler, canvas, mainCamera));
+        _model = AddDisposable(new HomeUIModel(positionsConverter, _uiServiceProvider, homeActionProgressHandler, canvas, mainCamera));
         AddDisposable(_model);
     }
 
@@ -169,9 +164,9 @@ public class HomeUIViewModel : UIViewModel
     
     private void OnOpenStartGameMenuButtonPressed()
     {
-        _mainUiService.Show<StartGameMenuView>(
+        _uiServiceProvider.Show<StartGameMenuView>(
             AddDisposable(new StartGameMenuViewModel(
-                _uiServiceLocator,
+                _uiServiceProvider,
                 _sceneSwitcher, 
                 _characterModelsConfig,
                 _positionsConverter,
@@ -181,7 +176,7 @@ public class HomeUIViewModel : UIViewModel
     
     private void OnOpenCharacterInfoButtonPressed()
     {
-        _fullScreensUIService.Show<CharacterInfoView>(AddDisposable(new CharacterInfoViewModel(_fullScreensUIService, _playerData)));
+        _uiServiceProvider.Show<CharacterInfoView>(AddDisposable(new CharacterInfoViewModel(_uiServiceProvider, _playerData)));
     }
 
     #endregion

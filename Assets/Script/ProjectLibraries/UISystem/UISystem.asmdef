@@ -2,7 +2,8 @@
     "name": "UISystem",
     "rootNamespace": "",
     "references": [
-        "GUID:e589ab210f69b994f8b31bbd0322b108"
+        "GUID:e589ab210f69b994f8b31bbd0322b108",
+        "GUID:388c39ec419fe254e82a608f81a1ec12"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

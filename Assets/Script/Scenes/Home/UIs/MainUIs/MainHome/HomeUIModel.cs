@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.Observer.ObservableValue;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.Scenes.Common.ActionProgressSystem.Handler;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
 using Script.Scenes.Home.UIs.MainUIs.MainHome.Components;
@@ -22,9 +23,9 @@ public class HomeUIModel : Model
     public event Action<float> MoveBubbleCompleted;
 
     public NotifyObservableValue<int> UpgradePoints { get; } = new(0, 5);
-    
+
     private readonly PositionsConverter _positionConverter;
-    private readonly IUIService _popupsUIService;
+    private readonly IUIServiceProvider _uiServiceProvider;
     private readonly HomeActionProgressHandler _homeActionProgressHandler;
     private readonly Canvas _canvas;
     private readonly Camera _mainCamera;
@@ -32,13 +33,13 @@ public class HomeUIModel : Model
     private bool _progressIsPause;
 
     public HomeUIModel(
-        PositionsConverter positionsConverter, 
-        IUIService popupsUIService,
+        PositionsConverter positionsConverter,
+        IUIServiceProvider uiServiceProvider,
         HomeActionProgressHandler homeActionProgressHandler,
         Canvas canvas,
         Camera mainCamera)
     {
-        _popupsUIService = popupsUIService;
+        _uiServiceProvider = uiServiceProvider;
         _homeActionProgressHandler = homeActionProgressHandler;
         _canvas = canvas;
         _mainCamera = mainCamera;
@@ -51,9 +52,8 @@ public class HomeUIModel : Model
 
         return worldToScreenSpace;
     }
-    
-    #region ActionProgress
 
+    #region ActionProgress
 
     public void UpdateStress(int stressPoint)
     {
@@ -61,7 +61,6 @@ public class HomeUIModel : Model
         {
             throw new Exception("Points can't be less zero");
         }
-        
     }
 
     public void InitUpgradePoints(int upgradePoints)
@@ -70,7 +69,7 @@ public class HomeUIModel : Model
         {
             throw new Exception("Points can't be less zero");
         }
-        
+
         UpgradePoints.Notify(upgradePoints);
     }
 
@@ -97,11 +96,11 @@ public class HomeUIModel : Model
         }
 
         SubscribeOnProgressEvents(progressHandler, _progressBar);
-        
+
         _progressBar.transform.localPosition = progressBarPosition;
-        
+
         _progressBar.ShowProgress(duration);
-        
+
         progressHandler.StartActionProgress(duration);
 
         var applicationQuitTokenSource = new ApplicationQuitTokenSource();
@@ -123,7 +122,6 @@ public class HomeUIModel : Model
         homeActionProgressHandler.ProgressСontinued += OnProgressContinued;
         homeActionProgressHandler.ProgressCompleted += OnProgressCompleted;
         progressBar.ProgressAnimationCompleted += OnProgressBarAnimationCompleted;
-
     }
 
     private void OnProgressBarAnimationCompleted()
@@ -158,8 +156,8 @@ public class HomeUIModel : Model
 
     private void OnCheckEventSuccessful()
     {
-        var inGameViewModel = AddDisposable(new InGameEventViewModel(_popupsUIService));
-        _popupsUIService.Show<InGameEventView>(inGameViewModel);
+        var inGameViewModel = AddDisposable(new InGameEventViewModel(_uiServiceProvider));
+        _uiServiceProvider.Show<InGameEventView>(inGameViewModel);
 
         inGameViewModel.EventCompleted += OnInGameEventCompleted;
     }
@@ -181,7 +179,7 @@ public class HomeUIModel : Model
     {
         var lessTime = duration;
         var checkPeriod = 1;
-        var pointsPerPeriod = (int) (allPoints / duration);
+        var pointsPerPeriod = (int)(allPoints / duration);
 
         while (true)
         {
@@ -189,7 +187,7 @@ public class HomeUIModel : Model
             {
                 return;
             }
-            
+
             if (token.IsCancellationRequested || upgradePointsIcon == null)
             {
                 return;
@@ -200,7 +198,7 @@ public class HomeUIModel : Model
                 await Task.Yield();
                 continue;
             }
-            
+
             //WorldToCanvasPoint(_canvas, _mainCamera, startMoveBubble.position, out var startMoveRectPosition);
             // RectTransformUtility.ScreenPointToLocalPointInRectangle(
             //     _canvas, 
@@ -210,7 +208,7 @@ public class HomeUIModel : Model
 
             await Task.Delay(checkPeriod * 1000, token);
             lessTime -= checkPeriod;
-            
+
             ShowBubble(startMoveBubblePosition, pointsPerPeriod, flyBubblePrefab, bubblesParent, upgradePointsIcon);
         }
     }
@@ -234,20 +232,21 @@ public class HomeUIModel : Model
     {
         var currentPoints = UpgradePoints.Value + bubble.BodyInfo;
         UpgradePoints.Notify(currentPoints);
-        
+
         bubble.Destroy();
         bubble.MoveCompleted -= OnMoveBubbleCompleted;
     }
-    
+
     private void WorldToCanvasPoint(Canvas canvas, Camera camera, Vector3 worldPosition, out Vector2 canvasPosition)
     {
         var screenPoint = camera.WorldToScreenPoint(worldPosition);
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPoint, null, out Vector2 canvasPoint);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPoint, null,
+            out Vector2 canvasPoint);
 
-        canvasPosition =  canvasPoint;
+        canvasPosition = canvasPoint;
     }
-    
+
     #endregion
 }
 }

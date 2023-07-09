@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Script.DataServices.Services.PlayerDataService
 {
+//TODO: remove. Use config
 public class PlayerDataService : IDataService
 {
     public IDataContainer DataContainer => _containerModel;

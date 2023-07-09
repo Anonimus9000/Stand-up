@@ -1,4 +1,4 @@
-﻿namespace Script.Initializer.Base
+﻿namespace Script.ProjectLibraries.Root
 {
 public interface IRoot
 {

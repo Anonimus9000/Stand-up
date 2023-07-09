@@ -1,7 +1,6 @@
 using Plugins.IngameDebugConsole.Scripts;
 using Script.DataServices.Base;
 using Script.DataServices.Services.PlayerDataService;
-using Script.Initializer.Base;
 using Script.ProjectLibraries.ConfigParser.Base;
 using Script.ProjectLibraries.ConfigParser.FakeConfigData.CharacterCreationData;
 using Script.ProjectLibraries.ConfigParser.FakeConfigData.InGameEventsData;
@@ -11,9 +10,10 @@ using Script.ProjectLibraries.ConfigParser.Parsers.Fake;
 using Script.ProjectLibraries.Logger.Loggers;
 using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.ResourceLoader;
+using Script.ProjectLibraries.Root;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.ServiceLocators;
-using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ResourceLoader;
 using Script.Scenes;
 using Script.Scenes.MainMenu.UIs.FullScreens.CharacterCreation.Components;
@@ -23,11 +23,10 @@ using Script.Utils.UIPositionConverter;
 using UnityEngine;
 using UnityEngine.Serialization;
 using ILogger = Script.ProjectLibraries.Logger.LoggerBase.ILogger;
-using IUIServiceLocator = Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider.IUIServiceLocator;
 
 namespace Script.Roots
 {
-public class GameEntryPoint : BehaviourDisposableBase, IRoot
+public class GameEntryRoot : BehaviourDisposableBase, IRoot
 {
     #region MonoBehavioursDependencies
 
@@ -132,7 +131,7 @@ public class GameEntryPoint : BehaviourDisposableBase, IRoot
         return mainConfig;
     }
 
-    private IUIServiceLocator InitializeUISystem(ILogger logger, IResourceLoader resourceLoader)
+    private IUIServiceProvider InitializeUISystem(ILogger logger, IResourceLoader resourceLoader)
     {
         return _uiRoot.Initialize(logger, resourceLoader);
     }
@@ -141,7 +140,7 @@ public class GameEntryPoint : BehaviourDisposableBase, IRoot
         IResourceLoader resourceLoader,
         Transform scenesParent,
         IInActionProgressConfig inActionProgressEventsFakeConfig,
-        IUIServiceLocator uiServiceLocator,
+        IUIServiceProvider iuiServiceProvider,
         ICharacterModelsConfig characterConfig,
         PositionsConverter positionsConverter,
         IDataService playerData,
@@ -154,7 +153,7 @@ public class GameEntryPoint : BehaviourDisposableBase, IRoot
             resourceLoader,
             scenesParent,
             inActionProgressEventsFakeConfig,
-            uiServiceLocator,
+            iuiServiceProvider,
             characterConfig,
             positionsConverter,
             playerData,
@@ -182,7 +181,7 @@ public class GameEntryPoint : BehaviourDisposableBase, IRoot
     }
     
     private void OpenApplicationEnterDotWindow(
-        IUIServiceLocator iuiServiceLocator, 
+        IUIServiceProvider uiIuiServiceProvider, 
         ISceneSwitcher sceneSwitcher, 
         ICharacterModelsConfig characterConfig, 
         IDataServiceLocator dataServiceLocator,
@@ -192,7 +191,7 @@ public class GameEntryPoint : BehaviourDisposableBase, IRoot
         var playerDataService = dataServiceLocator.GetService<PlayerDataService>();
 
         var applicationEnterViewModel = new StartGameMenuViewModel(
-            iuiServiceLocator,
+            uiIuiServiceProvider,
             sceneSwitcher,
             characterConfig,
             positionsConverter,
@@ -201,8 +200,7 @@ public class GameEntryPoint : BehaviourDisposableBase, IRoot
         
         compositeDisposable.AddDisposable(applicationEnterViewModel);
         
-        var mainUIService = iuiServiceLocator.GetService<MainUIService>();
-        mainUIService.Show<StartGameMenuView>(applicationEnterViewModel);
+        uiIuiServiceProvider.Show<StartGameMenuView>(applicationEnterViewModel);
     }
 }
 }

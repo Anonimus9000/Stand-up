@@ -1,13 +1,13 @@
 ﻿using System;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
 using Script.Scenes.Home.UIs.MainUIs.MainHome.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using IUIServiceLocator = Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider.IUIServiceLocator;
 
 namespace Script.Scenes.Home.UIs.MainUIs.MainHome
 {
@@ -53,7 +53,7 @@ public class HomeUIView : UiViewBehaviour, IMainUI
 
     public Slider StressSlider => _stressSlider;
 
-    private IUIServiceLocator _serviceLocator;
+    private IUIServiceProvider _iuiServiceProvider;
     private FullScreensUIService _fullScreensUIService;
     private ISceneSwitcher _sceneSwitcher;
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using Script.ProjectLibraries.UISystem.Managers.Instantiater;
 using Script.ProjectLibraries.UISystem.Managers.UiAnimatorServiceProvider.Base.Animators;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.Service;
+using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
 using Script.ProjectLibraries.UISystem.UiMVVM;
 using Script.ProjectLibraries.UISystem.UIWindow;
 
@@ -9,6 +11,7 @@ namespace Script.UI.CommonUIs.PopupDialogs.InGameEvent
 {
 public class InGameEventViewModel : UIViewModel
 {
+    public override UIType UIType { get; }
     public override event Action<IUIViewModel> ViewShown;
     public override event Action<IUIViewModel> ViewHidden;
 
@@ -16,11 +19,12 @@ public class InGameEventViewModel : UIViewModel
     
     private InGameEventView _view;
     private IAnimatorService _animatorService;
-    private readonly IUIService _popupsUIService;
+    private readonly IUIServiceProvider _uiServiceProvider;
 
-    public InGameEventViewModel(IUIService popupsUIService)
+    public InGameEventViewModel(IUIServiceProvider uiServiceProvider)
     {
-        _popupsUIService = popupsUIService;
+        UIType = UIType.Popup;
+        _uiServiceProvider = uiServiceProvider;
     }
 
     public override void Init(IUIView view, IAnimatorService animatorService)
@@ -79,17 +83,17 @@ public class InGameEventViewModel : UIViewModel
 
     private void OnButtonCloseClicked()
     {
-        _popupsUIService.CloseCurrentView();
+        _uiServiceProvider.CloseCurrentView(UIType.Popup);
     }
 
     private void OnButtonRejectClicked()
     {
-        _popupsUIService.CloseCurrentView();
+        _uiServiceProvider.CloseCurrentView(UIType.Popup);
     }
 
     private void OnAcceptButtonClicked()
     {
-        _popupsUIService.CloseCurrentView();
+        _uiServiceProvider.CloseCurrentView(UIType.Popup);
     }
 
     #endregion

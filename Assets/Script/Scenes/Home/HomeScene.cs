@@ -2,14 +2,11 @@
 using System.Threading.Tasks;
 using Script.DataServices.Base;
 using Script.ProjectLibraries.ConfigParser.Base;
-using Script.ProjectLibraries.ConfigParser.Configs.FakeConfigs;
 using Script.ProjectLibraries.MVVM;
 using Script.ProjectLibraries.ResourceLoader;
 using Script.ProjectLibraries.SceneSwitcherSystem;
 using Script.ProjectLibraries.ServiceLocators;
-using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider;
 using Script.ProjectLibraries.UISystem.Managers.UiServiceProvider.Base.ServiceProvider;
-using Script.Scenes.Common.ActionProgressSystem.Handler;
 using Script.Scenes.Home.ActionProgressSystem.Handler;
 using Script.Scenes.Home.UIs.MainUIs.MainHome;
 using Script.Scenes.MainMenu.UIs.FullScreens.CharacterCreation.Components;
@@ -30,7 +27,7 @@ public class HomeScene : ViewModel, IScene
     private readonly ISceneSwitcher _sceneSwitcher;
 
     private HomeRoot _homeSceneRoot;
-    private readonly IUIServiceLocator _uiServiceLocator;
+    private readonly IUIServiceProvider _iuiServiceProvider;
     private readonly CharacterSelector _characterSelector;
     private readonly ICharacterModelsConfig _characterConfig;
     private readonly PositionsConverter _positionsConverter;
@@ -45,14 +42,14 @@ public class HomeScene : ViewModel, IScene
         Transform scenesParent,
         IInActionProgressConfig inActionProgressEventsFakeConfig,
         ISceneSwitcher sceneSwitcher,
-        IUIServiceLocator uiServiceLocator,
+        IUIServiceProvider iuiServiceProvider,
         CharacterSelector characterSelector,
         ICharacterModelsConfig characterConfig,
         PositionsConverter positionsConverter,
         IDataService playerData,
         Canvas mainCanvas,
         IInteractableObjectsConfig interactableObjectsConfig,
-        IDataServiceLocator dataServiceLocator, 
+        IDataServiceLocator dataServiceLocator,
         Camera mainCamera)
     {
         _mainCamera = mainCamera;
@@ -63,7 +60,7 @@ public class HomeScene : ViewModel, IScene
         _resourceLoader = resourceLoader;
         _scenesParent = scenesParent;
         _sceneSwitcher = sceneSwitcher;
-        _uiServiceLocator = uiServiceLocator;
+        _iuiServiceProvider = iuiServiceProvider;
         _characterSelector = characterSelector;
         _characterConfig = characterConfig;
         _positionsConverter = positionsConverter;
@@ -87,7 +84,7 @@ public class HomeScene : ViewModel, IScene
         Close();
         return Task.CompletedTask;
     }
-    
+
     public void Open()
     {
         if (_homeSceneRoot == null)
@@ -103,27 +100,26 @@ public class HomeScene : ViewModel, IScene
     public void Close()
     {
         HideHome();
-        
+
         SceneClosed?.Invoke(SceneType.Home);
     }
 
     private void ShowHome()
     {
-        var mainUIService = _uiServiceLocator.GetService<MainUIService>();
         var homeUIViewModel = AddDisposable(new HomeUIViewModel(
             _sceneSwitcher,
-            _uiServiceLocator,
+            _iuiServiceProvider,
             _characterConfig,
             _characterSelector,
             _positionsConverter,
             _homeActionProgressHandler,
             _playerData,
             _resourceLoader,
-            _mainCamera, 
+            _mainCamera,
             _mainCanvas));
 
-        mainUIService.Show<HomeUIView>(homeUIViewModel);
-        
+        _iuiServiceProvider.Show<HomeUIView>(homeUIViewModel);
+
         _homeSceneRoot.gameObject.SetActive(true);
     }
 
@@ -137,7 +133,7 @@ public class HomeScene : ViewModel, IScene
         var prefab = await _resourceLoader.LoadResourceAsync(_resourceImage, Application.exitCancellationToken);
         CreateScene(prefab);
     }
-    
+
     private void LoadScene()
     {
         _resourceLoader.LoadResource(_resourceImage, OnResourceLoaded);
@@ -152,7 +148,7 @@ public class HomeScene : ViewModel, IScene
     {
         _homeSceneRoot = AddDisposable(Object.Instantiate(prefab, _scenesParent).GetComponent<HomeRoot>());
         _homeSceneRoot.Initialize(
-            _uiServiceLocator,
+            _iuiServiceProvider,
             _dataServiceLocator,
             _homeActionProgressHandler,
             _mainCanvas,
@@ -160,11 +156,12 @@ public class HomeScene : ViewModel, IScene
             _resourceLoader,
             _mainCamera);
     }
-    
-    private HomeActionProgressHandler InitializeActionProgressHandler(IInActionProgressConfig inActionProgressEventsFakeConfig)
+
+    private HomeActionProgressHandler InitializeActionProgressHandler(
+        IInActionProgressConfig inActionProgressEventsFakeConfig)
     {
         var homeActionProgressHandler = new HomeActionProgressHandler(inActionProgressEventsFakeConfig);
-        
+
         return homeActionProgressHandler;
     }
 }
